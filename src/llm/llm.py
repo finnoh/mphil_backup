@@ -76,6 +76,8 @@ if __name__ == "__main__":
     llm = LLM(model=GPT2LMHeadModel.from_pretrained(s_model),
               tokenizer=AutoTokenizer.from_pretrained(s_model))
     
+    # TODO: Set up a function that gives the generated text and losses for an input embedding
+    # TODO: Next step is to set up a tiny neural network, where we implement the training framework
     embedding = llm.get_embedding(s_string=s_string)
     outputs, transition_scores = llm.generate_embedding2text(embedding=embedding)
 
