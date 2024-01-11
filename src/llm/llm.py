@@ -9,79 +9,119 @@ s_model = 'gpt2'
 s_string = "Finn writes code"
 
 # FUNCTIONS --------------------------
-class LLM:
-    def __init__(self, model, tokenizer):
-        # store tokenizer and model
-        self.tokenizer = tokenizer
-        self.model = model
-        # standard settings for generating text
-        self.max_new_tokens=5
-        self.do_sample=True
-        self.top_k=1
-        self.num_return_sequences=1
-        
-        # tests
-        self.test_roundtrip_tokenizer("This is a test string.")
-        
-    def decode(self, t_tokens):
-        return self.tokenizer.decode(t_tokens)
-    
-    def encode(self, s_string):
-        return self.tokenizer.encode(s_string, return_tensors="pt")
-    
-    def get_embedding(self, s_string):
-        # get the input embedding of a string
-        return self.model.get_input_embeddings()(self.encode(s_string))
-        
-    def generate_embedding2text(self, embedding):
-        # generate text
-        outputs = self.model.generate(inputs_embeds=embedding,
-                        max_new_tokens=self.max_new_tokens,
-                        do_sample=self.do_sample,
-                        top_k=self.top_k,
-                        return_dict_in_generate=True,
-                        num_return_sequences=self.num_return_sequences,
-                        output_scores=True)
-        # calculate the transition scores
-        transition_scores = self.model.compute_transition_scores(
-        outputs.sequences,
-        outputs.scores,
-        normalize_logits=True
-        )
-        
-        return outputs, transition_scores
-    
-    def analyze_generation(self, inputs, outputs, transition_scores):
-        # TODO: Implement inputs and outputs
-        # read out tokens
-        generated_tokens = outputs.sequences[:, inputs.input_ids.shape[1]:]
-        
-        # Iterate over the generated tokens and transition scores
-        df = pd.DataFrame({'token': generated_tokens[0].numpy(),
-                           'trans_scores': transition_scores[0].numpy()})
+def calc_joint_prob(transition_scores: torch.Tensor) -> float:
+    # calculate the joint probability of a generated text
+    return np.exp(np.sum(transition_scores.numpy()))
+
+def calc_trans_prob(transition_scores: torch.Tensor) -> float:
+    return np.exp(transition_scores.numpy())
+
+def table_trans_prob(generated_tokens: torch.Tensor , transition_scores: torch.Tensor) -> pd.DataFrame : 
+    # for beam search, loops over all generated texts
+    l_df = list()
+    for i in range(len(generated_tokens)):
+        # create the dataframe and append to list
+        l_df.append(pd.DataFrame({'token': generated_tokens[i].numpy(),
+                        'trans_scores': transition_scores[i].numpy()}))
         # create other columns
-        df['token_str'] = df['token'].apply(lambda x: self.tokenizer.decode(x))
-        df['trans_prob'] = df['trans_scores'].apply(lambda x: np.exp(x))
-        
-        return df[['token', 'token_str', 'trans_scores', 'trans_prob']]
+        l_df[i]['token_str'] = l_df[i]['token'].apply(lambda x: tokenizer.decode(x))
+        l_df[i]['trans_prob'] = l_df[i]['trans_scores'].apply(lambda x: np.exp(x))
+        l_df[i]['generation'] = i+1
+        l_df[i]['joint'] = calc_joint_prob(transition_scores[i])
     
-    # TODO: Implement as actual test
-    def test_roundtrip_tokenizer(self, s_string):
-        t_embedding = self.encode(s_string)
-        s_redecoded_string = self.decode(t_embedding[0])
-        assert s_string == s_redecoded_string, "Check the tokenizer; Roundtrip test failed"
+    return pd.concat(l_df)
+
+def passthrough(input_embedding, fn_model, model):
+    outputs = fn_model(input_embedding)
+    
+    try:
+        transition_scores = model.compute_transition_scores(
+            outputs.sequences, outputs.scores, outputs.beam_indices, normalize_logits=True
+        )
+    except AttributeError:
+        #print("\nNo beam search!\n")
+        transition_scores = model.compute_transition_scores(
+            outputs.sequences, outputs.scores, normalize_logits=True
+        )
+    
+    return calc_trans_prob(transition_scores[0]), outputs
         
 # MAIN --------------------------
 if __name__ == "__main__":
-    llm = LLM(model=GPT2LMHeadModel.from_pretrained(s_model),
-              tokenizer=AutoTokenizer.from_pretrained(s_model))
     
-    # TODO: Set up a function that gives the generated text and losses for an input embedding
-    # TODO: Next step is to set up a tiny neural network, where we implement the training framework
-    embedding = llm.get_embedding(s_string=s_string)
-    outputs, transition_scores = llm.generate_embedding2text(embedding=embedding)
 
-    print(outputs)
-    print(llm.decode(outputs.sequences[0]))
-    print("Transition\n")
-    print(transition_scores)
+    # MAGICKS
+    i_seed_value = 42
+    
+    s_string = "Chicken and the"
+    s_model = 'gpt2'
+    
+    i_num_beams = 1
+    i_new_tokens = 5
+    
+    # BUG: Does this seed work?
+    torch.manual_seed(i_seed_value)
+    model = GPT2LMHeadModel.from_pretrained(s_model)
+    tokenizer = AutoTokenizer.from_pretrained(s_model)
+    tokenizer.pad_token_id = tokenizer.eos_token_id
+    
+    # TEST: create test case
+    s_string = "Finn writes code"
+    b_string = True
+    #input_embedding = torch.randn(1, 5, 768)
+    input_embedding = model.get_input_embeddings()(tokenizer.encode(s_string, return_tensors="pt"))
+    
+    # NOTE: torch.Size([1, 5, 768])
+    print(input_embedding.shape)
+    print(input_embedding)
+    
+    # NOTE: num_beams=1 is greedy-search
+    fn_model = lambda x: model.generate(
+        inputs_embeds=x,
+        max_new_tokens=i_new_tokens,
+        num_beams=i_num_beams,
+        num_return_sequences=1,
+        return_dict_in_generate=True,
+        output_scores=True,
+    )
+
+    v_trans_prob_all, outputs = passthrough(input_embedding, fn_model, model)
+    s_string_test = tokenizer.decode(outputs.sequences[0][1:])
+    
+    l_trans_prob = list()
+    s_string_copy = s_string
+    
+    for i in range(i_new_tokens):
+        
+        if b_string:
+            input_embedding = model.get_input_embeddings()(tokenizer.encode(s_string, return_tensors="pt"))
+        
+        fn_model = lambda x: model.generate(
+            inputs_embeds=x,
+            max_new_tokens=1,
+            num_beams=i_num_beams,
+            num_return_sequences=1,
+            return_dict_in_generate=True,
+            output_scores=True,
+        )
+
+        v_trans_prob, outputs = passthrough(input_embedding, fn_model, model)
+        l_trans_prob.append(v_trans_prob)
+        
+        s_string += tokenizer.decode(outputs.sequences[0][1])
+        print(s_string)
+        b_string = True
+        
+    print("\n\n")
+    print(s_string_copy)
+    print("\n")
+    print(f"Iter: {s_string[len(s_string_copy):]}")
+    print(f"Full: {s_string_test}")
+
+    print(f"Iter: {np.asarray(l_trans_prob).flatten()}")
+    print(f"Full: {v_trans_prob_all}")
+    
+    if i_num_beams == 1:
+        assert s_string[len(s_string_copy):] == s_string_test, "TEXT: Iterative not the same as gen. all at once for greedy search"
+        assert np.allclose(np.asarray(l_trans_prob).flatten(), v_trans_prob_all, rtol=0.001), "PROB: Transition probs not the same"
+    
