@@ -43,17 +43,15 @@ def llikelihood(output: tuple, target_sequence: torch.Tensor) -> float:
     #m_prob_sub = autograd.Variable(m_prob[target_sequence.squeeze()], requires_grad=True)
     m_prob_sub = m_prob[target_sequence.squeeze()]
     
-    # get the diagonal of the matrix # NOTE: Turn positive, as we use a minimizer
+    # get the diagonal of the matrix 
     #v_trans_prob = autograd.Variable(torch.diag(m_prob_sub), requires_grad=True)
     v_trans_prob = torch.diag(m_prob_sub)
     #d_llikelihood = autograd.Variable(torch.sum(v_trans_prob) * (-1), requires_grad=True)
+    # NOTE: we use a minimizer
     d_llikelihood = torch.sum(v_trans_prob) * (-1)
-
-    print(d_llikelihood)
     
     # return the log-likelihood of the target tokens and the diagonal
     #return m_prob, v_trans_prob, d_llikelihood
-    
     return d_llikelihood
 
 def forward_pass(input_embedding, fn_model, model, target_sequence):
@@ -162,19 +160,13 @@ fn_generate = lambda x: model.generate_with_grad(
 
 # MAIN --------------------------
 if __name__ == "__main__":
-    
-    #d_likelihood = forward_pass(input_embedding, fn_model, model, target_sequence)
-    # Compute gradients with respect to input_embedding
-    #print(d_likelihood)
-
-    # Instantiate optimizer
-    # optimizer = torch.optim.Adam([input_embedding], lr=0.001)
-    # losses = training_loop(input_embedding, fn_forward_pass, optimizer, n=100)
-    
+  
     print(input_embedding.shape)
     
-    output = model.generate_with_grad(
-        inputs_embeds=input_embedding,
+    input_embedding_start = torch.clone(input_embedding) # save it
+    
+    output_start = model.generate_with_grad(
+        inputs_embeds=input_embedding_start,
         pad_token_id=tokenizer.eos_token_id,
         max_new_tokens=1,
         num_beams=i_num_beams,
@@ -182,26 +174,21 @@ if __name__ == "__main__":
         return_dict_in_generate=True,
         output_scores=True)
     
-    ll = llikelihood(output, target_sequence)
+    print("START\n")
+    print(input_embedding_start)
+    print(tokenizer.decode(output_start.sequences[0]))
+    print(output_start.sequences[0])
+    
+    ll = llikelihood(output_start, target_sequence)
     
     print(ll)
-    make_dot(ll).render("dag", format="svg")
-    
-    # output = model(inputs_embeds=input_embedding, return_dict=True)
-    # print(F.softmax(output.logits[:, -1, :], dim=-1).argmax())
-    # print(F.softmax(output.logits[:, -1, :], dim=-1).shape)
-
-    # output_gen = fn_model(input_embedding)
-    # print(output_gen.sequences[0][1:])
-    
-    #loss = nn.CrossEntropyLoss()
-    
+    make_dot(ll).render("dag", format="svg")   
     
     #gd = torch.optim.SGD([omega], lr=1e-5)
     gd = torch.optim.Adam([input_embedding], lr=0.001)
     history_gd = []
 
-    for i in tqdm(range(100000)):
+    for i in tqdm(range(1000)):
         gd.zero_grad()
         
         # generate output for the current input
@@ -210,11 +197,33 @@ if __name__ == "__main__":
         gd.step()
         history_gd.append(objective.item())
         
-        print(input_embedding)
-        print(gd)
+        if (i > 1) and (i % 10 == 0):
+            print(input_embedding)
+            print(f"neg. LL: {history_gd[-1]}")
+            print(f"Delta: {np.abs(history_gd[-1] - history_gd[-2])}")
         
-        if (i>1) and (np.abs(history_gd[-1] - history_gd[-2]) < .00001):
+        if (i>1) and (np.abs(history_gd[-1] - history_gd[-2]) < .01):
             print("Convergence achieved in ", i+1, " iterations")
             print("-LogL Value: ", objective.item())
-            print("Mean |gradient|: ", torch.abs(omega.grad).mean().item())
+            print("Mean |gradient|: ", torch.abs(input_embedding.grad).mean().item())
             break
+    
+    print("\n")
+    print("\n")
+    print("RESULT\n")
+        
+    output_final = fn_generate(input_embedding)
+    
+    print(input_embedding_start)
+    print(input_embedding)
+    
+    print(output_start.scores)
+    print(output_final.scores)
+    
+    print(output_start.sequences[0])
+    print(output_final.sequences[0])
+    print(target_sequence[0])
+
+    print(tokenizer.decode(output_start.sequences[0]))
+    print(tokenizer.decode(output_final.sequences[0]))
+    print(tokenizer.decode(target_sequence[0]))
