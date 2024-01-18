@@ -1,0 +1,73 @@
+---
+title: "Meeting --- Summary LLM"
+author: "Bas Doners, Dennis Fok, Finn-Ole Höner"
+date: 2024-01-18
+date-format: long
+format: beamer
+aspectratio: 169
+incremental: false
+include-in-header: ../beamer_preamble.tex
+bibliography: ../references.bib
+fig-align: center
+fig-cap-location: bottom
+fig-format: pdf
+links-as-notes: true
+number-depth: 1
+---
+
+# Terms 
+
+target string
+: The string that we want to "re-create"
+
+input embedding
+: $n_{tokens} \times n_{vocab}$ input embedding
+
+flat input embedding
+: $1 \times n_{vocab}$ input embedding
+
+# Can we speed things up? {.allowframebreaks}
+
+- flat input embedding of target string helps
+- GPU helps a lot
+- RMSProp instead of ADAM helps
+  - Adjust learning rate based on input embedding and generation technique
+- $n$-Beam-search is slightly slower than greedy search, but not by factor $n$ (finding better steps that take longer to compute?)
+
+- Stop optimization based on hitting the target sequence instead? About half the iterations
+- Is there a way to move to "conditional likelihoods", once we found one correct token?
+- How stable is the optimization?
+
+---
+
+"Does it make sense to compare apples and oranges?", flat input embedding, RMSProp(lr=1e-1), T4GPU
+
+:::{layout-ncol="2"}
+
+![Convergence](image002.png)
+
+![NLL](image003.png)
+
+:::
+
+# Generation technique?
+
+- We run into problems if the generation technique samples: Then we cannot track the likelihood anymore (inplace gradient change)
+- Likely beam search with many beams is the most balanced option?
+- Contrastive search, which penalizes repeated tokens, does not work as it relies on sampling behind the scenes
+- Maybe we can penalize the likelihood itself for repetitions? Or solve it through restrictions on the optimization?
+
+# Number of parameters?
+
+- With flat input embedding, we have $n_{vocab}$ ($768$ for GPT-2) parameters. 
+- Many hyperparameters: Starting values, optimizer, generation settings, LLM
+- Maybe we can reduce the number of parameters by having a smaller layer in front of the flat input-embedding. This smaller layer plus the weights connecting it to the input embedding could be less than $n_{vocab}$. (Backwards convolution?)
+
+
+# Other
+
+- Need to read up on the Google Colab resources, whether it is suitable for computing larger datasets
+- GPU on Snellius (would that be feasible)?
+- GitHub
+- Can we compare the likelihood across different settings? (Likely not?)
+- Difference to "Reverse Prompt-Engineering"

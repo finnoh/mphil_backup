@@ -1,0 +1,45 @@
+---
+title: "Meeting Notes --- Summary LLM"
+author: "Bas Doners, Dennis Fok, Finn-Ole Höner"
+date: last-modified
+date-format: long
+format:
+    pdf:
+        documentclass: scrartcl
+        toc: false
+        number-sections: false
+        number-depth: 2
+        colorlinks: true
+        fig-pos: 'H'
+        fig-align: center
+        geometry:
+            - top = 30mm
+            - bottom = 30mm
+            - left = 20mm
+            - right = 20mm
+        papersize: dina4
+aspectratio: 169
+incremental: false
+bibliography: ../references.bib
+fig-align: center
+fig-cap-location: bottom
+fig-format: pdf
+links-as-notes: true
+number-depth: 1
+---
+
+# 18-01-2024
+
+> First steps towards a summary LLM, basic computations seem to work.
+
+## Can we speed things up?
+
+## Generation technique?
+
+## Number of parameters?
+
+## Other
+
+## Next steps
+
+
