@@ -217,6 +217,9 @@ def training_parallel(target_sequence, summary_embedding, tokenizer, gd, fn_gene
             
         return summary_embedding
 
+# TODO: Implement reverse training, see forward expanding generation, but start from last token instead
+# TODO: Compare the times of threading inside the function vs multiprocessing on different observations
+
 # MAIN --------------------------
 if __name__ == "__main__":
     # MAGICKS --------------------------
