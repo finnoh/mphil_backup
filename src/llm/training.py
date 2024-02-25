@@ -372,7 +372,7 @@ if __name__ == "__main__":
 
     input_embedding1 = autograd.Variable(torch.mean(model.get_input_embeddings()(tokenizer.encode(s_target_string, return_tensors="pt")), 1, keepdim=True), requires_grad=True)
     gd = torch.optim.RMSprop([input_embedding1],
-                            lr=1e-1, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0, centered=False, foreach=None, maximize=False, differentiable=False)
+                            lr=1, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0, centered=False, foreach=None, maximize=False, differentiable=False)
 
     start_time = time.time()
     summary_embedding_1 = training_joint(target_sequence, input_embedding1, tokenizer, gd, fn_generate_full)
@@ -381,7 +381,7 @@ if __name__ == "__main__":
 
     input_embedding4 = autograd.Variable(torch.mean(model.get_input_embeddings()(tokenizer.encode(s_target_string, return_tensors="pt")), 1, keepdim=True), requires_grad=True)
     gd = torch.optim.RMSprop([input_embedding4],
-                            lr=1e-1, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0, centered=False, foreach=None, maximize=False, differentiable=False)
+                            lr=1, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0, centered=False, foreach=None, maximize=False, differentiable=False)
     
     start_time = time.time()
     summary_embedding_4, history_gd = training_fwinduction(target_sequence, input_embedding4, tokenizer, gd, fn_generate_i, fn_generate_full, model)
@@ -399,12 +399,12 @@ if __name__ == "__main__":
     end_time = time.time()
     execution_time_2 = end_time - start_time
     
-    input_embedding = autograd.Variable(torch.mean(model.get_input_embeddings()(tokenizer.encode(s_target_string, return_tensors="pt")), 1, keepdim=True), requires_grad=True)
+    input_embedding_3 = autograd.Variable(torch.mean(model.get_input_embeddings()(tokenizer.encode(s_target_string, return_tensors="pt")), 1, keepdim=True), requires_grad=True)
     gd = torch.optim.RMSprop([input_embedding],
                             lr=1e-1, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0, centered=False, foreach=None, maximize=False, differentiable=False)
 
     start_time = time.time()
-    summary_embedding_3 = training_parallel(target_sequence, input_embedding, tokenizer, gd, fn_generate_one, fn_generate_full, model, threading=True)
+    summary_embedding_3 = training_parallel(target_sequence, input_embedding_3, tokenizer, gd, fn_generate_one, fn_generate_full, model, threading=True)
     end_time = time.time()
     execution_time_3 = end_time - start_time
     # 72 iterations, 0.84, 120s -> gpt2, training_joint
