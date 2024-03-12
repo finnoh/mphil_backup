@@ -1,5 +1,5 @@
 ---
-format: pdf
+format: docx
 pdf-engine: pdflatex
 header-includes:
   \usepackage{fancyhdr}
@@ -35,15 +35,11 @@ have been aware of the value of real-time personalization, but still lack real-t
 non-stationary reward functions and arm pools.
 -->
 
-#### Business -> Challenge
-
 
 
 <!-- TODO: References to examples -->
 
 Learning summaries of text is a fundamental problem in natural language processing, and of special interest in the context of Large Language Models (LLMs). 
-
-#### Why a challenge? -> Idea
 
 <!-- TODO: REFERENCES, what about SBERT -->
 <!-- TODO: "Deterministic" right word? Needs better structure here -->
@@ -60,9 +56,6 @@ This novel training framework can be an important stepping stone towards making 
 <!-- TODO: double checks -->
 In the domain of marketing, we envision two projects with these summary embeddings. First, we want to research how marketers design-choices of product claims relates to consumer preferences. For example, a marketer might decide between making a more factual or a more emotional claim. While there are theoretical motivations for these types of decisions, it would allow us to quantitatively assess these styles of claims and to learn how consumer preferences relate to them. An extension of this research could lie in the relation of human marketers and the help of AI, namely LLMs, in the creation of these claims. Investigating how AI and human generated claims that are supposed to fulfill a certain characteristic, such as being more emotional, are actually perceived as such by consumers, could deliver novel insights. Second, in a more field-based setting, we want to investigate how we can use these summary embeddings to adapt online descriptions to the preferences of the consumer. While there are techniques based on Reinforcement Learning, which is used to adapt the website to users' tastes, already in use, these types of algorithms cannot make adaptations "out-of-sample", i.e. they cannot generate new content that is not already pre-defined. We believe that the use of summary embeddings could allow us to generate adaptive text-based content, such as product descriptions or article headlines, that are not part of a predefined set, allowing for a true form of personalization.
 
-
-#### Building blocks -> Approach
-
 We aim to link these summary embeddings to consumer preferences, and plan to use these data to inform the generation of new claims for specific contexts.
 
 One way how such a generation could work, is by averaging the embeddings of a set of claims, and then using this average embedding to generate a new claim.
@@ -78,15 +71,12 @@ We believe this project fits the mission of Amazon Science's Foundation Model De
 
 ## Prior Work
 
+To summarize the information contained in a piece of text, we want to highlight the work on word2vec [@mikolov2013distributed], GloVe [@penningtonGloVeGlobalVectors2014], BERT [@devlinBERTPretrainingDeep2018], and SBERT [@reimersSentenceBERTSentenceEmbeddings2019]. The first two word representations are based on the idea that words derive the meaning from the company that they keep, while the BERT and SBERT embeddings are rooted in the use of Transformers [see e.g. @vaswani2017attention]. Aggregating these word embeddings for sentences can serve as a way to capture the information content in a sentence [see @shenBaselineNeedsMore2018]. With respect to the task of computing the similarity between sentences, @reimersSentenceBERTSentenceEmbeddings2019 show that their adaptation of the BERT algorithm, SBERT, outperforms other methods with respect to this task and does a good job at serving as a sentence embedding in classification tasks.
+
+
 <!-- TODO: References -->
 
 # Methods
-
-#### Overview of the Method
-
-- Novel, “reverse engineering” approach to finding text summaries (find a better word… in an information sense, not in a writing short summary sense). Given a target sequence and a given LLM, we want to find the input embedding to this LLM, which maximizes the likelihood for the LLM to generate the target sequence. 
-
-- Training can be done with simply forward passes through the LLM model 
 
 ## Problem Formulation
 
@@ -135,7 +125,10 @@ We can make this expression more explicit, by using the LLM in our notation. For
 In the training process, we execute the following algorithm. First, we initialize the input embedding, $\boldsymbol{s}$. Second, we generate a sequence of length $L$, with the LLM and the current input embedding.
 -->
 
-Currently, we initialize the summary embedding as the element-wise average of the embedding of the target sequence. This speeds up the computation, compared to a randomly intialized embedding. We want to investigate further improvements to the implementation, such as computing the likelihood contributions of the tokens in a distributed fashion. In Algorithm 1, we summarize the training process.
+
+## Method in a Nutshell
+
+We aim to find a summary embedding, $\boldsymbol{e^{*}}$, that maximizes the likelihood of generating a given target sequence, $\lbrace t_i \rbrace_{i=1}^{L}$, with a given LLM, $\mathcal{M}$. We use a gradient-based optimization algorithm to maximize this likelihood. We initialize the summary embedding as the element-wise average of the embedding of the target sequence. We then generate a sequence of length $L$, with the LLM and the current input embedding. For the resulting output layer, we compute the likelihood that this layer will generate the target sequence. We backpropagate the gradients and adjust the input layer accordingly. We repeat this process until the optimization converges. We want to investigate further improvements to the implementation, such as computing the likelihood contributions of the tokens in a distributed fashion. In Algorithm 1, we summarize the training process.
 
 \begin{algorithm}
 \begin{algorithmic}
@@ -152,8 +145,6 @@ Currently, we initialize the summary embedding as the element-wise average of th
 \EndWhile
 \end{algorithmic}
 \end{algorithm}
-
-## Method in a Nutshell
 
 # Expected Results
 
@@ -178,6 +169,21 @@ As a second angle, we want to investigate how we can use these embeddings to gen
 
 We plan the following timeline:
 
+<!-- TODO: TIMELINE -->
+
+# Novel hardware exploration
+
+Despite working on an efficient implementation of our algorithm and the ability to use pre-trained LLMs, we are currently constrained by the computational resources available to us, which limits the lengths of our feasible target sequences. While we can already train summary embeddings for target sequences of lengths that are useful for applications e.g. in marketing, summarizing full documents has prohibitively high computational costs. Being able to perform these calculations for full "target documents", could lead valuable insights for example when researching political polarization. If these summary embeddings truly pick up on nuances in the writing style, we could use them to investigate how different political groups and news outlets differ in the bias of their writing style. Since, we are interested in using these embeddings for the generation of new text, we might be able to use these deterministic summary to "de-bias" a piece of writing in a generative and deterministic fashion. These types of applications hinge on the availability of computational resources, and the use of the AWS Trainium2 chips could be a valuable asset in this regard.
+
+The higher computational efficiency of the Trainium2 chip also aligns with our view, that we need to be mindful of the environmental impact of our research. We try to keep this impact low by only making use of pre-trained LLMs and only having to perform forward-passes through these. However, we are aware that the repetitive  
+
+For applications of these summary embeddings to massive datasets of millions of target tokens, a high degree of parallelization will be necessary to perform this in adequate time. While each separate optimization only requires a sequence of forward-passes through the LLM, running these optimizations in parallel will require a high degree of computational resources. We would be excited to investigate how such a training process could be tailored to the architecture of the Trainium2 hardware.
+
+Currently, we are working with small LLMs such as GPT-2, to keep our training times at bay and computational costs low. Naturally, we are interested in the potential of using state-of-the art LLMs instead, such as e.g. LLaMA2. Not only can these types of models generate more coherent and meaningful text, but their input embeddings are of higher dimensions than the current LLMs we are using. This could potentially lead to more expressive and more detailed summary embeddings.
+
+# Open-source intention
+
+This grant would enable us to contribute to the open-source community in two ways. The first way is by open-sourcing our code in a publicly hosted Python module. Ideally, this module would be adjusted to the API of the HuggingFace Transformers library. This would ensure ease of use and adoption by other researchers and practitioners, and would allow us to scale our research to a large set of LLMs. In the context of using these summary embeddings for researching LLM safety and interpretability, an extension to the PyTorch Captum module would prove to be valuable. The second way how we can contribute to the open-source community, is not through code, but by providing access to pre-trained summary embeddings. With sufficient computing resources, we would be able to train these summary embeddings for a large set of target sequences from a public dataset, and make these embeddings publicly available to the research community for benchmarking purposes. One example could be to provide summary embeddings for the [Microsoft News Dataset](https://msnews.github.io/#getting-start), which serves as a benchmark for news recommendation systems.
 
 
 # Funds needed
