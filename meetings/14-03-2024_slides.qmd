@@ -1,0 +1,66 @@
+---
+title: "Meeting --- Summary LLM"
+author: "Bas Donkers, Dennis Fok, Finn-Ole Höner"
+date: 2024-03-14
+date-format: long
+format: beamer
+aspectratio: 169
+incremental: false
+include-in-header: ../beamer_preamble.tex
+bibliography: ../references.bib
+fig-align: center
+fig-cap-location: bottom
+fig-format: pdf
+links-as-notes: true
+number-depth: 1
+---
+
+# Updates
+
+- Grant proposal handed in
+- SURF Research Cloud Workshop
+  - Pieter Meijndert, Yuliia Orlova
+  - Small SURF Grant (quick, easy to get, uncomplicated); up to 5k GPU hours; once per calendar year
+- (Start thinking about thesis comittee)
+- Improving implementation of optimization still work in progress
+
+
+---
+
+{{< embed ../src/analysis/visualize_embeddings.ipynb#fig-corr1 >}}
+
+---
+
+{{< embed ../src/analysis/visualize_embeddings.ipynb#fig-corr2 >}}
+
+---
+
+{{< embed ../src/analysis/visualize_embeddings.ipynb#fig-corr3 >}}
+
+---
+
+{{< embed ../src/analysis/visualize_embeddings.ipynb#fig-pca >}}
+
+---
+
+{{< embed ../src/analysis/visualize_embeddings.ipynb#fig-tsne >}}
+
+---
+
+{{< embed ../src/analysis/visualize_embeddings.ipynb#fig-loo1 >}}
+
+---
+
+{{< embed ../src/analysis/visualize_embeddings.ipynb#fig-loo2 >}}
+
+---
+
+{{< embed ../src/analysis/visualize_embeddings.ipynb#fig-loo3 >}}
+
+---
+
+{{< embed ../src/analysis/visualize_embeddings.ipynb#fig-corr-all >}}
+
+---
+
+{{< embed ../src/analysis/visualize_embeddings.ipynb#fig-pca-all >}}

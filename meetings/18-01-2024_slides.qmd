@@ -1,6 +1,6 @@
 ---
 title: "Meeting --- Summary LLM"
-author: "Bas Doners, Dennis Fok, Finn-Ole Höner"
+author: "Bas Donkers, Dennis Fok, Finn-Ole Höner"
 date: 2024-01-18
 date-format: long
 format: beamer
