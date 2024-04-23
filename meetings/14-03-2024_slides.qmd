@@ -24,7 +24,6 @@ number-depth: 1
 - (Start thinking about thesis comittee)
 - Improving implementation of optimization still work in progress
 
-
 ---
 
 {{< embed ../src/analysis/visualize_embeddings.ipynb#fig-corr1 >}}

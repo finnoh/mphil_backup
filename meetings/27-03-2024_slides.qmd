@@ -1,0 +1,262 @@
+---
+title: "Meeting --- Summary LLM"
+author: "Bas Donkers, Dennis Fok, Finn-Ole Höner"
+date: 2024-03-27
+date-format: long
+format: beamer
+aspectratio: 169
+incremental: false
+include-in-header: ../beamer_preamble.tex
+bibliography: ../references.bib
+fig-align: center
+fig-cap-location: bottom
+fig-format: pdf
+links-as-notes: true
+number-depth: 1
+eval: false
+echo: true
+---
+
+# Updates
+
+- Bias terms in encoder and decoder
+- More nodes in hidden layer speeds up convergence
+- Also tried out 3 nodes, results are "more noisy". However, could be interesting when claims have more "dimensions" behind them.
+- Threshold: Each log-likelihood below 1 (this is softer than)
+
+# Relevant Code
+
+```{python}
+while not bStop:
+    aStore = np.zeros((1, tOHETarget.shape[0]))
+    lLoss = []
+    for i in range(tOHETarget.shape[0]):
+        ae_outputs = ae(tOHETarget[i, :])
+        outputs = lGenerate[i](ae_outputs.reshape(1, 1, -1))
+        loss = llikelihood(outputs, lTargetSequence[i])
+        
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+    bStop = np.all(aLLHistory[epoch, :] < dEps)
+```
+
+---
+
+::: {.columns}
+
+::: {.column}
+
+![4:15h MacBook, Hair, 10 Claims, ADAM lr=3]("./figures/ae_training_hair_2d.png")
+
+:::
+
+::: {.column}
+![14h MacBook, Cleaner, 10 Claims, ADAM lr=3]("./figures/training_cleaner_2d.png")
+
+:::
+
+:::
+
+---
+
+::: {.columns}
+
+::: {.column}
+
+![Autoencoder values of Hair 2 dimensions]("./figures/ae_2d_hair.png")
+
+:::
+
+::: {.column}
+
+![Autoencoder values of Cleaner 2 dimensions]("./figures/ae_sc.png")
+
+:::
+
+:::
+
+
+---
+
+::: {.columns}
+
+::: {.column}
+
+![Embeddings AE-2D]("./figures/ae_structure_hair_2d.png")
+
+:::
+
+::: {.column}
+
+![Embeddings Previously]("./figures/structure_embeddings_before.png")
+
+:::
+
+:::
+
+---
+
+Hair
+```{python}
+    "Experience mirror-like shine with every wash.",
+    "Get dazzling, glossy hair in just one use.",
+    "Transform dull strands into radiant locks.",
+    "Achieve salon-quality shine at home.",
+    "Enhance natural brilliance with our advanced formula.",
+    "Unlock the confidence of luminous hair that turns heads.",
+    "Experience the joy of hair that gleams with vitality.",
+    "Embrace the radiance of hair that reflects your inner beauty.",
+    "Elevate your everyday with hair that shines with sophistication.",
+    "Feel the allure of irresistibly shiny hair that captivates."
+```
+
+---
+
+
+::: {.columns}
+
+::: {.column}
+
+![Corr. Mat. 3D-AE Hair]("./figures/ae_3d_corr.png")
+
+:::
+
+::: {.column}
+
+![Corr. Mat. BERT Hair]("./figures/bert_corr_hair.png")
+
+:::
+
+:::
+
+---
+
+::: {.columns}
+
+::: {.column}
+
+![Corr. Mat. 2D-AE Hair]("./figures/ae_corr_hair_2d.png")
+
+:::
+
+::: {.column}
+
+![Corr. Mat. BERT Hair]("./figures/bert_corr_hair.png")
+
+:::
+
+:::
+
+---
+
+Surface Cleaner
+```{python}
+    "Our surface cleaner delivers a mirror-like shine every time.",
+    "Say goodbye to streaks and smudges with our powerful formula.",
+    "Achieve a noticeable sparkle on all surfaces with just one application.",
+    "Experience surfaces so clean, you can see your reflection in them.",
+    "Our cleaner leaves behind a gleaming, polished finish that lasts.",
+    "Elevate your surroundings with a touch of brilliance.",
+    "Unleash the hidden beauty of your home with our surface cleaner.",
+    "Experience the joy of pristine surfaces that brighten your space.",
+    "Bring a sense of clarity and freshness to your environment.",
+    "Enhance the ambiance of any room with surfaces that radiate."
+```
+
+---
+
+::: {.columns}
+
+::: {.column}
+
+![Corr. Mat. 2D-AE Cleaner]("./figures/ae_sc_corr.png")
+
+:::
+
+::: {.column}
+
+![Corr. Mat. BERT Cleaner]("./figures/bert_sc_corr.png")
+
+:::
+
+:::
+
+---
+
+::: {.columns}
+
+::: {.column}
+
+![PCA 2D-AE Hair]("./figures/ae_pca_hair_2d.png")
+
+:::
+
+::: {.column}
+
+![PCA BERT Hair]("./figures/bert_pca_hair.png")
+
+:::
+
+:::
+
+---
+
+::: {.columns}
+
+::: {.column}
+
+![PCA 2D-AE Cleaner]("./figures/ae_sc_pca.png")
+
+:::
+
+::: {.column}
+
+![PCA BERT Cleaner]("./figures/bert_sc_pca.png")
+
+:::
+
+:::
+
+
+---
+
+
+::: {.columns}
+
+::: {.column}
+
+![LOO 2D-AE Hair]("./figures/ae_loo_hair_2d.png")
+
+:::
+
+::: {.column}
+
+![LOO 2D-AE Cleaner]("./figures/ae_sc_loo.png")
+
+:::
+
+:::
+
+---
+
+![Embeddings AE-3D]("./figures/ae_structure_both.png")
+
+---
+
+
+::: {.columns}
+
+::: {.column}
+
+![Corr. Mat. BERT Hair]("./figures/ae_both_3d_corr.png")
+
+:::
+
+::: {.column}
+
+![Corr. Mat. BERT Hair]("./figures/bert_corr_both.png")
+
+:::
+
+:::

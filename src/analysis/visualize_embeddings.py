@@ -9,6 +9,11 @@ from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 import statsmodels.api as sm
 from transformers import BertTokenizer, BertModel
+from sklearn.feature_extraction.text import CountVectorizer
+import torch
+from transformers import BertTokenizer, BertModel
+import numpy as np
+from gensim.models import Word2Vec
 
 # MAGICKS --------------------------
 sPathEmbeddings = "data/processed/summary_embeddings"
@@ -189,12 +194,6 @@ def loo_regression(tEmbeddingsA, tEmbeddingsB, tEmbeddings_demeaned, sName, vCol
     plt.show()
     
     return lResults
-
-from sklearn.feature_extraction.text import CountVectorizer
-import torch
-from transformers import BertTokenizer, BertModel
-import numpy as np
-from gensim.models import Word2Vec
 class SummaryEmbeddings:
     def __init__(self, lClaims):
         self.lClaims = lClaims
@@ -214,7 +213,7 @@ class SummaryEmbeddings:
         # Extract the embeddings for the [CLS] token, which represents the entire sentence
         # This index corresponds to the first token in each sequence
         embeddings = outputs.last_hidden_state[:, 0, :]
-        
+        print(embeddings.shape)
         return embeddings.detach().numpy()
     
     def word2vec(self):

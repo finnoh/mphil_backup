@@ -1,0 +1,98 @@
+---
+title: "Meeting --- Summary LLM"
+author: "Bas Donkers, Dennis Fok, Finn-Ole Höner"
+date: 2024-04-12
+date-format: long
+format: beamer
+aspectratio: 169
+incremental: false
+include-in-header: ../beamer_preamble.tex
+bibliography: ../references.bib
+fig-align: center
+fig-cap-location: bottom
+fig-format: pdf
+links-as-notes: true
+number-depth: 1
+eval: false
+echo: true
+fig-width: 12
+fig-height: 8
+---
+
+# Updates
+
+- Improved the training, now works with tensors, GPT batching (~5-10x faster)
+- Monitoring steps made is more involved than expected
+- Normalization layer
+- EOS token (GPT-2 has no padding token)
+- "Exploration" of the encoder space
+- Scales linearly with `iMaxTokens`, by the cube with `iClaims` (i.e. $O(n^3)$)
+
+---
+
+:::: {.columns}
+::: {.column}
+![Hair 10](../models/training_monitor_autoencoder.png)
+:::
+::: {.column}
+![Hair 20](../models/training_monitor_autoencoder20.png)
+:::
+::::
+
+---
+
+# Examples of "New" Claims
+
+Issues at $(0, 0)$?
+
+Exact reproduction of training data, dead space, and "new" claims; i.e. EOS token and not in training data.
+
+---
+
+Examples:
+
+<|endoftext|>Locks in in moisture to enhance<|endoftext|>"
+
+<|endoftext|>Clin by enhance by enhance by saturation.<|endoftext|>
+
+<|endoftext|>Linininineineine<|endoftext|>
+
+<|endoftext|>Lin by enhance by enhanceistedistedistedisted by<|endoftext|>
+
+<|endoftext|>Locks in moisture to amplify amplify l to enhance line<|endoftext|>
+
+<|endoftext|>Elevate your confidence with confidence.<|endoftext|>
+
+<|endoftext|>Elevate your confidence with hair that gleams in any light.<|endoftext|>
+
+<|endoftext|>Clinically proven to enhance shine by up to%.<|endoftext|>
+
+
+---
+
+![Cleaner](./figures/cleaner_vis_norm.png)
+
+---
+
+![New Hair, bad grid?](./figures/output_new.png)
+
+---
+
+![New Hair, bad grid?](./figures/hair_new2.png)
+
+---
+
+![New Hair, bad grid?](./figures/hair_new3.png)
+
+
+---
+
+Inspriration from molecule generation / drug discovery [e.g @MegaSynIntegratingGenerative]
+
+- Balancing exploration: Searching for molecules that are not only enumerations of the training data, but that are also feasible
+- Primed models, focussing on specific sub-structures and saving models every $n$ epochs. This yields a spectrum of models that generate more general to more specific solutions.
+- Have model that scores the quality of a claim
+- Hill-climb MLE (Feedback with top X% of claims)
+- Fine-tune GPT to advertising claims
+- Wrap MAB around this: Play arm for new generation, evaluate with scoring model, learn from feedback (*also online on websites? This model might be rather fast? Retrain the latent space in batches based on the feedback*)
+- Do we need to retrain from scratch or can we simply keep training with the existing model as a starting point?

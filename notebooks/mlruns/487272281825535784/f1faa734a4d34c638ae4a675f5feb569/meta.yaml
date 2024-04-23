@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/hoener/Documents/bds_lectures/mphil/notebooks/mlruns/487272281825535784/f1faa734a4d34c638ae4a675f5feb569/artifacts
+end_time: 1712053033688
+entry_point_name: ''
+experiment_id: '487272281825535784'
+lifecycle_stage: active
+run_id: f1faa734a4d34c638ae4a675f5feb569
+run_name: mysterious-ant-993
+run_uuid: f1faa734a4d34c638ae4a675f5feb569
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712052926053
+status: 3
+tags: []
+user_id: hoener

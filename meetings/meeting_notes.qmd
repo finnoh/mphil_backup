@@ -95,3 +95,6 @@ number-depth: 1
 ## Questions
 
 - What is a GPU core hour?
+
+# 14-03-2024
+
