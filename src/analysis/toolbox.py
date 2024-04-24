@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from transformers import AutoTokenizer, GPT2LMHeadModel
+from transformers import AutoTokenizer, GPT2LMHeadModel, PhrasalConstraint
 from undecorated import undecorated
 from types import MethodType
 
@@ -154,3 +154,49 @@ def plot_results(sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStepsWeight
             tGenNew = fn_generate_max(ae(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)).sequences
             for i in range(tOHETarget.shape[0]):
                 print(f"Claim {i}: {tokenizer.decode(tGenNew[i])}")
+                
+                
+def fit_ae(fn_generate_max_constr, fn_generate_max, tokenizer, ae, optimizer, OHETarget, TargetStrings, iMaxTokens, iClaims, iVocab, dEps, i):
+    iEpoch = 0
+    lLoss = list()
+    bStop = False
+    tic = time.time()
+    while not bStop:
+
+        # Forward pass, Generate and compute loss
+        tAEOutputs = ae(OHETarget).reshape(OHETarget.shape[0], 1, -1)
+
+        # BUG: Generated less that iMaxTokens elements for all claims, then crashed
+        outputs = fn_generate_max_constr(tAEOutputs)
+        
+        # TODO revert to outputs.scores
+        loss, loss_monitor = LLikelihood(outputs.scores, TargetStrings, iMaxTokens, iClaims, iVocab)
+        lLoss.append(loss.item())
+
+        # Backward pass and optimization
+        optimizer.zero_grad()
+        loss.backward()
+
+        # Check stopping criterion; logging
+        bStop = loss < dEps        
+        optimizer.step()
+
+        # Monitoring
+        if (iEpoch % 10 == 0) or bStop:
+            toc = time.time()
+            plt.plot(np.log1p(lLoss))
+            plt.axhline(y=np.log1p(dEps), linestyle='--', color='black')
+            plt.legend()
+            print(f"time: {np.round(toc - tic, 2)} s")
+            plt.savefig(f"./models/training_monitor_monitor.png")
+            tic = time.time()
+            tGenNew = fn_generate_max(ae(OHETarget).reshape(OHETarget.shape[0], 1, -1)).sequences
+            tGenNewConstrNew = fn_generate_max_constr(ae(OHETarget).reshape(OHETarget.shape[0], 1, -1)).sequences
+            print(f"Free: {tokenizer.decode(tGenNew[0])}")
+            print(f"Constrained: {tokenizer.decode(tGenNewConstrNew[0])}")
+            print("\n")
+
+        iEpoch = 1 + iEpoch
+    print(f"Verify the final generation...\n\n")
+    tGenNew = fn_generate_max(ae(OHETarget).reshape(OHETarget.shape[0], 1, -1)).sequences
+    print(f"Claim {i}: {tokenizer.decode(tGenNew[0])}")

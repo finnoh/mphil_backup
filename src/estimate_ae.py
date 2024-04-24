@@ -8,7 +8,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from transformers import AutoTokenizer, GPT2LMHeadModel
+from transformers import AutoTokenizer, GPT2LMHeadModel, PhrasalConstraint
 from undecorated import undecorated
 from types import MethodType
 
@@ -16,6 +16,7 @@ import time
 import pickle
 import io
 import os
+from tqdm import tqdm
 
 device = (
     "cuda"
@@ -24,6 +25,7 @@ device = (
     if torch.backends.mps.is_available()
     else "cpu"
 )
+device = "cpu"
 torch.set_default_device(device)
 print(f"Using {device} device")
 print(torch.tensor([1, 2, 3]).device)
@@ -32,7 +34,7 @@ print(torch.tensor([1, 2, 3]).device)
 s_model = "gpt2"
 iSeed = 4523522
 sPadding = "left"
-sNameAEModel = "autoencoder_test"
+sNameAEModel = "autoencoder_hair20_eos"
 
 lTargetStrings = [
     "Experience 50% more visible shine after just one use.",
@@ -56,28 +58,22 @@ lTargetStrings = [
     "Experience the magic of hair that dazzles with every movement.",
     "Unlock the secret to hair that shines from within, reflecting your inner glow."
 ]
-lTargetStrings = [
-    "Locks in moisture to amplify hair's natural luster.",
-    "Achieve salon-quality shine without leaving home.",
-    "Visible reduction in dullness, replaced with stunning shine.",
-    "Say goodbye to lackluster hair, hello to mirror-like shine.",
-    "Clinically proven to enhance shine by up to 70%.", # ^tangible
-    "Elevate your confidence with hair that gleams under any light.",
-    "Embrace the allure of luminous hair that turns heads.",
-    "Unleash the power of radiant hair that speaks volumes.",
-    "Transform your look with hair that exudes brilliance.",
-    "Feel the difference of hair that shines with vitality and health."]
-lPromptStrings = [
-    "This new haircare product will",
-    "This new haircare product will",
-    "This new haircare product will",
-    "This new haircare product will",
-    "This new haircare product will",
-    "This new haircare product will",
-    "This new haircare product will",
-    "This new haircare product will",
-    "This new haircare product will",
-    "This new haircare product will"]
+# lTargetStrings = [
+#     "Experience 50% more visible shine after just one use.",
+#     "Formulated with light-reflecting technology for a glossy finish.",
+#     "Transform dull strands into radiant, luminous locks."
+# ]
+# lTargetStrings = [
+#     "Locks in moisture to amplify hair's natural luster.",
+#     "Achieve salon-quality shine without leaving home.",
+#     "Visible reduction in dullness, replaced with stunning shine.",
+#     "Say goodbye to lackluster hair, hello to mirror-like shine.",
+#     "Clinically proven to enhance shine by up to 70%.", # ^tangible
+#     "Elevate your confidence with hair that gleams under any light.",
+#     "Embrace the allure of luminous hair that turns heads.",
+#     "Unleash the power of radiant hair that speaks volumes.",
+#     "Transform your look with hair that exudes brilliance.",
+#     "Feel the difference of hair that shines with vitality and health."]
 
 # Unleash the power of radiant hair that speaks volumes.
 # Feel the difference of hair that shines with vitality and health.
@@ -96,25 +92,13 @@ iVocab = 50257
 iBurnIn = 500
 ae = Autoencoder(iClaims, iEncodingDim, iOutputSize)
 ae_burnin = Autoencoder(iClaims, iEncodingDim, iOutputSize)
-dLearningRate = 5e-2
+dLearningRatePrefit = 1e1
 dLearningRate = 1
+dLearningRate = 5
 optimizer = optim.Adam(ae.parameters(), lr=dLearningRate)
 iEpoch = 0
 iEpochBurnin = 0
 dEps = 1
-bStop = False
-aLLHistory = np.ones((1, iClaims))
-lGradWeightsDecoder = []
-lGradBiasDecoder = []
-lGradWeightsEncoder = []
-lGradBiasEncoder = []
-lStepsWeightsDecoder = []
-lStepsBiasDecoder = []
-lStepsWeightsEncoder = []
-lStepsBiasEncoder = []
-aLLHistory[0, :] = np.nan
-aLLHistory = np.ones((1, iClaims))
-aLLHistory[0, :] = np.nan
 
 
 # INIT --------------------------
@@ -131,16 +115,23 @@ tokenizer.padding_side = sPadding
 print("EOS TOKEN ID", tokenizer.eos_token_id)
 
 tOHETarget = create_input_data(iClaims)
+
+lConstraints = [PhrasalConstraint(tokenizer(sentence, add_special_tokens=False).input_ids) for sentence in lTargetStrings]
+lForceWords = [tokenizer(sentence, add_special_tokens=False).input_ids for sentence in lTargetStrings]
+print("Force Words")
+print(lForceWords)
+
 tTargetStrings, lLengths = TokenizeClaims(lTargetStrings, tokenizer)
-print(tTargetStrings)
-print(tTargetStrings.shape)
+#lForceWords = [tokenizer(sentence, add_special_tokens=False).input_ids for sentence in lTargetStrings]
+print(lConstraints)
 
 # Get input embeddings of model for tokenized sentences
-tInputEmbeddings = model.get_input_embeddings()(torch.tensor([tokenizer.encode(sentence, add_special_tokens=True) for sentence in lPromptStrings]))
-tInputEmbeddings = torch.mean(tInputEmbeddings, dim=1).squeeze()
-print(f"IE shape {tInputEmbeddings.shape}")
+# tInputEmbeddings = model.get_input_embeddings()(torch.tensor([tokenizer.encode(sentence, add_special_tokens=True) for sentence in lPromptStrings]))
+# tInputEmbeddings = torch.mean(tInputEmbeddings, dim=1).squeeze()
+# print(f"IE shape {tInputEmbeddings.shape}")
 
 iMaxTokens = max(lLengths) + 1 # add one for eos, see TokenizeClaims() fct.
+iMinTokens = min(lLengths)
 print(f"Lengths of target strings {lLengths}")
 print(f"Max number of tokens {iMaxTokens}")
 
@@ -152,29 +143,26 @@ fn_generate_i = lambda x, i: model.generate_with_grad(
         pad_token_id=tokenizer.eos_token_id,
         max_new_tokens=i,
         #min_new_tokens=int(i),
-        num_beams=i_num_beams,
+        num_beams=1,
         num_return_sequences=i_num_return,
         return_dict_in_generate=True,
         output_scores=True)
-# fn_generate_max = lambda x: model.generate_with_grad(
-#         inputs_embeds=x,
-#         do_sample=False,
-#         eos_token_id=tokenizer.eos_token_id,
-#         forced_eos_token_id=tokenizer.eos_token_id,
-#         pad_token_id=tokenizer.eos_token_id,
-#         num_beams=i_num_beams,
-#         num_return_sequences=i_num_return,
-#         return_dict_in_generate=True,
-#         output_scores=True)
+
+fn_generate_max_constr = lambda x: model.generate_with_grad(
+    inputs_embeds=x,
+    do_sample=False,
+    eos_token_id=tokenizer.eos_token_id,
+    pad_token_id=tokenizer.eos_token_id,
+    max_new_tokens=iMaxTokens,
+    #constraints = lConstraints,
+    force_words_ids = lForceWords,
+    num_beams=10,
+    num_return_sequences=i_num_return,
+    return_dict_in_generate=True,
+    output_scores=True)
 
 fn_generate_max = lambda x: fn_generate_i(x, iMaxTokens)
 
-# Burn-in period
-# Using an Adam Optimizer with lr = 0.1
-optimizer_burnin = torch.optim.Adam(ae_burnin.parameters(),
-                             lr = dLearningRate,
-                             weight_decay = 1e-8)
-criterion_burnin = torch.nn.MSELoss(reduction='mean')
 
 # TODO: Init ae with lin comb of summary
 # TODO: Are the EOS tokens working?
@@ -183,33 +171,92 @@ tic_total = time.time()
 tic = time.time()
 lLoss = []
 
-# while iEpochBurnin < iBurnIn:
-#     tAEOutputs = ae_burnin(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)
-#     loss_burnin = criterion_burnin(tAEOutputs.squeeze(), tInputEmbeddings)
-#     print(f"Burn-in {iEpoch}: {loss_burnin.item()}")
-#     optimizer_burnin.zero_grad()
-#     loss_burnin.backward(retain_graph=True)
-#     optimizer_burnin.step()
-#     iEpochBurnin += 1
+lAE = []
 
-# tGenNew = fn_generate_max(ae_burnin(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)).sequences
-# for i in range(tOHETarget.shape[0]):
-#     print(f"Claim {i}: {tokenizer.decode(tGenNew[i])}")
+for i in tqdm(range(iClaims)):
+    
+    tic_it = time.time()
 
-# # init ae with burnin weights
-# ae.load_state_dict(ae_burnin.state_dict())
+    # temporary objects
+    ae_it = Autoencoder(1, iEncodingDim, iOutputSize)
+    optimizer_it = optim.Adam(ae_it.parameters(), lr=dLearningRatePrefit)
+    OHETarget_it = create_input_data(1)
+    TargetStrings_it, _ = TokenizeClaims([lTargetStrings[i]], tokenizer)
+    print([tokenizer(lTargetStrings[i], add_special_tokens=False).input_ids])
+    
+    fn_generate_max_constr = lambda x: model.generate_with_grad(
+        inputs_embeds=x,
+        do_sample=False,
+        eos_token_id=tokenizer.eos_token_id,
+        pad_token_id=tokenizer.eos_token_id,
+        max_new_tokens=iMaxTokens,
+        force_words_ids = [tokenizer(sentence, add_special_tokens=False).input_ids for sentence in [lTargetStrings[i]]],
+        num_beams=10,
+        num_return_sequences=i_num_return,
+        return_dict_in_generate=True,
+        output_scores=True)
 
-# tGenNew = fn_generate_max(ae(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)).sequences
-# for i in range(tOHETarget.shape[0]):
-#     print(f"Claim {i}: {tokenizer.decode(tGenNew[i])}")
+    lAE.append(fit_ae(fn_generate_max_constr, fn_generate_max, tokenizer, ae_it, optimizer_it, OHETarget_it, TargetStrings_it, iMaxTokens, iClaims, iVocab, dEps, i))
+    toc_it = time.time()
+    print(f"Iteration {i} time: {np.round(toc_it - tic_it, 2)} s")
 
+toc = time.time()
+print(f"Total time: {np.round(toc - tic_total, 2)} s")
+torch.save(torch.stack([ae(OHETarget_it) for ae in lAE], dim=1), "test_indv_embeddings.pt")
+
+tInputEmbeddings = torch.load("test_indv_embeddings.pt").squeeze(0)
+print(tInputEmbeddings)
+print(tInputEmbeddings.shape)
+
+# Burn-in period
+# Using an Adam Optimizer with lr = 0.1
+iBurnIn = 1000
+iEpochBurnin = 0
+ae_burnin = Autoencoder(iClaims, iEncodingDim, iOutputSize)
+optimizer_burnin = torch.optim.Adam(ae_burnin.parameters(),
+                             lr = dLearningRate,
+                             weight_decay = 1e-8)
+criterion_burnin = torch.nn.MSELoss(reduction='mean')
+
+while iEpochBurnin < iBurnIn:
+    tAEOutputs = ae_burnin(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)
+    loss_burnin = criterion_burnin(tAEOutputs.squeeze(), tInputEmbeddings)
+    print(f"Burn-in {iEpochBurnin}: {loss_burnin.item()}")
+    optimizer_burnin.zero_grad()
+    loss_burnin.backward(retain_graph=True)
+    optimizer_burnin.step()
+    iEpochBurnin += 1
+
+# # 3 Training together
+iEpoch = 0
+
+ae.load_state_dict(ae_burnin.state_dict())
+optimizer = torch.optim.Adam(ae.parameters(),
+                             lr = 1e-1,
+                             weight_decay = 1e-8)
+dEps = 1
+bStop = False
+aLLHistory = np.ones((1, iClaims))
+lGradWeightsDecoder = []
+lGradBiasDecoder = []
+lGradWeightsEncoder = []
+lGradBiasEncoder = []
+lStepsWeightsDecoder = []
+lStepsBiasDecoder = []
+lStepsWeightsEncoder = []
+lStepsBiasEncoder = []
+aLLHistory[0, :] = np.nan
+aLLHistory = np.ones((1, iClaims))
+aLLHistory[0, :] = np.nan
+lLoss = []
 while not bStop:
 
     # Forward pass, Generate and compute loss
     tAEOutputs = ae(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)
+
     # BUG: Generated less that iMaxTokens elements for all claims, then crashed
     outputs = fn_generate_max(tAEOutputs)
-    
+  
     loss, loss_monitor = LLikelihood(outputs.scores, tTargetStrings, iMaxTokens, iClaims, iVocab)
     lLoss.append(loss.item())
 
@@ -250,6 +297,12 @@ while not bStop:
 
 toc = time.time()
 print(f"Total time: {np.round(toc - tic_total, 2)} s")
+
+print(f"Verify the final generation...\n\n")
+tGenNew = fn_generate_max(ae(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)).sequences
+for i in range(tOHETarget.shape[0]):
+    print(f"Claim {i}: {tokenizer.decode(tGenNew[i])}")
+
 
 # Encoding the data using the trained autoencoder
 torch.save(ae.state_dict(), sNameAEModel + "_dict.pt")
