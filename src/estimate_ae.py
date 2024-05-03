@@ -8,7 +8,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from transformers import AutoTokenizer, GPT2LMHeadModel, PhrasalConstraint
+from transformers import AutoTokenizer, GPT2LMHeadModel, PhrasalConstraint, QuantoConfig
 from undecorated import undecorated
 from types import MethodType
 
@@ -25,7 +25,7 @@ device = (
     if torch.backends.mps.is_available()
     else "cpu"
 )
-device = "cpu"
+
 torch.set_default_device(device)
 print(f"Using {device} device")
 print(torch.tensor([1, 2, 3]).device)
@@ -95,6 +95,7 @@ ae_burnin = Autoencoder(iClaims, iEncodingDim, iOutputSize)
 dLearningRatePrefit = 1e1
 dLearningRate = 1
 dLearningRate = 5
+dLearningRate = 5e-1
 optimizer = optim.Adam(ae.parameters(), lr=dLearningRate)
 iEpoch = 0
 iEpochBurnin = 0
@@ -104,7 +105,10 @@ dEps = 1
 # INIT --------------------------
 torch.manual_seed(iSeed)
 
-model = GPT2LMHeadModel.from_pretrained(s_model, resume_download=True)
+quantization_config = QuantoConfig(weights="int8")
+# TODO: Try out flash-attention
+#model = GPT2LMHeadModel.from_pretrained(s_model, device_map=device, resume_download=True, quantization_config=quantization_config)
+model = GPT2LMHeadModel.from_pretrained(s_model, device_map=device, resume_download=True)
 # TODO: Link to this https://github.com/huggingface/transformers/issues/15552 (last comment)
 generate_with_grad = model.generate.__closure__[1].cell_contents
 model.generate_with_grad = MethodType(generate_with_grad, model)
@@ -118,17 +122,8 @@ tOHETarget = create_input_data(iClaims)
 
 lConstraints = [PhrasalConstraint(tokenizer(sentence, add_special_tokens=False).input_ids) for sentence in lTargetStrings]
 lForceWords = [tokenizer(sentence, add_special_tokens=False).input_ids for sentence in lTargetStrings]
-print("Force Words")
-print(lForceWords)
 
 tTargetStrings, lLengths = TokenizeClaims(lTargetStrings, tokenizer)
-#lForceWords = [tokenizer(sentence, add_special_tokens=False).input_ids for sentence in lTargetStrings]
-print(lConstraints)
-
-# Get input embeddings of model for tokenized sentences
-# tInputEmbeddings = model.get_input_embeddings()(torch.tensor([tokenizer.encode(sentence, add_special_tokens=True) for sentence in lPromptStrings]))
-# tInputEmbeddings = torch.mean(tInputEmbeddings, dim=1).squeeze()
-# print(f"IE shape {tInputEmbeddings.shape}")
 
 iMaxTokens = max(lLengths) + 1 # add one for eos, see TokenizeClaims() fct.
 iMinTokens = min(lLengths)
@@ -154,7 +149,7 @@ fn_generate_max_constr = lambda x: model.generate_with_grad(
     eos_token_id=tokenizer.eos_token_id,
     pad_token_id=tokenizer.eos_token_id,
     max_new_tokens=iMaxTokens,
-    #constraints = lConstraints,
+    constraints = lConstraints,
     force_words_ids = lForceWords,
     num_beams=10,
     num_return_sequences=i_num_return,
@@ -164,8 +159,8 @@ fn_generate_max_constr = lambda x: model.generate_with_grad(
 fn_generate_max = lambda x: fn_generate_i(x, iMaxTokens)
 
 
-# TODO: Init ae with lin comb of summary
-# TODO: Are the EOS tokens working?
+# # TODO: Init ae with lin comb of summary
+# # TODO: Are the EOS tokens working?
 
 tic_total = time.time()
 tic = time.time()
@@ -173,8 +168,8 @@ lLoss = []
 
 lAE = []
 
-for i in tqdm(range(iClaims)):
-    
+for i in range(iClaims):
+    print(i, iClaims)
     tic_it = time.time()
 
     # temporary objects
@@ -190,7 +185,7 @@ for i in tqdm(range(iClaims)):
         eos_token_id=tokenizer.eos_token_id,
         pad_token_id=tokenizer.eos_token_id,
         max_new_tokens=iMaxTokens,
-        force_words_ids = [tokenizer(sentence, add_special_tokens=False).input_ids for sentence in [lTargetStrings[i]]],
+        #force_words_ids = [tokenizer(sentence, add_special_tokens=False).input_ids for sentence in [lTargetStrings[i]]],
         num_beams=10,
         num_return_sequences=i_num_return,
         return_dict_in_generate=True,
@@ -204,36 +199,54 @@ toc = time.time()
 print(f"Total time: {np.round(toc - tic_total, 2)} s")
 torch.save(torch.stack([ae(OHETarget_it) for ae in lAE], dim=1), "test_indv_embeddings.pt")
 
-tInputEmbeddings = torch.load("test_indv_embeddings.pt").squeeze(0)
-print(tInputEmbeddings)
-print(tInputEmbeddings.shape)
+# tInputEmbeddings = torch.load("test_indv_embeddings.pt").squeeze(0)
+# print(tInputEmbeddings)
+# print(tInputEmbeddings.shape)
 
-# Burn-in period
-# Using an Adam Optimizer with lr = 0.1
-iBurnIn = 1000
-iEpochBurnin = 0
-ae_burnin = Autoencoder(iClaims, iEncodingDim, iOutputSize)
-optimizer_burnin = torch.optim.Adam(ae_burnin.parameters(),
-                             lr = dLearningRate,
-                             weight_decay = 1e-8)
-criterion_burnin = torch.nn.MSELoss(reduction='mean')
+# Get InputEmbeddings of the claims
+# Forward pass through the model
+# tInputEmbeddings, _ = torch.max(model.get_input_embeddings()(tTargetStrings), dim = 1)
+# tInputEmbeddings = model.get_input_embeddings()(tokenizer.encode("I am washing my hair with", return_tensors="pt")).mean(dim=1)
+# print(tInputEmbeddings.shape)
 
-while iEpochBurnin < iBurnIn:
-    tAEOutputs = ae_burnin(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)
-    loss_burnin = criterion_burnin(tAEOutputs.squeeze(), tInputEmbeddings)
-    print(f"Burn-in {iEpochBurnin}: {loss_burnin.item()}")
-    optimizer_burnin.zero_grad()
-    loss_burnin.backward(retain_graph=True)
-    optimizer_burnin.step()
-    iEpochBurnin += 1
+# #print(tokenizer.decode(fn_generate_max(tInputEmbeddings.reshape(tOHETarget.shape[0], 1, -1)).sequences[0]))
+# print(tokenizer.decode(fn_generate_max(tInputEmbeddings.reshape(1, 1, -1)).sequences[0]))
+
+# # Burn-in period
+# # Using an Adam Optimizer with lr = 0.1
+# iEpochBurnin = 0
+# ae_burnin = Autoencoder(iClaims, iEncodingDim, iOutputSize)
+# optimizer_burnin = torch.optim.Adam(ae_burnin.parameters(),
+#                              lr = dLearningRate,
+#                              weight_decay = 1e-8)
+# criterion_burnin = torch.nn.MSELoss(reduction='mean')
+
+# # TODO: Implement stopping criterion
+# while iEpochBurnin < iBurnIn:
+#     tAEOutputs = ae_burnin(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)
+#     loss_burnin = criterion_burnin(tAEOutputs.squeeze(), tInputEmbeddings)
+#     print(f"Burn-in {iEpochBurnin}: {loss_burnin.item()}")
+#     optimizer_burnin.zero_grad()
+#     loss_burnin.backward(retain_graph=True)
+#     optimizer_burnin.step()
+#     iEpochBurnin += 1
+    
+#     if loss_burnin.item() < 1e-5:
+#         break
+
+# print(f"Starting point of generation...\n\n")
+# tGenNew = fn_generate_max(ae(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)).sequences
+# for i in range(tOHETarget.shape[0]):
+#     print(f"Claim {i}: {tokenizer.decode(tGenNew[i])}")
 
 # # 3 Training together
 iEpoch = 0
-
-ae.load_state_dict(ae_burnin.state_dict())
+dLearningRate = 5e-2
+#ae.load_state_dict(ae_burnin.state_dict())
 optimizer = torch.optim.Adam(ae.parameters(),
-                             lr = 1e-1,
-                             weight_decay = 1e-8)
+                             lr = dLearningRate)
+optimizer = torch.optim.SGD(ae.parameters(), lr = dLearningRate)
+
 dEps = 1
 bStop = False
 aLLHistory = np.ones((1, iClaims))
@@ -245,10 +258,23 @@ lStepsWeightsDecoder = []
 lStepsBiasDecoder = []
 lStepsWeightsEncoder = []
 lStepsBiasEncoder = []
+lStepsWeightsDecoder = []
+lStepsBiasDecoder = []
+lStepsWeightsEncoder = []
+lStepsBiasEncoder = []
 aLLHistory[0, :] = np.nan
 aLLHistory = np.ones((1, iClaims))
 aLLHistory[0, :] = np.nan
 lLoss = []
+
+# for LFBGS
+def closure():
+    optimizer.zero_grad()
+    output = fn_generate_max(ae(tOHETarget).reshape(tOHETarget.shape[0], 1, -1))
+    loss, _ = LLikelihood(outputs.scores, tTargetStrings, iMaxTokens, iClaims, iVocab)
+    loss.backward(retain_graph=True)
+    return loss
+
 while not bStop:
 
     # Forward pass, Generate and compute loss
@@ -277,9 +303,10 @@ while not bStop:
     lGradWeightsDecoder.append(torch.norm(ae.decoder[0].weight.grad).cpu().detach().numpy())
     lGradBiasDecoder.append(torch.norm(ae.decoder[0].bias.grad).cpu().detach().numpy())
     lGradWeightsEncoder.append(torch.norm(ae.encoder[0].weight.grad).cpu().detach().numpy())
-    # lGradBiasEncoder.append(torch.norm(ae.encoder[0].bias.grad).cpu().detach().numpy())
+    #lGradBiasEncoder.append(torch.norm(ae.encoder[0].bias.grad).cpu().detach().numpy())
     
     optimizer.step()
+    # optimizer.step(closure)
     
     lStepsWeightsDecoder.append(np.abs(ae.decoder[0].weight.cpu().detach().numpy() - tDecoderWOld))
     lStepsBiasDecoder.append(np.abs(ae.decoder[0].bias.cpu().detach().numpy() - tDecoderBOld))
@@ -289,9 +316,15 @@ while not bStop:
     # Monitoring
     if (iEpoch % 10 == 0) or bStop:
         toc = time.time()
-        plot_results(sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStepsWeightsEncoder, lStepsBiasEncoder, lStepsWeightsDecoder, lStepsBiasDecoder, lGradWeightsEncoder, lGradBiasEncoder, lGradWeightsDecoder, lGradBiasDecoder, iEpoch, dEps, tOHETarget, fn_generate_max, tokenizer)
-        print(f"time: {np.round(toc - tic, 2)} s")
+        dTime = np.round(toc - tic, 2)
         tic = time.time()
+        plot_results(dTime, sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStepsWeightsEncoder, lStepsBiasEncoder, lStepsWeightsDecoder, lStepsBiasDecoder, lGradWeightsEncoder, lGradBiasEncoder, lGradWeightsDecoder, lGradBiasDecoder, iEpoch, dEps, tOHETarget, fn_generate_max, tokenizer)
+        print(f"time: {dTime} s")
+        
+    if (iEpoch % 50 == 0) or bStop:
+        torch.save(ae.state_dict(), sNameAEModel + "_checkpoint_" + "_dict.pt")
+        model_scripted = torch.jit.script(ae) # Export to TorchScript
+        model_scripted.save(sNameAEModel + "_checkpoint" + ".pt") # Save
 
     iEpoch = 1 + iEpoch
 

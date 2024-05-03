@@ -83,12 +83,12 @@ class Autoencoder(nn.Module):
        super(Autoencoder, self).__init__()
        self.encoder = nn.Sequential(
            # TODO: Consider killing this bias term
-           nn.Linear(input_size, encoding_dim, bias=False)
+           nn.Linear(input_size, encoding_dim, bias=True)
        )
        self.decoder = nn.Sequential(
-           nn.Linear(encoding_dim, output_size, bias=True),
+           nn.Linear(encoding_dim, output_size, bias=True)#,
            #nn.Dropout(p = 10/768),
-           nn.LayerNorm(output_size)
+           #nn.LayerNorm(output_size)
        )
 
    def forward(self, x):
@@ -97,11 +97,11 @@ class Autoencoder(nn.Module):
        return x
    
    
-def plot_results(sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStepsWeightsEncoder, lStepsBiasEncoder, lStepsWeightsDecoder, lStepsBiasDecoder, lGradWeightsEncoder, lGradBiasEncoder, lGradWeightsDecoder, lGradBiasDecoder, iEpoch, dEps, tOHETarget, fn_generate_max, tokenizer):
+def plot_results(dTime, sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStepsWeightsEncoder, lStepsBiasEncoder, lStepsWeightsDecoder, lStepsBiasDecoder, lGradWeightsEncoder, lGradBiasEncoder, lGradWeightsDecoder, lGradBiasDecoder, iEpoch, dEps, tOHETarget, fn_generate_max, tokenizer):
             
             #print(f"Progress: {aLLHistory}\n")
             
-            fig, axs = plt.subplots(2, 3, figsize=(16, 16))
+            fig, axs = plt.subplots(2, 4, figsize=(32, 16))
             
             # Plot 1
             for i in range(tOHETarget.shape[0]):
@@ -110,7 +110,7 @@ def plot_results(sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStepsWeight
             axs[0, 0].legend()
             axs[0, 0].set_xlabel("Epoch")
             axs[0, 0].set_ylabel("log1p (-LL)")
-            axs[0, 0].set_title(f"N-LL {iEpoch}")
+            axs[0, 0].set_title(f"N-LL {iEpoch}, time per 10 epochs: {dTime} s")
 
             # Plot 1
             axs[0, 1].plot(np.log1p(np.asarray(lLoss)))
@@ -137,19 +137,49 @@ def plot_results(sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStepsWeight
             #axs[3].legend()
             
             # # # Plot 3
-            # axs[1, 1].plot(np.asarray(lStepsBiasEncoder)[:, 0], linestyle='--', label=f"Bias Encoder")
-            # axs[1, 1].set_xlabel("Epoch")
-            # axs[1, 1].set_ylabel("Stepsize")
-            # axs[1, 1].set_title(f"Step made Bias Encoder {iEpoch}")
-            # axs[1, 1].legend()
+            axs[1, 1].plot(np.asarray(lStepsBiasEncoder)[:, 0], linestyle='--', label=f"Bias Encoder")
+            axs[1, 1].set_xlabel("Epoch")
+            axs[1, 1].set_ylabel("Stepsize")
+            axs[1, 1].set_title(f"Step made Bias Encoder {iEpoch}")
+            axs[1, 1].legend()
 
             axs[1, 2].plot(np.asarray(lStepsBiasDecoder)[:, 0], linestyle='--', label=f"Bias Decoder")
             axs[1, 2].set_xlabel("Epoch")
             axs[1, 2].set_ylabel("Stepsize")
             axs[1, 2].set_title(f"Step made Bias Decoder {iEpoch}")
             axs[1, 2].legend()
+            
+            # # # Plot 4
+                        
+            axs[1, 3].plot(np.asarray(lGradBiasEncoder), linestyle='--', label=f"Grad Bias Encoder")
+            axs[1, 3].set_xlabel("Epoch")
+            axs[1, 3].set_ylabel("Stepsize")
+            axs[1, 3].set_title(f"Grad Bias{iEpoch}")
+            axs[1, 3].legend()
 
-            plt.savefig(f"./models/training_monitor_{sNameAEModel}.png")
+            axs[1, 3].plot(np.asarray(lGradBiasDecoder), linestyle='--', label=f"Grad Bias Decoder")
+            axs[1, 3].set_xlabel("Epoch")
+            axs[1, 3].set_ylabel("Stepsize")
+            axs[1, 3].set_title(f"Grad Bias{iEpoch}")
+            axs[1, 3].legend()
+            
+            # # # Plot 4
+            axs[0, 3].plot(np.asarray(lGradWeightsEncoder), linestyle='--', label=f"Grad Weights Encoder")
+            axs[0, 3].set_xlabel("Epoch")
+            axs[0, 3].set_ylabel("Stepsize")
+            axs[0, 3].set_title(f"Grad Weights{iEpoch}")
+            axs[0, 3].legend()
+
+            axs[0, 3].plot(np.asarray(lGradWeightsDecoder), linestyle='--', label=f"Grad Weights Decoder")
+            axs[0, 3].set_xlabel("Epoch")
+            axs[0, 3].set_ylabel("Stepsize")
+            axs[0, 3].set_title(f"Grad Weights{iEpoch}")
+            axs[0, 3].legend()
+
+            try:
+                plt.savefig(f"./models/training_monitor_{sNameAEModel}.png")
+            except:
+                plt.savefig(f"training_monitor_{sNameAEModel}.png")
 
             tGenNew = fn_generate_max(ae(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)).sequences
             for i in range(tOHETarget.shape[0]):
@@ -200,3 +230,4 @@ def fit_ae(fn_generate_max_constr, fn_generate_max, tokenizer, ae, optimizer, OH
     print(f"Verify the final generation...\n\n")
     tGenNew = fn_generate_max(ae(OHETarget).reshape(OHETarget.shape[0], 1, -1)).sequences
     print(f"Claim {i}: {tokenizer.decode(tGenNew[0])}")
+    return ae
