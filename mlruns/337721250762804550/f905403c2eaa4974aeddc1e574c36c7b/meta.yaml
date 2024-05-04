@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/337721250762804550/f905403c2eaa4974aeddc1e574c36c7b/artifacts
+deleted_time: 1714814323726
+end_time: 1714813899015
+entry_point_name: ''
+experiment_id: '337721250762804550'
+lifecycle_stage: deleted
+run_id: f905403c2eaa4974aeddc1e574c36c7b
+run_name: enthused-stag-781
+run_uuid: f905403c2eaa4974aeddc1e574c36c7b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714813877022
+status: 3
+tags: []
+user_id: hoener

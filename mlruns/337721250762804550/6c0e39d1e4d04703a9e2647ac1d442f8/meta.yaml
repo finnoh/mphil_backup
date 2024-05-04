@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/337721250762804550/6c0e39d1e4d04703a9e2647ac1d442f8/artifacts
+deleted_time: 1714814323717
+end_time: 1714813995941
+entry_point_name: ''
+experiment_id: '337721250762804550'
+lifecycle_stage: deleted
+run_id: 6c0e39d1e4d04703a9e2647ac1d442f8
+run_name: nosy-squid-957
+run_uuid: 6c0e39d1e4d04703a9e2647ac1d442f8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714813935156
+status: 3
+tags: []
+user_id: hoener

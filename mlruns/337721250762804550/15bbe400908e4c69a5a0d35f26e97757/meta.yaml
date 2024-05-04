@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/337721250762804550/15bbe400908e4c69a5a0d35f26e97757/artifacts
+deleted_time: 1714814323723
+end_time: 1714813935142
+entry_point_name: ''
+experiment_id: '337721250762804550'
+lifecycle_stage: deleted
+run_id: 15bbe400908e4c69a5a0d35f26e97757
+run_name: redolent-shark-792
+run_uuid: 15bbe400908e4c69a5a0d35f26e97757
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714813899028
+status: 3
+tags: []
+user_id: hoener

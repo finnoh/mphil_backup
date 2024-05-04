@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/337721250762804550/b056b0286f1444c7b8c879050474052d/artifacts
+deleted_time: 1714814509474
+end_time: 1714814363553
+entry_point_name: ''
+experiment_id: '337721250762804550'
+lifecycle_stage: deleted
+run_id: b056b0286f1444c7b8c879050474052d
+run_name: Hair20_Cleaner20
+run_uuid: b056b0286f1444c7b8c879050474052d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714814344918
+status: 4
+tags: []
+user_id: hoener
