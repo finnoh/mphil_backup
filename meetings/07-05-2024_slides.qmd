@@ -33,3 +33,5 @@ fig-height: 8
 `.compute_transition_scores()` very similar to our functions; Computes the conditional probabilities for the generated sequence. Taking the sum, yields the likelihood of the generated sequence.
 
 Does calling this function with the target sequence, yield the correct target likelihood?
+
+Use LLM judge to assess grammar?
