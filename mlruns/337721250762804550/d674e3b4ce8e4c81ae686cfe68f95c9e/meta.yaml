@@ -1,8 +1,9 @@
 artifact_uri: mlflow-artifacts:/337721250762804550/d674e3b4ce8e4c81ae686cfe68f95c9e/artifacts
+deleted_time: 1714815124447
 end_time: 1714815047105
 entry_point_name: ''
 experiment_id: '337721250762804550'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: d674e3b4ce8e4c81ae686cfe68f95c9e
 run_name: Hair20_Cleaner20
 run_uuid: d674e3b4ce8e4c81ae686cfe68f95c9e
