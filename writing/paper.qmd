@@ -1,6 +1,6 @@
 ---
 author: Finn-Ole Höner (657110)
-title: "MPhil"
+title: "Decoding Consumer Preferences with Large Language Models: A Novel Training Framework"
 date: last-modified
 date-format: long
 code-color-bg: lightgray
