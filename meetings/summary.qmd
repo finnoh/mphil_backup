@@ -1,0 +1,63 @@
+---
+title: "BDS MPhil: Reverse Engineering GPT"
+author: "Finn-Ole Höner; Supervisors: Bas Donkers, Dennis Fok"
+date: last-modified
+date-format: long
+format: beamer
+aspectratio: 169
+incremental: false
+pdf-engine: pdflatex
+include-in-header: ../beamer_preamble.tex
+bibliography: ../references.bib
+fig-align: center
+fig-cap-location: bottom
+fig-format: pdf
+links-as-notes: true
+number-depth: 1
+eval: false
+echo: true
+fig-width: 12
+fig-height: 8
+---
+
+# Setup
+
+**Can consumer preferences inform LLM text generation?**
+
+- **Application:** Generating advertising claims with an LLM, based on consumer preferences.
+
+- **Methodology:** Find input-embeddings for GPT, that generate a specific advertising claim (we call these "summary embeddings"). We model these "summary embeddings" with an Autoencoder, which gives us a "generation space" for advertising claims.
+
+- **Toy-Example:** Tangible (e.g. "50% more visible shine after one use") and intangible (e.g. "Rediscover vibrant, joyful hair") advertising claims.
+
+# Idea
+
+We try to find an input-embedding that makes an LLM generate a specific output-sequence: Find the summary embedding $\boldsymbol{e^{*}}$ that maximizes the likelihood of the target-sequence $t_1, \ldots, t_L$ given the summary embedding $\boldsymbol{e}$:
+
+$$
+\boldsymbol{e^{*}} = \argmax_{\boldsymbol{e}} \sum_{i=1}^{L} \log p(t_1, \ldots, t_L | \boldsymbol{e}) \text{. }
+$$
+
+We impose restrictions on $\boldsymbol{e^{*}}$ by using an Autoencoder (AE) to model its elements. The hidden layer of this AE is our "generation space".
+
+# Current State
+
+- Summary embeddings generate target sequences.
+- Separation of tangible and intangible claims in generation space (Figure 1).
+- Grid-search exploration reveals "candidates" for new claims (red crosses) and "islands" regenerating training data claims (color-coded circles) (Figure 2).
+
+**Next Steps:**
+
+- Optimize optimization process.
+- Enhance generation mode for clearer new claims.
+- Integrate consumer preferences/ratings for generated claims.
+---
+
+::: {.columns}
+::: {.column}
+![Tangible and intangible claims in 2D-generation space.](./figures/07-05-24-03.png)
+:::
+::: {.column}
+![Grid-search across 2D-generation space.](./figures/slides_pitch.png)
+:::
+::: 

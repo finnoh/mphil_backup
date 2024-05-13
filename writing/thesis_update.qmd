@@ -1,0 +1,57 @@
+---
+bibliography: references.bib
+title: "Decoding Consumer Preferences: Reverse-Engineering LLMs for Personalization"
+subtitle: MPhil Thesis Update, Tentative Pre-Defense Date and Committee
+format: pdf
+---
+
+# Update
+
+- **Application:** Generating advertising claims with an LLM, based on consumer preferences.
+
+- **Method:** Development of a new method. Find input-embeddings for LLM, that generate a specific advertising claim (we call these "summary embeddings"). We model these "summary embeddings" with an autoencoder, which gives us a "generation space" for advertising claims. These summary embeddings maximize the likelihood to generate a specific advertising claim. 
+
+- **Data:** Advertising claims from market research company, different brands, different products. Ratings by respondents on different dimensions, e.g. fit with brand, and preference over other claims.
+
+- **Intended contribution:**
+  - Introduction of reverse-engineered "summary embeddings"
+  - Use of generative models for personalization in marketing
+  - Explore the role of brands in the generation space
+  - Learning about consumer preferences and linking them to a "generation-space", from which we can generate new advertising claims. Possibly, relate this to the idea of perceptual maps, i.e. mapping the different offerings on the market and identifying the "gaps" in-between.
+
+- **Key references:**
+    - @radford2018improving
+    - @devlinBERTPretrainingDeep2018
+    - @mullainathanPredictiveAlgorithmsAutomatic2023
+    - @pangDeepGenerativeModels2023
+    - @morozovWhereDoesAdvertising2024
+    - @burnapProductAestheticDesign2023
+    - @liFrontiersDeterminingValidity2024a
+    - @schmalenseePerceptualMapsOptimal1988
+
+- **Progress:** Data acquisition, development of algorithm, validation on toy-data, exploration of generation space.
+  - Summary embeddings generate target sequences.
+  - Separation of tangible and intangible claims in generation space (Figure 1).
+  - Grid-search exploration reveals "candidates" for new claims (red crosses) and "islands" regenerating training data claims (color-coded circles) (Figure 2).
+
+
+::: {layout-ncol=2 #fig-fig}
+![Tangible and intangible claims in 2D-generation space.](../meetings/figures/07-05-24-03.png){#fig-fig1}
+
+![Grid-search across 2D-generation space.](../meetings/figures/slides_pitch.png){#fig-fig2}
+
+Two preliminary results on the toy-data. The toy-data are a collection of ChatGPT generated advertising claims for a hair-shampoo product, where the first half of claims is tangible and the second half is intangible in their wording.
+:::
+
+- **Next steps:** Improve training, introduce LLM judge for newly generated claims, incorporate e.g. brands in training process, perform analysis on market research data, explore relation to perceptual maps.
+
+
+
+# Pre-Defense Admin
+
+- **Expected defence date:** Fri, 28th June 2024
+
+- **Thesis Committee**: Prof. Meike Morren (VU), Prof. Jonne Guyt (UvA); Supervisors: Prof. Fok (EUR), Prof. Donkers (EUR)
+
+
+# References

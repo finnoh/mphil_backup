@@ -16,6 +16,7 @@ import pickle
 import io
 import os
 
+import mlflow
 
 def TokenizeClaims(lClaims, tokenizer):
     # Tokenize the sentences
@@ -101,16 +102,17 @@ def plot_results(dTime, sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStep
             
             #print(f"Progress: {aLLHistory}\n")
             
-            fig, axs = plt.subplots(2, 4, figsize=(32, 16))
+            fig, axs = plt.subplots(2, 4, figsize=(14, 7))
             
-            # Plot 1
-            for i in range(tOHETarget.shape[0]):
-                axs[0, 0].plot(np.log1p(aLLHistory[0:iEpoch, i]), label=f"Claim {i + 1}")
-            axs[0, 0].axhline(y=np.log1p(dEps), linestyle='--', color='black', label="Threshold")
-            axs[0, 0].legend()
-            axs[0, 0].set_xlabel("Epoch")
-            axs[0, 0].set_ylabel("log1p (-LL)")
-            axs[0, 0].set_title(f"N-LL {iEpoch}, time per 10 epochs: {dTime} s")
+            if aLLHistory is not None:
+                # Plot 1
+                for i in range(tOHETarget.shape[0]):
+                    axs[0, 0].plot(np.log1p(aLLHistory[0:iEpoch, i]), label=f"Claim {i + 1}")
+                axs[0, 0].axhline(y=np.log1p(dEps), linestyle='--', color='black', label="Threshold")
+                axs[0, 0].legend()
+                axs[0, 0].set_xlabel("Epoch")
+                axs[0, 0].set_ylabel("log1p (-LL)")
+                axs[0, 0].set_title(f"N-LL {iEpoch}, time per 10 epochs: {dTime} s")
 
             # Plot 1
             axs[0, 1].plot(np.log1p(np.asarray(lLoss)))
@@ -175,15 +177,17 @@ def plot_results(dTime, sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStep
             axs[0, 3].set_ylabel("Stepsize")
             axs[0, 3].set_title(f"Grad Weights{iEpoch}")
             axs[0, 3].legend()
+            
+            mlflow.log_figure(fig, 'dashboard.png')
 
-            try:
-                plt.savefig(f"./models/training_monitor_{sNameAEModel}.png")
-            except:
-                plt.savefig(f"training_monitor_{sNameAEModel}.png")
+            # try:
+            #     plt.savefig(f"./models/training_monitor_{sNameAEModel}.png")
+            # except:
+            #     plt.savefig(f"training_monitor_{sNameAEModel}.png")
 
-            tGenNew = fn_generate_max(ae(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)).sequences
-            for i in range(tOHETarget.shape[0]):
-                print(f"Claim {i}: {tokenizer.decode(tGenNew[i])}")
+            # tGenNew = fn_generate_max(ae(tOHETarget).reshape(tOHETarget.shape[0], 1, -1)).sequences
+            # for i in range(tOHETarget.shape[0]):
+            #     print(f"Claim {i}: {tokenizer.decode(tGenNew[i])}")
                 
                 
 def fit_ae(fn_generate_max_constr, fn_generate_max, tokenizer, ae, optimizer, OHETarget, TargetStrings, iMaxTokens, iClaims, iVocab, dEps, i):

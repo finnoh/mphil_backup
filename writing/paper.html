@@ -82,6 +82,14 @@ window.Quarto = {
 <ul>
 <li>Social media, short videos TikTok, Images, Netflix, Audio / Podcasts</li>
 </ul></li>
+<li><p>What is missing from preference learning? How is this different?</p>
+<ul>
+<li>Media products / things are different from products as attribute bundles
+<ul>
+<li>We can directly represent the product itself?</li>
+</ul></li>
+<li>Brands and their role in advertising</li>
+</ul></li>
 <li><p>Market research is expensive. How can we leverage these insights better to improve its benefits?</p></li>
 <li><p>EU AI Act</p></li>
 <li><p>GDPR</p>
@@ -121,7 +129,7 @@ window.Quarto = {
 <p>The Autoencoder <span class="math inline">\(\operatorname{AE}_{\Beta} \left(\cdot \right): \lbrace 0, 1 \rbrace^{C} \to \mathbb{R}^E\)</span>, with parameters <span class="math inline">\(\Beta\)</span></p>
 <p>The log-likelihood function <span class="math inline">\(\operatorname{\mathcal{L}} \left ( \cdot \right): \mathbb{R}^E \to \left (- \infty, 0 \right]\)</span></p>
 <p>The length <span class="math inline">\(E\)</span> summary-embedding <span class="math inline">\(\boldsymbol{e}\)</span>.</p>
-<p>The length <span class="math inline">\(T\)</span> vector of target tokens <span class="math inline">\(\boldsymbol{t}\)</span>, where the element <span class="math inline">\(t_i\)</span> is a unique integer code representing a token, e.g.&nbsp;in GPT-2 50267 is the End-of-Text token <code>&lt;|eos|&gt;</code>.</p>
+<p>The length <span class="math inline">\(T\)</span> vector of target tokens <span class="math inline">\(\boldsymbol{t}\)</span>, where the element <span class="math inline">\(t_i\)</span> is a unique integer code representing a token, e.g.&nbsp;in GPT-2, <span class="math inline">\(50267\)</span> is the End-of-Text token <code>&lt;|eos|&gt;</code>.</p>
 <!-- TODO: What does it really return? -->
 <!-- TODO: Good idea or not? -->
 <p>To express that we generate tokens with the LLM, <span class="math inline">\(\mathcal{M}\)</span>, based on length <span class="math inline">\(E\)</span> input-embedding <span class="math inline">\(\boldsymbol{e}\)</span>, we use the notation <span class="math inline">\(\mathcal{M}(\boldsymbol{e})\)</span>. To express the number of tokens, <span class="math inline">\(k\)</span>, that we generate, we use the subscript <span class="math inline">\(\mathcal{M}_k(\boldsymbol{e})\)</span>. This function call returns an output vector of length <span class="math inline">\(V\)</span>, where <span class="math inline">\(V\)</span> denotes the vocabulary size. We denote the output vector as <span class="math inline">\(\boldsymbol{o}\)</span>. Each element <span class="math inline">\(o_v\)</span> of this output vector represents the probability of generating token <span class="math inline">\(v\)</span> as the next token. We predict the next token, by selecting the largest element of <span class="math inline">\(\boldsymbol{o}\)</span>. When <span class="math inline">\(k = 1\)</span>, we use the previous tokens to predict the next token. When <span class="math inline">\(k &gt; 1\)</span>, we append the predicted tokens autoregressively to the input embedding, such that we can predict more than one token. While there are many ways to design this procedure and select tokens along the way, we perform a standard greedy procedure, where we select the token with the highest probability at each step. We denote the probability that <span class="math inline">\(\mathcal{M}\)</span> generates the target sequence, given the input embedding, as <span class="math inline">\(p(t_1, \ldots, t_L | \boldsymbol{e})\)</span>. For a given Large Language Model, we define <span class="math inline">\(\boldsymbol{e^{*}}\)</span>,</p>
@@ -129,6 +137,10 @@ window.Quarto = {
 \boldsymbol{e^{*}} = \argmax_{\boldsymbol{e}} \sum_{i=1}^{L} \log p(t_1, \ldots, t_L | \boldsymbol{e}) \text{, }
 \]</span></p>
 <p>as the input-embedding that maximizes the likelihood of generating a given target sequence, <span class="math inline">\(\lbrace t_i \rbrace_{i=1}^{L}\)</span>, where <span class="math inline">\(L\)</span> denotes the length of the target sequence and <span class="math inline">\(t_i\)</span> represents token <span class="math inline">\(i\)</span>. We estimate these summary embeddings <span class="math inline">\(\boldsymbol{e^{*}}\)</span>, by maximizing the conditional likelihood that this embedding generates the target sequence for a given LLM. We use a gradient-based optimization algorithm to maximize this likelihood.</p>
+<ul>
+<li><p>Adding covariates to the AE</p></li>
+<li><p>LLM judge to rate claims</p></li>
+</ul>
 <!-- TODO: Consider renaming this headline -->
 </section>
 <section id="implementation" class="level1">
@@ -138,6 +150,7 @@ window.Quarto = {
 <li><p>Configuration of LLM</p></li>
 <li><p>Optimization</p></li>
 <li><p>Connection to other measures, e.g.&nbsp;syntax or rating of consumers</p></li>
+<li><p>Different generation strategies, use beam search to get closer to max LL</p></li>
 </ul>
 </section>
 <section id="data" class="level1">
@@ -150,33 +163,43 @@ window.Quarto = {
 <section id="results" class="level1">
 <h1>Results</h1>
 <ul>
-<li>Optimization
+<li><p>Optimization</p>
 <ul>
 <li>Computation time, scaling</li>
 </ul></li>
-<li>Encoding space
+<li><p>Encoding space</p>
 <ul>
 <li>example tangible, intangible</li>
 <li>generations from encoding space</li>
 <li>Wasteland, geometrical shape and where it comes from</li>
 </ul></li>
-<li>Application to CBC data</li>
+<li><p>Measures of fit</p>
+<ul>
+<li>areas in the encoding space (count out the pixels and compare to curvature of LL?)</li>
+<li>analysis of the trees</li>
+<li>Gap between most likely and second most likely token</li>
+</ul></li>
+<li><p>Application to MR data</p></li>
+<li><p>Comparison to BERT embeddings</p></li>
 </ul>
 </section>
 <section id="managerial-implications" class="level1">
 <h1>Managerial Implications</h1>
 <ul>
 <li>Generative AI for personalization</li>
+<li>Brands</li>
+<li>Wording</li>
 </ul>
 </section>
 <section id="discussion" class="level1">
 <h1>Discussion</h1>
 <ul>
-<li>Problems
+<li><p>Problems</p>
 <ul>
 <li>Computation time</li>
 </ul></li>
-<li>Expansion of this research
+<li><p>Comparison to BERT embeddings</p></li>
+<li><p>Expansion of this research</p>
 <ul>
 <li>MAB around the fitted AE, to incorporate consumer feedback in online learning: Which areas of the space are valuable for which consumers?</li>
 <li>Better LLM</li>

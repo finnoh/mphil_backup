@@ -21,18 +21,39 @@ fig-height: 8
 
 # Updates
 
-Found the source for the spikes and fixed it: `.generate()` is the wrong method, need `.forward()` $\to$ wrong conditionals! Now maximizes the likelihood and faster!
+Improved the optimization: `.generate()` is the wrong method, need `.forward()` $\to$ wrong conditionals! Now maximizes the likelihood and is faster!
 
-- New generated slogans seem better, space looks more interesting (have yet to do the "box" normalization)
-- Maybe even further performance gains by using `past_key_values`
+- Space looks different now; Does maximizing the likelihood collapse the encoding space?
+- Maybe even further performance gains by using `past_key_values`?
 
 - Idea: LLM judge to assess grammar / quality of slogans?
 - (MLFlow)
 
+MPhil: Need to start working towards the paper now
+
+---
+
 \textbf{Admin}: 
 
+- [ ] There seem to be issues with the access to the data for me now
 - [ ] SLURM application
 - [ ] Set appointment for pre-defense
-- [ ] Find third assessor 
+- [ ] Find third assessor
 - [ ] Complete data management survey
 
+
+---
+
+![Maxmimum Likelihood (nLL)](./figures/07-05-24-04.png)
+
+---
+
+![Encoded data points](./figures/07-05-24-03.png)
+
+---
+
+![Exploring the encoding space with generation, x are candidates](./figures/07-05-24-01.png)
+
+---
+
+![Cosine similarity between the candidate points](./figures/07-05-24-02.png)

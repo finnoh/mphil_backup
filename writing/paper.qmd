@@ -1,7 +1,56 @@
+---
+author: Finn-Ole Höner (657110)
+title: "MPhil"
+date: last-modified
+date-format: long
+code-color-bg: lightgray
+header-includes:
+  \usepackage{fancyhdr}
+  \usepackage{fancyvrb}
+  \usepackage{float}
+  \usepackage{booktabs}
+  \usepackage{lscape}
+  \usepackage{amsmath}
+  \usepackage{graphicx}
+  \usepackage{algorithm}
+  \usepackage{algpseudocode}
+  \usepackage{kpfonts}
+  \DeclareMathOperator*{\argmin}{arg\,min}
+  \DeclareMathOperator*{\argmax}{arg\,max}
+pdf-engine: pdflatex
+format:
+    pdf:
+        documentclass: article
+        toc: false
+        number-sections: false
+        number-depth: 2
+        colorlinks: true
+        fig-pos: 'H'
+        fig-align: center
+        geometry:
+            - top = 20mm
+            - bottom = 20mm
+            - left = 20mm
+            - right = 20mm
+        papersize: dina4
+bibliography: references.bib
+echo: false
+eval: true
+messages: false
+error: false
+warning: false
+cache: false
+---
+
 # Introduction
 
 - Media products increase relevance of content
   - Social media, short videos TikTok, Images, Netflix, Audio / Podcasts
+
+- What is missing from preference learning? How is this different?
+  - Media products / things are different from products as attribute bundles
+    - We can directly represent the product itself?
+  - Brands and their role in advertising
 
 - Market research is expensive. How can we leverage these insights better to improve its benefits?
 
@@ -22,7 +71,9 @@
   - Circumvent issues with the LLMs decoder
   - Input embedding represents the information contained in the sequence, as it is the starting point which makes the LLM generate the target sequence
 
+
 <!-- TODO: Consider renaming this headline -->
+
 # Theory
 
 - Generative AI for text
@@ -34,7 +85,7 @@
 
 - Maximize the likelihood to generate the data
 
-The Autoencoder $\operatorname{AE}_{\Beta} \left(\cdot \right): \lbrace 0, 1 \rbrace^{C} \to \mathbb{R}^E$, with parameters $\Beta$
+The Autoencoder $\operatorname{AE}_{\mathcal{B}} \left(\cdot \right): \lbrace 0, 1 \rbrace^{C} \to \mathbb{R}^E$, with parameters $\mathcal{B}$
 
 The log-likelihood function $\operatorname{\mathcal{L}} \left ( \cdot \right): \mathbb{R}^E \to \left (- \infty, 0 \right]$
 
@@ -52,6 +103,11 @@ $$
 
 as the input-embedding that maximizes the likelihood of generating a given target sequence, $\lbrace t_i \rbrace_{i=1}^{L}$, where $L$ denotes the length of the target sequence and $t_i$ represents token $i$. We estimate these summary embeddings $\boldsymbol{e^{*}}$, by maximizing the conditional likelihood that this embedding generates the target sequence for a given LLM. We use a gradient-based optimization algorithm to maximize this likelihood.
 
+- Adding covariates to the AE
+
+
+- LLM judge to rate claims
+
 <!-- TODO: Consider renaming this headline -->
 # Implementation
 
@@ -63,6 +119,7 @@ as the input-embedding that maximizes the likelihood of generating a given targe
 
 - Connection to other measures, e.g. syntax or rating of consumers
 
+- Different generation strategies, use beam search to get closer to max LL
 
 # Data
 
@@ -78,16 +135,26 @@ as the input-embedding that maximizes the likelihood of generating a given targe
   - example tangible, intangible
   - generations from encoding space
   - Wasteland, geometrical shape and where it comes from
-- Application to CBC data
+- Measures of fit
+  - areas in the encoding space (count out the pixels and compare to curvature of LL?)
+  - analysis of the trees
+  - Gap between most likely and second most likely token
+- Application to MR data
+
+- Comparison to BERT embeddings
 
 # Managerial Implications
 
 - Generative AI for personalization
+- Brands
+- Wording
 
 # Discussion
 
 - Problems
   - Computation time
+
+- Comparison to BERT embeddings
 
 - Expansion of this research
   - MAB around the fitted AE, to incorporate consumer feedback in online learning: Which areas of the space are valuable for which consumers?
