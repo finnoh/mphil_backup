@@ -178,7 +178,7 @@ def plot_results(dTime, sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStep
             axs[0, 3].set_title(f"Grad Weights")
             axs[0, 3].legend()
             
-            mlflow.log_figure(fig, 'dashboard.png')
+            mlflow.log_figure(fig, './plots/dashboard.png')
 
             # try:
             #     plt.savefig(f"./models/training_monitor_{sNameAEModel}.png")
@@ -269,7 +269,7 @@ def plot_results_last10(dTime, sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory
             axs[0, 3].set_title(f"Grad Weights")
             axs[0, 3].legend()
             
-            mlflow.log_figure(fig, f'dashboard_last10_{iEpoch}.png')
+            mlflow.log_figure(fig, f'./plots/dashboard_last10_{iEpoch}.png')
 
             # try:
             #     plt.savefig(f"./models/training_monitor_{sNameAEModel}.png")
