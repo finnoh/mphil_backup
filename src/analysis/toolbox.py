@@ -107,16 +107,16 @@ def plot_results(dTime, sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStep
             if aLLHistory is not None:
                 # Plot 1
                 for i in range(tOHETarget.shape[0]):
-                    axs[0, 0].plot(np.log1p(aLLHistory[0:iEpoch, i]), label=f"Claim {i + 1}")
-                axs[0, 0].axhline(y=np.log1p(dEps), linestyle='--', color='black', label="Threshold")
+                    axs[0, 0].plot(aLLHistory[0:iEpoch, i], label=f"Claim {i + 1}")
+                axs[0, 0].axhline(y=dEps, linestyle='--', color='black', label="Threshold")
                 axs[0, 0].legend()
                 axs[0, 0].set_xlabel("Epoch")
                 axs[0, 0].set_ylabel("log1p (-LL)")
                 axs[0, 0].set_title(f"N-LL {iEpoch}, time per 10 epochs: {dTime} s")
 
             # Plot 1
-            axs[0, 1].plot(np.log1p(np.asarray(lLoss)))
-            axs[0, 1].axhline(y=np.log1p(dEps), linestyle='--', color='black', label="Threshold")
+            axs[0, 1].plot(np.asarray(lLoss))
+            axs[0, 1].axhline(y=dEps, linestyle='--', color='black', label="Threshold")
             axs[0, 1].legend()
             axs[0, 1].set_xlabel("Epoch")
             axs[0, 1].set_ylabel("log1p (-LL)")
@@ -198,16 +198,16 @@ def plot_results_last10(dTime, sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory
             if aLLHistory is not None:
                 # Plot 1
                 for i in range(tOHETarget.shape[0]):
-                    axs[0, 0].plot(np.log1p(aLLHistory[0:iEpoch, i]), label=f"Claim {i + 1}")
-                axs[0, 0].axhline(y=np.log1p(dEps), linestyle='--', color='black', label="Threshold")
+                    axs[0, 0].plot(aLLHistory[0:iEpoch, i], label=f"Claim {i + 1}")
+                axs[0, 0].axhline(y=dEps, linestyle='--', color='black', label="Threshold")
                 axs[0, 0].legend()
                 axs[0, 0].set_xlabel("Epoch")
                 axs[0, 0].set_ylabel("log1p (-LL)")
                 axs[0, 0].set_title(f"N-LL {iEpoch}, time per 10 epochs: {dTime} s")
 
             # Plot 1
-            axs[0, 1].plot(np.log1p(np.asarray(lLoss[-10:])))
-            axs[0, 1].axhline(y=np.log1p(dEps), linestyle='--', color='black', label="Threshold")
+            axs[0, 1].plot(np.asarray(lLoss[-10:]))
+            axs[0, 1].axhline(y=dEps, linestyle='--', color='black', label="Threshold")
             axs[0, 1].legend()
             axs[0, 1].set_xlabel("Epoch")
             axs[0, 1].set_ylabel("log1p (-LL)")

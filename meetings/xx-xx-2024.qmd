@@ -26,6 +26,7 @@ fig-height: 8
 - Increase of Decoder Weight gradients seems to precede the increase of the -LL
 - The other gradients seem to react to this jump
 - Gradient-Decoder $\to$ Step $\to$ Other gradients $\to$ Step ...
+- [`torch.nn.utils.clip_grad_norm_(ae.parameters(), max_norm=dMaxGrad)`](https://pytorch.org/docs/stable/generated/torch.nn.utils.clip_grad_norm_.html#torch.nn.utils.clip_grad_norm_) seems to help. This clips the gradient if the norm exceeds `dMaxGrad`. [See here](https://www.cs.toronto.edu/~rgrosse/courses/csc321_2017/readings/L15%20Exploding%20and%20Vanishing%20Gradients.pdf#page=6.78).
 
 ---
 
@@ -49,6 +50,19 @@ Spikes: Notice how the decoder gradient norm increases first, causing a large st
 ---
 
 ![](./figures/dashboard_last10_350.png)
+
+---
+
+![Fixed clipping at 0.3. Later in the optimization this is too large.](./figures/dashboard_clipping_fixed.png)
+
+
+
+
+---
+
+Likely, you only want to clip true "outliers" in the gradients and not be too conservative. 
+
+![You can overdo it with the gradient clipping.](./figures/dashboard_clip_01.png)
 
 
 

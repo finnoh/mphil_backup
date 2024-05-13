@@ -1,5 +1,5 @@
 artifact_uri: mlflow-artifacts:/337721250762804550/e81b1fd168814f02a50ba00102583823/artifacts
-end_time: null
+end_time: 1715614865693
 entry_point_name: ''
 experiment_id: '337721250762804550'
 lifecycle_stage: active
@@ -10,6 +10,6 @@ source_name: ''
 source_type: 4
 source_version: ''
 start_time: 1715612883636
-status: 1
+status: 4
 tags: []
 user_id: hoener
