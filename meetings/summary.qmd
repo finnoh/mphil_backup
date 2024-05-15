@@ -1,5 +1,5 @@
 ---
-title: "BDS MPhil: Reverse Engineering GPT"
+title: "BDS MPhil"
 author: "Finn-Ole Höner; Supervisors: Bas Donkers, Dennis Fok"
 date: last-modified
 date-format: long
@@ -19,6 +19,58 @@ echo: true
 fig-width: 12
 fig-height: 8
 ---
+
+# Decoding Marketers' Intentions: Deterministic Generation of Ad-Claims
+
+::: {.columns}
+::: {.column}
+
+**Setting** 
+
+- Advertising claims with meta information & ratings
+
+**Contribution**
+
+- Novel "summary embeddings", that make an LLM generate a specific ad-claim.
+
+**What's done?**
+
+- Algorithm, validation, data acquisition, Snellius application
+
+**What's next?**
+
+- Empirical application, first-draft
+
+<!--
+
+- Match and mismatch of intention and wording?
+
+- Comparing focal brand with competitors, country, consumer ratings, brand fit, different languages, ranking of claims within set, compare branded and unbranded, sustainability messages, tangible & intangible
+
+- Different sub-categories of hair-care e.g. intense damage, hydro, color
+
+- mixtures of certain phrasings
+
+Using model for prediction? Have training claims and test claims embedded in the same space. Then use the training claims to predict the test claims based on encoding space.
+
+male and female targeting
+
+short-term, long-term benefits
+
+fit with brand measure
+
+Pre-training based on GPT generated claims
+
+Dairy: Naturality, nutrition, ingredients, ferments
+-->
+
+:::
+::: {.column}
+![2D-generation space.](./figures/slides_pitch.png)
+:::
+::: 
+
+
 
 # Setup
 
@@ -51,6 +103,7 @@ We impose restrictions on $\boldsymbol{e^{*}}$ by using an Autoencoder (AE) to m
 - Optimize optimization process.
 - Enhance generation mode for clearer new claims.
 - Integrate consumer preferences/ratings for generated claims.
+
 ---
 
 ::: {.columns}

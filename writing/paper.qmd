@@ -28,10 +28,10 @@ format:
         fig-pos: 'H'
         fig-align: center
         geometry:
-            - top = 20mm
-            - bottom = 20mm
-            - left = 20mm
-            - right = 20mm
+            - top = 1in
+            - bottom = 1in
+            - left = 1in
+            - right = 1in
         papersize: dina4
 bibliography: references.bib
 echo: false
@@ -71,27 +71,31 @@ cache: false
   - Circumvent issues with the LLMs decoder
   - Input embedding represents the information contained in the sequence, as it is the starting point which makes the LLM generate the target sequence
 
+- Comparison to prompt engineering
+
 
 <!-- TODO: Consider renaming this headline -->
 
-# Theory
+# Methodology
 
-- Generative AI for text
-    - Attention
-    - Transformer
-    - GPT
+- Overview
+  - LLM
+  - maximize likelihood of target sequence
+  - autoencoder on these summary embeddings (+ covariates?)
+  - also yields low-dim generation space
+  - generation
+  - rating of claims
 
-- Autoencoder
+- LLM
+  - Attention
+  - Transformer
+  - GPT
+  - The length $E$ summary-embedding $\boldsymbol{e}$.
+  - The length $T$ vector of target tokens $\boldsymbol{t}$, where the element $t_i$ is a unique integer code representing a token, e.g. in GPT-2, $50267$ is the End-of-Text token `<|eos|>`.
+
 
 - Maximize the likelihood to generate the data
-
-The Autoencoder $\operatorname{AE}_{\mathcal{B}} \left(\cdot \right): \lbrace 0, 1 \rbrace^{C} \to \mathbb{R}^E$, with parameters $\mathcal{B}$
-
-The log-likelihood function $\operatorname{\mathcal{L}} \left ( \cdot \right): \mathbb{R}^E \to \left (- \infty, 0 \right]$
-
-The length $E$ summary-embedding $\boldsymbol{e}$.
-
-The length $T$ vector of target tokens $\boldsymbol{t}$, where the element $t_i$ is a unique integer code representing a token, e.g. in GPT-2, $50267$ is the End-of-Text token `<|eos|>`.
+  - The log-likelihood function $\operatorname{\mathcal{L}} \left ( \cdot \right): \mathbb{R}^E \to \left (- \infty, 0 \right]$
 
 <!-- TODO: What does it really return? -->
 <!-- TODO: Good idea or not? -->
@@ -103,13 +107,18 @@ $$
 
 as the input-embedding that maximizes the likelihood of generating a given target sequence, $\lbrace t_i \rbrace_{i=1}^{L}$, where $L$ denotes the length of the target sequence and $t_i$ represents token $i$. We estimate these summary embeddings $\boldsymbol{e^{*}}$, by maximizing the conditional likelihood that this embedding generates the target sequence for a given LLM. We use a gradient-based optimization algorithm to maximize this likelihood.
 
-- Adding covariates to the AE
+- Autoencoder
+  - The Autoencoder $\operatorname{AE}_{\mathcal{B}} \left(\cdot \right): \lbrace 0, 1 \rbrace^{C} \to \mathbb{R}^E$, with parameters $\mathcal{B}$
+  - Adding covariates to the AE
 
+- Figure of generation tree
+  - beam-search for generation
 
 - LLM judge to rate claims
 
 <!-- TODO: Consider renaming this headline -->
-# Implementation
+
+## Implementation
 
 - Autoencoder
 
@@ -146,17 +155,22 @@ as the input-embedding that maximizes the likelihood of generating a given targe
 # Managerial Implications
 
 - Generative AI for personalization
+
 - Brands
+
 - Wording
+
+- Interactive dashboard to explore the embedding space
+
 
 # Discussion
 
 - Problems
   - Computation time
 
-- Comparison to BERT embeddings
-
 - Expansion of this research
   - MAB around the fitted AE, to incorporate consumer feedback in online learning: Which areas of the space are valuable for which consumers?
+  - For online learning, could wrap the decoder into an MAB and let the MAB explore the space by pulling arms <!-- TODO: Which kind of MAB? -->
+  - Could also learn preferences online with this setup
   - Better LLM
   - Image, video, website, audio data. Perhaps website a good application. Perhaps audio a rather simple way to make this multi-modal (content and sound)
