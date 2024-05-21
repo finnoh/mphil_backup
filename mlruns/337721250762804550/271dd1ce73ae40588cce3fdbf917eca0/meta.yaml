@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/337721250762804550/271dd1ce73ae40588cce3fdbf917eca0/artifacts
+end_time: 1716283973797
+entry_point_name: ''
+experiment_id: '337721250762804550'
+lifecycle_stage: active
+run_id: 271dd1ce73ae40588cce3fdbf917eca0
+run_name: test_newtonraphson
+run_uuid: 271dd1ce73ae40588cce3fdbf917eca0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716282285672
+status: 4
+tags: []
+user_id: hoener

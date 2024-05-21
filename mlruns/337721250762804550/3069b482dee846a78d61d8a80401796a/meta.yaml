@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/337721250762804550/3069b482dee846a78d61d8a80401796a/artifacts
+end_time: 1716281835042
+entry_point_name: ''
+experiment_id: '337721250762804550'
+lifecycle_stage: active
+run_id: 3069b482dee846a78d61d8a80401796a
+run_name: test_freeze_decoder
+run_uuid: 3069b482dee846a78d61d8a80401796a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716281571336
+status: 4
+tags: []
+user_id: hoener

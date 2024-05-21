@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/337721250762804550/e443c8087ec64f3990266aacac5676db/artifacts
+end_time: 1716029844060
+entry_point_name: ''
+experiment_id: '337721250762804550'
+lifecycle_stage: active
+run_id: e443c8087ec64f3990266aacac5676db
+run_name: test
+run_uuid: e443c8087ec64f3990266aacac5676db
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716029772709
+status: 4
+tags: []
+user_id: hoener

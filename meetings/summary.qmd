@@ -25,13 +25,13 @@ fig-height: 8
 ::: {.columns}
 ::: {.column}
 
-**Setting** 
-
-- Advertising claims with meta information & ratings
-
 **Contribution**
 
-- Novel "summary embeddings", that make an LLM generate a specific ad-claim.
+- Novel Method: A Summary Embeddings, that make an LLM generate a specific ad-claim.
+
+**Data** 
+
+- Advertising claims with meta information & ratings from choice-experiment
 
 **What's done?**
 
@@ -40,6 +40,13 @@ fig-height: 8
 **What's next?**
 
 - Empirical application, first-draft
+
+
+:::
+::: {.column}
+![2D-generation space](./figures/slides_pitch.png)
+:::
+::: 
 
 <!--
 
@@ -63,13 +70,6 @@ Pre-training based on GPT generated claims
 
 Dairy: Naturality, nutrition, ingredients, ferments
 -->
-
-:::
-::: {.column}
-![2D-generation space.](./figures/slides_pitch.png)
-:::
-::: 
-
 
 
 # Setup

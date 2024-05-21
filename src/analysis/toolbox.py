@@ -125,18 +125,17 @@ def plot_results(dTime, sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory, lStep
             # # Plot 3
             # print(np.asarray(lStepsWeightsEncoder).shape)
             for i in range(iEncodingDim):
-                axs[0, 2].plot(np.mean(np.asarray(lStepsWeightsEncoder)[0:iEpoch, i, :], axis=1), linestyle='--', label=f"Weights {i + 1}")
+                axs[0, 2].plot(np.max(np.asarray(lStepsWeightsEncoder)[0:iEpoch, i, :], axis=1), linestyle='--', label=f"Weights {i + 1}")
             axs[0, 2].set_xlabel("Epoch")
             axs[0, 2].set_ylabel("Stepsize")
             axs[0, 2].set_title(f"SM Encoder {iEpoch}")
             #axs0, [2].legend()
             
             for i in range(iEncodingDim):
-                axs[1, 0].plot(np.mean(np.asarray(lStepsWeightsDecoder)[0:iEpoch, :, i], axis=1), linestyle='--', label=f"Weights {i + 1}")
+                axs[1, 0].plot(np.max(np.asarray(lStepsWeightsDecoder)[0:iEpoch, :, i], axis=1), linestyle='--', label=f"Weights {i + 1}")
             axs[1, 0].set_xlabel("Epoch")
             axs[1, 0].set_ylabel("Stepsize")
             axs[1, 0].set_title(f"SM Decoder {iEpoch}")
-            #axs[3].legend()
             
             # # # Plot 3
             axs[1, 1].plot(np.asarray(lStepsBiasEncoder)[:, 0], linestyle='--', label=f"Bias Encoder")
@@ -216,14 +215,14 @@ def plot_results_last10(dTime, sNameAEModel, iEncodingDim, ae, lLoss, aLLHistory
             # # Plot 3
             # print(np.asarray(lStepsWeightsEncoder).shape)
             for i in range(iEncodingDim):
-                axs[0, 2].plot(np.mean(np.asarray(lStepsWeightsEncoder)[-10:, i, :], axis=1), linestyle='--', label=f"Weights {i + 1}")
+                axs[0, 2].plot(np.max(np.asarray(lStepsWeightsEncoder)[-10:, i, :], axis=1), linestyle='--', label=f"Weights {i + 1}")
             axs[0, 2].set_xlabel("Epoch")
             axs[0, 2].set_ylabel("Stepsize")
             axs[0, 2].set_title(f"SM Encoder {iEpoch}")
             #axs0, [2].legend()
             
             for i in range(iEncodingDim):
-                axs[1, 0].plot(np.mean(np.asarray(lStepsWeightsDecoder)[-10:, :, i], axis=1), linestyle='--', label=f"Weights {i + 1}")
+                axs[1, 0].plot(np.max(np.asarray(lStepsWeightsDecoder)[-10:, :, i], axis=1), linestyle='--', label=f"Weights {i + 1}")
             axs[1, 0].set_xlabel("Epoch")
             axs[1, 0].set_ylabel("Stepsize")
             axs[1, 0].set_title(f"SM Decoder {iEpoch}")

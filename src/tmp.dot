@@ -1,0 +1,1768 @@
+digraph {
+	graph [size="12,12"]
+	node [align=left fontsize=12 height=0.2 ranksep=0.1 shape=box style=filled]
+	14205664416 [label=AddBackward0 fillcolor=white]
+	13572850368 -> 14205664416
+	14205663504 -> 14205664416
+	14205663504 [label=NllLossBackward0 fillcolor=white]
+	14205662256 -> 14205663504
+	14205662256 [label=LogSoftmaxBackward0 fillcolor=white]
+	14205664992 -> 14205662256
+	14205664992 [label=ViewBackward0 fillcolor=white]
+	14205663888 -> 14205664992
+	14205663888 [label=SliceBackward0 fillcolor=white]
+	14205664032 -> 14205663888
+	14205664032 [label=SliceBackward0 fillcolor=white]
+	14205664704 -> 14205664032
+	14205664704 [label=LinearBackward0 fillcolor=red]
+	14205664608 -> 14205664704
+	13638934992 -> 14205664704
+	13638934992 [label="Variable
+ (50257, 768)" fillcolor=lightblue]
+	14205664608 [label=ViewBackward0 fillcolor=white]
+	14205664752 -> 14205664608
+	14205664752 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205664368 -> 14205664752
+	13636586208 -> 14205664752
+	13636587008 -> 14205664752
+	13636587008 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636586208 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205664368 [label=AddBackward0 fillcolor=white]
+	14205662784 -> 14205664368
+	14205662544 -> 14205664368
+	14205662544 [label=ViewBackward0 fillcolor=white]
+	14205664512 -> 14205662544
+	14205664512 [label=AddmmBackward0 fillcolor=white]
+	13637938768 -> 14205664512
+	14205663072 -> 14205664512
+	13637937808 -> 14205664512
+	13637937808 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	14205663072 [label=ViewBackward0 fillcolor=white]
+	14205662880 -> 14205663072
+	14205662880 [label=MulBackward0 fillcolor=white]
+	14205663648 -> 14205662880
+	14205664320 -> 14205662880
+	14205664320 [label=AddBackward0 fillcolor=red]
+	14205664080 -> 14205664320
+	14205664080 [label=TanhBackward0 fillcolor=white]
+	14205661488 -> 14205664080
+	14205661488 [label=MulBackward0 fillcolor=red]
+	14205662016 -> 14205661488
+	14205662016 [label=AddBackward0 fillcolor=white]
+	14205662208 -> 14205662016
+	14205663216 -> 14205662016
+	14205663216 [label=MulBackward0 fillcolor=red]
+	14205663312 -> 14205663216
+	14205663312 [label=PowBackward0 fillcolor=white]
+	14205662208 -> 14205663312
+	14205662208 [label=ViewBackward0 fillcolor=white]
+	14205748800 -> 14205662208
+	14205748800 [label=AddmmBackward0 fillcolor=white]
+	13637935488 -> 14205748800
+	14205748464 -> 14205748800
+	13637935808 -> 14205748800
+	13637935808 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14205748464 [label=ViewBackward0 fillcolor=white]
+	14205748416 -> 14205748464
+	14205748416 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205662784 -> 14205748416
+	13637937088 -> 14205748416
+	13636584608 -> 14205748416
+	13636584608 [label="Variable
+ (768)" fillcolor=lightblue]
+	13637937088 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205662784 [label=AddBackward0 fillcolor=white]
+	14205750480 -> 14205662784
+	14205750672 -> 14205662784
+	14205750672 [label=AddBackward0 fillcolor=white]
+	14205750384 -> 14205750672
+	14205751200 -> 14205750672
+	14205751200 [label=ViewBackward0 fillcolor=white]
+	14205748896 -> 14205751200
+	14205748896 [label=AddmmBackward0 fillcolor=white]
+	13636585808 -> 14205748896
+	14205748656 -> 14205748896
+	13636585248 -> 14205748896
+	13636585248 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	14205748656 [label=ViewBackward0 fillcolor=white]
+	14205747408 -> 14205748656
+	14205747408 [label=MulBackward0 fillcolor=white]
+	14205747648 -> 14205747408
+	14205747936 -> 14205747408
+	14205747936 [label=AddBackward0 fillcolor=red]
+	14205749472 -> 14205747936
+	14205749472 [label=TanhBackward0 fillcolor=white]
+	14205750144 -> 14205749472
+	14205750144 [label=MulBackward0 fillcolor=red]
+	14205528480 -> 14205750144
+	14205528480 [label=AddBackward0 fillcolor=white]
+	14205529296 -> 14205528480
+	14205528720 -> 14205528480
+	14205528720 [label=MulBackward0 fillcolor=red]
+	14205526224 -> 14205528720
+	14205526224 [label=PowBackward0 fillcolor=white]
+	14205529296 -> 14205526224
+	14205529296 [label=ViewBackward0 fillcolor=white]
+	14205527232 -> 14205529296
+	14205527232 [label=AddmmBackward0 fillcolor=white]
+	13636585168 -> 14205527232
+	14205526704 -> 14205527232
+	13636585888 -> 14205527232
+	13636585888 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14205526704 [label=ViewBackward0 fillcolor=white]
+	14205529152 -> 14205526704
+	14205529152 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205750384 -> 14205529152
+	13636585728 -> 14205529152
+	13636585488 -> 14205529152
+	13636585488 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636585728 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205750384 [label=AddBackward0 fillcolor=white]
+	14205527760 -> 14205750384
+	14205528576 -> 14205750384
+	14205528576 [label=AddBackward0 fillcolor=white]
+	14205527520 -> 14205528576
+	14205527808 -> 14205528576
+	14205527808 [label=ViewBackward0 fillcolor=white]
+	14205529632 -> 14205527808
+	14205529632 [label=AddmmBackward0 fillcolor=white]
+	13636584448 -> 14205529632
+	14205529440 -> 14205529632
+	13636586688 -> 14205529632
+	13636586688 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	14205529440 [label=ViewBackward0 fillcolor=white]
+	14205528528 -> 14205529440
+	14205528528 [label=MulBackward0 fillcolor=white]
+	14205529104 -> 14205528528
+	14205529008 -> 14205528528
+	14205529008 [label=AddBackward0 fillcolor=red]
+	14205528864 -> 14205529008
+	14205528864 [label=TanhBackward0 fillcolor=white]
+	14205528768 -> 14205528864
+	14205528768 [label=MulBackward0 fillcolor=red]
+	14205528336 -> 14205528768
+	14205528336 [label=AddBackward0 fillcolor=white]
+	14205529680 -> 14205528336
+	14205529392 -> 14205528336
+	14205529392 [label=MulBackward0 fillcolor=red]
+	14205529584 -> 14205529392
+	14205529584 [label=PowBackward0 fillcolor=white]
+	14205529680 -> 14205529584
+	14205529680 [label=ViewBackward0 fillcolor=white]
+	14205529344 -> 14205529680
+	14205529344 [label=AddmmBackward0 fillcolor=white]
+	13636584368 -> 14205529344
+	14205529968 -> 14205529344
+	13636584288 -> 14205529344
+	13636584288 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14205529968 [label=ViewBackward0 fillcolor=white]
+	14205528288 -> 14205529968
+	14205528288 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205527520 -> 14205528288
+	13636586928 -> 14205528288
+	13636585088 -> 14205528288
+	13636585088 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636586928 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205527520 [label=AddBackward0 fillcolor=white]
+	14205528384 -> 14205527520
+	14205528816 -> 14205527520
+	14205528816 [label=AddBackward0 fillcolor=white]
+	14205526800 -> 14205528816
+	14205526656 -> 14205528816
+	14205526656 [label=ViewBackward0 fillcolor=white]
+	14205528960 -> 14205526656
+	14205528960 [label=AddmmBackward0 fillcolor=white]
+	13636586368 -> 14205528960
+	14205527040 -> 14205528960
+	13636583568 -> 14205528960
+	13636583568 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	14205527040 [label=ViewBackward0 fillcolor=white]
+	14205527088 -> 14205527040
+	14205527088 [label=MulBackward0 fillcolor=white]
+	14205526608 -> 14205527088
+	14205882528 -> 14205527088
+	14205882528 [label=AddBackward0 fillcolor=red]
+	14205882480 -> 14205882528
+	14205882480 [label=TanhBackward0 fillcolor=white]
+	14205882576 -> 14205882480
+	14205882576 [label=MulBackward0 fillcolor=red]
+	14205883584 -> 14205882576
+	14205883584 [label=AddBackward0 fillcolor=white]
+	14205883248 -> 14205883584
+	14205883152 -> 14205883584
+	14205883152 [label=MulBackward0 fillcolor=red]
+	14205882720 -> 14205883152
+	14205882720 [label=PowBackward0 fillcolor=white]
+	14205883248 -> 14205882720
+	14205883248 [label=ViewBackward0 fillcolor=white]
+	14205884832 -> 14205883248
+	14205884832 [label=AddmmBackward0 fillcolor=white]
+	13636586448 -> 14205884832
+	14205884544 -> 14205884832
+	13636583968 -> 14205884832
+	13636583968 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14205884544 [label=ViewBackward0 fillcolor=white]
+	14205884304 -> 14205884544
+	14205884304 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205526800 -> 14205884304
+	13636586848 -> 14205884304
+	13638390864 -> 14205884304
+	13638390864 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636586848 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205526800 [label=AddBackward0 fillcolor=white]
+	14205886224 -> 14205526800
+	14205884352 -> 14205526800
+	14205884352 [label=AddBackward0 fillcolor=white]
+	14205885312 -> 14205884352
+	14205885984 -> 14205884352
+	14205885984 [label=ViewBackward0 fillcolor=white]
+	14205885792 -> 14205885984
+	14205885792 [label=AddmmBackward0 fillcolor=white]
+	13638392224 -> 14205885792
+	14205883824 -> 14205885792
+	13638390624 -> 14205885792
+	13638390624 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	14205883824 [label=ViewBackward0 fillcolor=white]
+	14205885456 -> 14205883824
+	14205885456 [label=MulBackward0 fillcolor=white]
+	14205883872 -> 14205885456
+	14205883008 -> 14205885456
+	14205883008 [label=AddBackward0 fillcolor=red]
+	14205885264 -> 14205883008
+	14205885264 [label=TanhBackward0 fillcolor=white]
+	14205884160 -> 14205885264
+	14205884160 [label=MulBackward0 fillcolor=red]
+	14205884256 -> 14205884160
+	14205884256 [label=AddBackward0 fillcolor=white]
+	14205885024 -> 14205884256
+	14205884928 -> 14205884256
+	14205884928 [label=MulBackward0 fillcolor=red]
+	14205624272 -> 14205884928
+	14205624272 [label=PowBackward0 fillcolor=white]
+	14205885024 -> 14205624272
+	14205885024 [label=ViewBackward0 fillcolor=white]
+	14205623840 -> 14205885024
+	14205623840 [label=AddmmBackward0 fillcolor=white]
+	13638391664 -> 14205623840
+	14205623552 -> 14205623840
+	13638390304 -> 14205623840
+	13638390304 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14205623552 [label=ViewBackward0 fillcolor=white]
+	14205620480 -> 14205623552
+	14205620480 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205885312 -> 14205620480
+	13638390784 -> 14205620480
+	13638389904 -> 14205620480
+	13638389904 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638390784 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205885312 [label=AddBackward0 fillcolor=white]
+	14205621152 -> 14205885312
+	14205621056 -> 14205885312
+	14205621056 [label=AddBackward0 fillcolor=white]
+	14205620720 -> 14205621056
+	14205620624 -> 14205621056
+	14205620624 [label=ViewBackward0 fillcolor=white]
+	14205621296 -> 14205620624
+	14205621296 [label=AddmmBackward0 fillcolor=white]
+	13638392384 -> 14205621296
+	14205622736 -> 14205621296
+	13638391344 -> 14205621296
+	13638391344 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	14205622736 [label=ViewBackward0 fillcolor=white]
+	14205623264 -> 14205622736
+	14205623264 [label=MulBackward0 fillcolor=white]
+	14205622208 -> 14205623264
+	14205622496 -> 14205623264
+	14205622496 [label=AddBackward0 fillcolor=red]
+	14205624224 -> 14205622496
+	14205624224 [label=TanhBackward0 fillcolor=white]
+	14205622256 -> 14205624224
+	14205622256 [label=MulBackward0 fillcolor=red]
+	14205621632 -> 14205622256
+	14205621632 [label=AddBackward0 fillcolor=white]
+	14205623888 -> 14205621632
+	14205623792 -> 14205621632
+	14205623792 [label=MulBackward0 fillcolor=red]
+	14205622016 -> 14205623792
+	14205622016 [label=PowBackward0 fillcolor=white]
+	14205623888 -> 14205622016
+	14205623888 [label=ViewBackward0 fillcolor=white]
+	14205622880 -> 14205623888
+	14205622880 [label=AddmmBackward0 fillcolor=white]
+	13638392144 -> 14205622880
+	14205623360 -> 14205622880
+	13638392944 -> 14205622880
+	13638392944 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14205623360 [label=ViewBackward0 fillcolor=white]
+	14205620864 -> 14205623360
+	14205620864 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205620720 -> 14205620864
+	13638393504 -> 14205620864
+	13638391184 -> 14205620864
+	13638391184 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638393504 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205620720 [label=AddBackward0 fillcolor=white]
+	14205621824 -> 14205620720
+	14205622976 -> 14205620720
+	14205622976 [label=AddBackward0 fillcolor=white]
+	14205622400 -> 14205622976
+	14205622160 -> 14205622976
+	14205622160 [label=ViewBackward0 fillcolor=white]
+	14205623504 -> 14205622160
+	14205623504 [label=AddmmBackward0 fillcolor=white]
+	13638392624 -> 14205623504
+	14205622352 -> 14205623504
+	13638391904 -> 14205623504
+	13638391904 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	14205622352 [label=ViewBackward0 fillcolor=white]
+	14205622832 -> 14205622352
+	14205622832 [label=MulBackward0 fillcolor=white]
+	14205622928 -> 14205622832
+	14205783392 -> 14205622832
+	14205783392 [label=AddBackward0 fillcolor=red]
+	14205782720 -> 14205783392
+	14205782720 [label=TanhBackward0 fillcolor=white]
+	14205783776 -> 14205782720
+	14205783776 [label=MulBackward0 fillcolor=red]
+	14205783488 -> 14205783776
+	14205783488 [label=AddBackward0 fillcolor=white]
+	14205780992 -> 14205783488
+	14205780896 -> 14205783488
+	14205780896 [label=MulBackward0 fillcolor=red]
+	14205780560 -> 14205780896
+	14205780560 [label=PowBackward0 fillcolor=white]
+	14205780992 -> 14205780560
+	14205780992 [label=ViewBackward0 fillcolor=white]
+	14205783248 -> 14205780992
+	14205783248 [label=AddmmBackward0 fillcolor=white]
+	13638393424 -> 14205783248
+	14205780032 -> 14205783248
+	13638392064 -> 14205783248
+	13638392064 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14205780032 [label=ViewBackward0 fillcolor=white]
+	14205782144 -> 14205780032
+	14205782144 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205622400 -> 14205782144
+	13638393584 -> 14205782144
+	13638464592 -> 14205782144
+	13638464592 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638393584 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205622400 [label=AddBackward0 fillcolor=white]
+	14205781616 -> 14205622400
+	14205781904 -> 14205622400
+	14205781904 [label=AddBackward0 fillcolor=white]
+	14205783728 -> 14205781904
+	14205783632 -> 14205781904
+	14205783632 [label=ViewBackward0 fillcolor=white]
+	14205781664 -> 14205783632
+	14205781664 [label=AddmmBackward0 fillcolor=white]
+	13638466112 -> 14205781664
+	14205782624 -> 14205781664
+	13638465232 -> 14205781664
+	13638465232 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	14205782624 [label=ViewBackward0 fillcolor=white]
+	14205783104 -> 14205782624
+	14205783104 [label=MulBackward0 fillcolor=white]
+	14205781136 -> 14205783104
+	14205782288 -> 14205783104
+	14205782288 [label=AddBackward0 fillcolor=red]
+	14205782768 -> 14205782288
+	14205782768 [label=TanhBackward0 fillcolor=white]
+	14205781184 -> 14205782768
+	14205781184 [label=MulBackward0 fillcolor=red]
+	14205783824 -> 14205781184
+	14205783824 [label=AddBackward0 fillcolor=white]
+	14205781520 -> 14205783824
+	14205781472 -> 14205783824
+	14205781472 [label=MulBackward0 fillcolor=red]
+	14205781808 -> 14205781472
+	14205781808 [label=PowBackward0 fillcolor=white]
+	14205781520 -> 14205781808
+	14205781520 [label=ViewBackward0 fillcolor=white]
+	14205782960 -> 14205781520
+	14205782960 [label=AddmmBackward0 fillcolor=white]
+	13638466272 -> 14205782960
+	14205783152 -> 14205782960
+	13638465712 -> 14205782960
+	13638465712 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14205783152 [label=ViewBackward0 fillcolor=white]
+	14205782336 -> 14205783152
+	14205782336 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205783728 -> 14205782336
+	13638464512 -> 14205782336
+	13638464992 -> 14205782336
+	13638464992 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638464512 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205783728 [label=AddBackward0 fillcolor=white]
+	14205783968 -> 14205783728
+	13053600000 -> 14205783728
+	13053600000 [label=AddBackward0 fillcolor=white]
+	13053600336 -> 13053600000
+	13053600528 -> 13053600000
+	13053600528 [label=ViewBackward0 fillcolor=white]
+	13053599808 -> 13053600528
+	13053599808 [label=AddmmBackward0 fillcolor=white]
+	13638466592 -> 13053599808
+	13053599952 -> 13053599808
+	13638466992 -> 13053599808
+	13638466992 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	13053599952 [label=ViewBackward0 fillcolor=white]
+	13053600720 -> 13053599952
+	13053600720 [label=MulBackward0 fillcolor=white]
+	13053600816 -> 13053600720
+	13053600576 -> 13053600720
+	13053600576 [label=AddBackward0 fillcolor=red]
+	13053600432 -> 13053600576
+	13053600432 [label=TanhBackward0 fillcolor=white]
+	13053600480 -> 13053600432
+	13053600480 [label=MulBackward0 fillcolor=red]
+	13053603744 -> 13053600480
+	13053603744 [label=AddBackward0 fillcolor=white]
+	13053601008 -> 13053603744
+	13053601056 -> 13053603744
+	13053601056 [label=MulBackward0 fillcolor=red]
+	13053600672 -> 13053601056
+	13053600672 [label=PowBackward0 fillcolor=white]
+	13053601008 -> 13053600672
+	13053601008 [label=ViewBackward0 fillcolor=white]
+	13053603216 -> 13053601008
+	13053603216 [label=AddmmBackward0 fillcolor=white]
+	13638464912 -> 13053603216
+	13053600864 -> 13053603216
+	13638467392 -> 13053603216
+	13638467392 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	13053600864 [label=ViewBackward0 fillcolor=white]
+	13053603072 -> 13053600864
+	13053603072 [label=NativeLayerNormBackward0 fillcolor=white]
+	13053600336 -> 13053603072
+	13638464832 -> 13053603072
+	13638467072 -> 13053603072
+	13638467072 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638464832 [label="Variable
+ (768)" fillcolor=lightblue]
+	13053600336 [label=AddBackward0 fillcolor=white]
+	13053603792 -> 13053600336
+	13053603264 -> 13053600336
+	13053603264 [label=AddBackward0 fillcolor=white]
+	13053602688 -> 13053603264
+	13053603360 -> 13053603264
+	13053603360 [label=ViewBackward0 fillcolor=white]
+	13053603024 -> 13053603360
+	13053603024 [label=AddmmBackward0 fillcolor=white]
+	13638465152 -> 13053603024
+	13053600912 -> 13053603024
+	13638466512 -> 13053603024
+	13638466512 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	13053600912 [label=ViewBackward0 fillcolor=white]
+	13053603408 -> 13053600912
+	13053603408 [label=MulBackward0 fillcolor=white]
+	14206045392 -> 13053603408
+	14206044048 -> 13053603408
+	14206044048 [label=AddBackward0 fillcolor=red]
+	14206042992 -> 14206044048
+	14206042992 [label=TanhBackward0 fillcolor=white]
+	14206044432 -> 14206042992
+	14206044432 [label=MulBackward0 fillcolor=red]
+	14206045008 -> 14206044432
+	14206045008 [label=AddBackward0 fillcolor=white]
+	14206042176 -> 14206045008
+	14206042272 -> 14206045008
+	14206042272 [label=MulBackward0 fillcolor=red]
+	14206042848 -> 14206042272
+	14206042848 [label=PowBackward0 fillcolor=white]
+	14206042176 -> 14206042848
+	14206042176 [label=ViewBackward0 fillcolor=white]
+	14206046112 -> 14206042176
+	14206046112 [label=AddmmBackward0 fillcolor=white]
+	13638934752 -> 14206046112
+	14206043952 -> 14206046112
+	13638936832 -> 14206046112
+	13638936832 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14206043952 [label=ViewBackward0 fillcolor=white]
+	14206042608 -> 14206043952
+	14206042608 [label=NativeLayerNormBackward0 fillcolor=white]
+	13053602688 -> 14206042608
+	13638937472 -> 14206042608
+	13638934832 -> 14206042608
+	13638934832 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638937472 [label="Variable
+ (768)" fillcolor=lightblue]
+	13053602688 [label=AddBackward0 fillcolor=white]
+	14206042368 -> 13053602688
+	14206043472 -> 13053602688
+	14206043472 [label=AddBackward0 fillcolor=white]
+	14206044096 -> 14206043472
+	14206044000 -> 14206043472
+	14206044000 [label=ViewBackward0 fillcolor=white]
+	14206043760 -> 14206044000
+	14206043760 [label=AddmmBackward0 fillcolor=white]
+	13638936112 -> 14206043760
+	14206043568 -> 14206043760
+	13638936992 -> 14206043760
+	13638936992 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	14206043568 [label=ViewBackward0 fillcolor=white]
+	14206043328 -> 14206043568
+	14206043328 [label=MulBackward0 fillcolor=white]
+	14206042896 -> 14206043328
+	14206043904 -> 14206043328
+	14206043904 [label=AddBackward0 fillcolor=red]
+	14206045344 -> 14206043904
+	14206045344 [label=TanhBackward0 fillcolor=white]
+	14206045056 -> 14206045344
+	14206045056 [label=MulBackward0 fillcolor=red]
+	14206045200 -> 14206045056
+	14206045200 [label=AddBackward0 fillcolor=white]
+	14206045104 -> 14206045200
+	14206045776 -> 14206045200
+	14206045776 [label=MulBackward0 fillcolor=red]
+	14206044576 -> 14206045776
+	14206044576 [label=PowBackward0 fillcolor=white]
+	14206045104 -> 14206044576
+	14206045104 [label=ViewBackward0 fillcolor=white]
+	14206044336 -> 14206045104
+	14206044336 [label=AddmmBackward0 fillcolor=white]
+	13638935312 -> 14206044336
+	14206045488 -> 14206044336
+	13638935072 -> 14206044336
+	13638935072 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14206045488 [label=ViewBackward0 fillcolor=white]
+	14206045632 -> 14206045488
+	14206045632 [label=NativeLayerNormBackward0 fillcolor=white]
+	14206044096 -> 14206045632
+	13638935872 -> 14206045632
+	13638937792 -> 14206045632
+	13638937792 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638935872 [label="Variable
+ (768)" fillcolor=lightblue]
+	14206044096 [label=AddBackward0 fillcolor=white]
+	14206044144 -> 14206044096
+	14206042704 -> 14206044096
+	14206042704 [label=AddBackward0 fillcolor=white]
+	14205551904 -> 14206042704
+	14205552000 -> 14206042704
+	14205552000 [label=ViewBackward0 fillcolor=white]
+	14205550752 -> 14205552000
+	14205550752 [label=AddmmBackward0 fillcolor=white]
+	13638937392 -> 14205550752
+	14205550704 -> 14205550752
+	13638934592 -> 14205550752
+	13638934592 [label="Variable
+ (3072, 768)" fillcolor=lightblue]
+	14205550704 [label=ViewBackward0 fillcolor=white]
+	14205551088 -> 14205550704
+	14205551088 [label=MulBackward0 fillcolor=white]
+	14205551184 -> 14205551088
+	14205551280 -> 14205551088
+	14205551280 [label=AddBackward0 fillcolor=red]
+	14205550992 -> 14205551280
+	14205550992 [label=TanhBackward0 fillcolor=white]
+	14205551520 -> 14205550992
+	14205551520 [label=MulBackward0 fillcolor=red]
+	14205551232 -> 14205551520
+	14205551232 [label=AddBackward0 fillcolor=white]
+	14205551760 -> 14205551232
+	14205551808 -> 14205551232
+	14205551808 [label=MulBackward0 fillcolor=red]
+	14205552336 -> 14205551808
+	14205552336 [label=PowBackward0 fillcolor=white]
+	14205551760 -> 14205552336
+	14205551760 [label=ViewBackward0 fillcolor=white]
+	14205552384 -> 14205551760
+	14205552384 [label=AddmmBackward0 fillcolor=white]
+	13638936272 -> 14205552384
+	14205553200 -> 14205552384
+	13638937312 -> 14205552384
+	13638937312 [label="Variable
+ (768, 3072)" fillcolor=lightblue]
+	14205553200 [label=ViewBackward0 fillcolor=white]
+	14205550656 -> 14205553200
+	14205550656 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205551904 -> 14205550656
+	13638935152 -> 14205550656
+	13638938112 -> 14205550656
+	13638938112 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638935152 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205551904 [label=AddBackward0 fillcolor=white]
+	14205552432 -> 14205551904
+	14205553152 -> 14205551904
+	14205553152 [label=AddBackward0 fillcolor=white]
+	14205553728 -> 14205553152
+	14205553632 -> 14205553152
+	14205553632 [label=EmbeddingBackward0 fillcolor=white]
+	13637937648 -> 14205553632
+	13637937648 [label="Variable
+ (1024, 768)" fillcolor=lightblue]
+	14205553728 [label=SliceBackward0 fillcolor=white]
+	14205552960 -> 14205553728
+	14205552960 [label=SliceBackward0 fillcolor=white]
+	14205554640 -> 14205552960
+	14205554640 [label=CatBackward0 fillcolor=white]
+	14205554448 -> 14205554640
+	13632691600 -> 14205554640
+	13632691600 [label=EmbeddingBackward0 fillcolor=white]
+	13638934992 -> 13632691600
+	14205554448 [label=UnsqueezeBackward0 fillcolor=white]
+	14205552768 -> 14205554448
+	14205552768 [label=LinearBackward0 fillcolor=white]
+	14205552240 -> 14205552768
+	13638722080 -> 14205552768
+	13638724160 -> 14205552768
+	13638724160 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638722080 [label="Variable
+ (768, 2)" fillcolor=lightblue]
+	14205552240 [label=LinearBackward0 fillcolor=red]
+	13638722880 -> 14205552240
+	13638722880 [label="Variable
+ (2, 1)" fillcolor=lightblue]
+	14205552432 [label=ViewBackward0 fillcolor=white]
+	14205553008 -> 14205552432
+	14205553008 [label=AddmmBackward0 fillcolor=white]
+	13638937552 -> 14205553008
+	14206029680 -> 14205553008
+	13638937072 -> 14205553008
+	13638937072 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14206029680 [label=ViewBackward0 fillcolor=white]
+	14206029344 -> 14206029680
+	14206029344 [label=ViewBackward0 fillcolor=white]
+	14206027856 -> 14206029344
+	14206027856 [label=CloneBackward0 fillcolor=white]
+	14206027088 -> 14206027856
+	14206027088 [label=PermuteBackward0 fillcolor=white]
+	14206027616 -> 14206027088
+	14206027616 [label=UnsafeViewBackward0 fillcolor=white]
+	14206026944 -> 14206027616
+	14206026944 [label=BmmBackward0 fillcolor=white]
+	14206027760 -> 14206026944
+	14206026896 -> 14206026944
+	14206026896 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206026368 -> 14206026896
+	14206026368 [label=ExpandBackward0 fillcolor=white]
+	14206026176 -> 14206026368
+	14206026176 [label=PermuteBackward0 fillcolor=white]
+	14206025840 -> 14206026176
+	14206025840 [label=ViewBackward0 fillcolor=white]
+	14206027520 -> 14206025840
+	14206027520 [label=SplitBackward0 fillcolor=white]
+	14206027232 -> 14206027520
+	14206027232 [label=ViewBackward0 fillcolor=white]
+	14206027376 -> 14206027232
+	14206027376 [label=AddmmBackward0 fillcolor=white]
+	13639929344 -> 14206027376
+	14206027280 -> 14206027376
+	13646730880 -> 14206027376
+	13646730880 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14206027280 [label=ViewBackward0 fillcolor=white]
+	14206029008 -> 14206027280
+	14206029008 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205553152 -> 14206029008
+	13638938432 -> 14206029008
+	13638935232 -> 14206029008
+	13638935232 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638938432 [label="Variable
+ (768)" fillcolor=lightblue]
+	13639929344 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14206027760 [label=ViewBackward0 fillcolor=white]
+	14206028576 -> 14206027760
+	14206028576 [label=ExpandBackward0 fillcolor=white]
+	14206026800 -> 14206028576
+	14206026800 [label=SoftmaxBackward0 fillcolor=white]
+	14206027664 -> 14206026800
+	14206027664 [label=WhereBackward0 fillcolor=red]
+	14206028144 -> 14206027664
+	14206028144 [label=DivBackward0 fillcolor=red]
+	14206026560 -> 14206028144
+	14206026560 [label=UnsafeViewBackward0 fillcolor=white]
+	14206028816 -> 14206026560
+	14206028816 [label=BmmBackward0 fillcolor=white]
+	14206029776 -> 14206028816
+	14206029488 -> 14206028816
+	14206029488 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206029248 -> 14206029488
+	14206029248 [label=ExpandBackward0 fillcolor=white]
+	14206027952 -> 14206029248
+	14206027952 [label=TransposeBackward0 fillcolor=white]
+	14206029440 -> 14206027952
+	14206029440 [label=PermuteBackward0 fillcolor=white]
+	14205968448 -> 14206029440
+	14205968448 [label=ViewBackward0 fillcolor=white]
+	14206027520 -> 14205968448
+	14206029776 [label=ReshapeAliasBackward0 fillcolor=white]
+	14205970896 -> 14206029776
+	14205970896 [label=ExpandBackward0 fillcolor=white]
+	14205970128 -> 14205970896
+	14205970128 [label=PermuteBackward0 fillcolor=white]
+	14205969552 -> 14205970128
+	14205969552 [label=ViewBackward0 fillcolor=white]
+	14206027520 -> 14205969552
+	13638937552 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638936272 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14205551184 [label=MulBackward0 fillcolor=red]
+	14205551760 -> 14205551184
+	13638937392 [label="Variable
+ (768)" fillcolor=lightblue]
+	14206044144 [label=ViewBackward0 fillcolor=white]
+	14205970416 -> 14206044144
+	14205970416 [label=AddmmBackward0 fillcolor=white]
+	13638937152 -> 14205970416
+	14205971040 -> 14205970416
+	13638936672 -> 14205970416
+	13638936672 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14205971040 [label=ViewBackward0 fillcolor=white]
+	14205968784 -> 14205971040
+	14205968784 [label=ViewBackward0 fillcolor=white]
+	14205970704 -> 14205968784
+	14205970704 [label=CloneBackward0 fillcolor=white]
+	14205970512 -> 14205970704
+	14205970512 [label=PermuteBackward0 fillcolor=white]
+	14205968544 -> 14205970512
+	14205968544 [label=UnsafeViewBackward0 fillcolor=white]
+	14205970272 -> 14205968544
+	14205970272 [label=BmmBackward0 fillcolor=white]
+	14205969840 -> 14205970272
+	14205968592 -> 14205970272
+	14205968592 [label=ReshapeAliasBackward0 fillcolor=white]
+	14205972096 -> 14205968592
+	14205972096 [label=ExpandBackward0 fillcolor=white]
+	14205972000 -> 14205972096
+	14205972000 [label=PermuteBackward0 fillcolor=white]
+	14205971760 -> 14205972000
+	14205971760 [label=ViewBackward0 fillcolor=white]
+	14205972336 -> 14205971760
+	14205972336 [label=SplitBackward0 fillcolor=white]
+	14205971520 -> 14205972336
+	14205971520 [label=ViewBackward0 fillcolor=white]
+	14205971568 -> 14205971520
+	14205971568 [label=AddmmBackward0 fillcolor=white]
+	13638937232 -> 14205971568
+	14205972432 -> 14205971568
+	13638938352 -> 14205971568
+	13638938352 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14205972432 [label=ViewBackward0 fillcolor=white]
+	14205970368 -> 14205972432
+	14205970368 [label=NativeLayerNormBackward0 fillcolor=white]
+	14206042704 -> 14205970368
+	13638936752 -> 14205970368
+	13638935472 -> 14205970368
+	13638935472 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638936752 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638937232 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14205969840 [label=ViewBackward0 fillcolor=white]
+	14205969216 -> 14205969840
+	14205969216 [label=ExpandBackward0 fillcolor=white]
+	14205969744 -> 14205969216
+	14205969744 [label=SoftmaxBackward0 fillcolor=white]
+	14205971472 -> 14205969744
+	14205971472 [label=WhereBackward0 fillcolor=red]
+	14205971664 -> 14205971472
+	14205971664 [label=DivBackward0 fillcolor=red]
+	14205972192 -> 14205971664
+	14205972192 [label=UnsafeViewBackward0 fillcolor=white]
+	14205970800 -> 14205972192
+	14205970800 [label=BmmBackward0 fillcolor=white]
+	14205971088 -> 14205970800
+	14206124144 -> 14205970800
+	14206124144 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206125104 -> 14206124144
+	14206125104 [label=ExpandBackward0 fillcolor=white]
+	14206124768 -> 14206125104
+	14206124768 [label=TransposeBackward0 fillcolor=white]
+	14206124576 -> 14206124768
+	14206124576 [label=PermuteBackward0 fillcolor=white]
+	14206124240 -> 14206124576
+	14206124240 [label=ViewBackward0 fillcolor=white]
+	14205972336 -> 14206124240
+	14205971088 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206126160 -> 14205971088
+	14206126160 [label=ExpandBackward0 fillcolor=white]
+	14206126304 -> 14206126160
+	14206126304 [label=PermuteBackward0 fillcolor=white]
+	14206126880 -> 14206126304
+	14206126880 [label=ViewBackward0 fillcolor=white]
+	14205972336 -> 14206126880
+	13638937152 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638935312 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14206042896 [label=MulBackward0 fillcolor=red]
+	14206045104 -> 14206042896
+	13638936112 [label="Variable
+ (768)" fillcolor=lightblue]
+	14206042368 [label=ViewBackward0 fillcolor=white]
+	14206127744 -> 14206042368
+	14206127744 [label=AddmmBackward0 fillcolor=white]
+	13638935712 -> 14206127744
+	14206125584 -> 14206127744
+	13638937632 -> 14206127744
+	13638937632 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14206125584 [label=ViewBackward0 fillcolor=white]
+	14206127408 -> 14206125584
+	14206127408 [label=ViewBackward0 fillcolor=white]
+	14206125632 -> 14206127408
+	14206125632 [label=CloneBackward0 fillcolor=white]
+	14206126496 -> 14206125632
+	14206126496 [label=PermuteBackward0 fillcolor=white]
+	14206126976 -> 14206126496
+	14206126976 [label=UnsafeViewBackward0 fillcolor=white]
+	14206125392 -> 14206126976
+	14206125392 [label=BmmBackward0 fillcolor=white]
+	14206127648 -> 14206125392
+	14206128080 -> 14206125392
+	14206128080 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206126736 -> 14206128080
+	14206126736 [label=ExpandBackward0 fillcolor=white]
+	14206126592 -> 14206126736
+	14206126592 [label=PermuteBackward0 fillcolor=white]
+	14206126256 -> 14206126592
+	14206126256 [label=ViewBackward0 fillcolor=white]
+	14206125920 -> 14206126256
+	14206125920 [label=SplitBackward0 fillcolor=white]
+	14206125968 -> 14206125920
+	14206125968 [label=ViewBackward0 fillcolor=white]
+	14206125728 -> 14206125968
+	14206125728 [label=AddmmBackward0 fillcolor=white]
+	13637935728 -> 14206125728
+	14206126016 -> 14206125728
+	13637938448 -> 14206125728
+	13637938448 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14206126016 [label=ViewBackward0 fillcolor=white]
+	14206172800 -> 14206126016
+	14206172800 [label=NativeLayerNormBackward0 fillcolor=white]
+	14206043472 -> 14206172800
+	13638936032 -> 14206172800
+	13638937952 -> 14206172800
+	13638937952 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638936032 [label="Variable
+ (768)" fillcolor=lightblue]
+	13637935728 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14206127648 [label=ViewBackward0 fillcolor=white]
+	14206169152 -> 14206127648
+	14206169152 [label=ExpandBackward0 fillcolor=white]
+	14206169248 -> 14206169152
+	14206169248 [label=SoftmaxBackward0 fillcolor=white]
+	14206170976 -> 14206169248
+	14206170976 [label=WhereBackward0 fillcolor=red]
+	14206170784 -> 14206170976
+	14206170784 [label=DivBackward0 fillcolor=red]
+	14206170544 -> 14206170784
+	14206170544 [label=UnsafeViewBackward0 fillcolor=white]
+	14206170352 -> 14206170544
+	14206170352 [label=BmmBackward0 fillcolor=white]
+	14206170112 -> 14206170352
+	14206170016 -> 14206170352
+	14206170016 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206170688 -> 14206170016
+	14206170688 [label=ExpandBackward0 fillcolor=white]
+	14206172128 -> 14206170688
+	14206172128 [label=TransposeBackward0 fillcolor=white]
+	14206171840 -> 14206172128
+	14206171840 [label=PermuteBackward0 fillcolor=white]
+	14206171984 -> 14206171840
+	14206171984 [label=ViewBackward0 fillcolor=white]
+	14206125920 -> 14206171984
+	14206170112 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206172992 -> 14206170112
+	14206172992 [label=ExpandBackward0 fillcolor=white]
+	14206171360 -> 14206172992
+	14206171360 [label=PermuteBackward0 fillcolor=white]
+	14206173088 -> 14206171360
+	14206173088 [label=ViewBackward0 fillcolor=white]
+	14206125920 -> 14206173088
+	13638935712 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638934752 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14206045392 [label=MulBackward0 fillcolor=red]
+	14206042176 -> 14206045392
+	13638465152 [label="Variable
+ (768)" fillcolor=lightblue]
+	13053603792 [label=ViewBackward0 fillcolor=white]
+	14206171168 -> 13053603792
+	14206171168 [label=AddmmBackward0 fillcolor=white]
+	13638465072 -> 14206171168
+	14206172704 -> 14206171168
+	13638466432 -> 14206171168
+	13638466432 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14206172704 [label=ViewBackward0 fillcolor=white]
+	14206171456 -> 14206172704
+	14206171456 [label=ViewBackward0 fillcolor=white]
+	14206171792 -> 14206171456
+	14206171792 [label=CloneBackward0 fillcolor=white]
+	14206169296 -> 14206171792
+	14206169296 [label=PermuteBackward0 fillcolor=white]
+	14206171552 -> 14206169296
+	14206171552 [label=UnsafeViewBackward0 fillcolor=white]
+	14206172464 -> 14206171552
+	14206172464 [label=BmmBackward0 fillcolor=white]
+	14206173040 -> 14206172464
+	14206172176 -> 14206172464
+	14206172176 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206172032 -> 14206172176
+	14206172032 [label=ExpandBackward0 fillcolor=white]
+	14206170736 -> 14206172032
+	14206170736 [label=PermuteBackward0 fillcolor=white]
+	14206172512 -> 14206170736
+	14206172512 [label=ViewBackward0 fillcolor=white]
+	14206247408 -> 14206172512
+	14206247408 [label=SplitBackward0 fillcolor=white]
+	14206249280 -> 14206247408
+	14206249280 [label=ViewBackward0 fillcolor=white]
+	14206250336 -> 14206249280
+	14206250336 [label=AddmmBackward0 fillcolor=white]
+	13638467472 -> 14206250336
+	14206247600 -> 14206250336
+	13638466352 -> 14206250336
+	13638466352 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14206247600 [label=ViewBackward0 fillcolor=white]
+	14206250960 -> 14206247600
+	14206250960 [label=NativeLayerNormBackward0 fillcolor=white]
+	13053603264 -> 14206250960
+	13638464272 -> 14206250960
+	13638464432 -> 14206250960
+	13638464432 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638464272 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638467472 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14206173040 [label=ViewBackward0 fillcolor=white]
+	14206250816 -> 14206173040
+	14206250816 [label=ExpandBackward0 fillcolor=white]
+	14206250144 -> 14206250816
+	14206250144 [label=SoftmaxBackward0 fillcolor=white]
+	14206249520 -> 14206250144
+	14206249520 [label=WhereBackward0 fillcolor=red]
+	14206247552 -> 14206249520
+	14206247552 [label=DivBackward0 fillcolor=red]
+	14206247360 -> 14206247552
+	14206247360 [label=UnsafeViewBackward0 fillcolor=white]
+	14206247024 -> 14206247360
+	14206247024 [label=BmmBackward0 fillcolor=white]
+	14206248512 -> 14206247024
+	14206248704 -> 14206247024
+	14206248704 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206248416 -> 14206248704
+	14206248416 [label=ExpandBackward0 fillcolor=white]
+	14206248560 -> 14206248416
+	14206248560 [label=TransposeBackward0 fillcolor=white]
+	14206248464 -> 14206248560
+	14206248464 [label=PermuteBackward0 fillcolor=white]
+	14206250288 -> 14206248464
+	14206250288 [label=ViewBackward0 fillcolor=white]
+	14206247408 -> 14206250288
+	14206248512 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206248224 -> 14206248512
+	14206248224 [label=ExpandBackward0 fillcolor=white]
+	14206249184 -> 14206248224
+	14206249184 [label=PermuteBackward0 fillcolor=white]
+	14206249760 -> 14206249184
+	14206249760 [label=ViewBackward0 fillcolor=white]
+	14206247408 -> 14206249760
+	13638465072 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638464912 [label="Variable
+ (3072)" fillcolor=lightblue]
+	13053600816 [label=MulBackward0 fillcolor=red]
+	13053601008 -> 13053600816
+	13638466592 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205783968 [label=ViewBackward0 fillcolor=white]
+	14206249328 -> 14205783968
+	14206249328 [label=AddmmBackward0 fillcolor=white]
+	13638467312 -> 14206249328
+	14206247744 -> 14206249328
+	13638466192 -> 14206249328
+	13638466192 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14206247744 [label=ViewBackward0 fillcolor=white]
+	14206249136 -> 14206247744
+	14206249136 [label=ViewBackward0 fillcolor=white]
+	14206250000 -> 14206249136
+	14206250000 [label=CloneBackward0 fillcolor=white]
+	14206250048 -> 14206250000
+	14206250048 [label=PermuteBackward0 fillcolor=white]
+	14206250432 -> 14206250048
+	14206250432 [label=UnsafeViewBackward0 fillcolor=white]
+	14206248896 -> 14206250432
+	14206248896 [label=BmmBackward0 fillcolor=white]
+	14206249088 -> 14206248896
+	14206248800 -> 14206248896
+	14206248800 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206248368 -> 14206248800
+	14206248368 [label=ExpandBackward0 fillcolor=white]
+	14206250672 -> 14206248368
+	14206250672 [label=PermuteBackward0 fillcolor=white]
+	14206250528 -> 14206250672
+	14206250528 [label=ViewBackward0 fillcolor=white]
+	14206302528 -> 14206250528
+	14206302528 [label=SplitBackward0 fillcolor=white]
+	14206303200 -> 14206302528
+	14206303200 [label=ViewBackward0 fillcolor=white]
+	14206302000 -> 14206303200
+	14206302000 [label=AddmmBackward0 fillcolor=white]
+	13638466832 -> 14206302000
+	14206303056 -> 14206302000
+	13638465792 -> 14206302000
+	13638465792 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14206303056 [label=ViewBackward0 fillcolor=white]
+	14206300992 -> 14206303056
+	14206300992 [label=NativeLayerNormBackward0 fillcolor=white]
+	13053600000 -> 14206300992
+	13638466912 -> 14206300992
+	13638465872 -> 14206300992
+	13638465872 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638466912 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638466832 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14206249088 [label=ViewBackward0 fillcolor=white]
+	14206301184 -> 14206249088
+	14206301184 [label=ExpandBackward0 fillcolor=white]
+	14206300848 -> 14206301184
+	14206300848 [label=SoftmaxBackward0 fillcolor=white]
+	14206300416 -> 14206300848
+	14206300416 [label=WhereBackward0 fillcolor=red]
+	14206302672 -> 14206300416
+	14206302672 [label=DivBackward0 fillcolor=red]
+	14206302816 -> 14206302672
+	14206302816 [label=UnsafeViewBackward0 fillcolor=white]
+	14206303392 -> 14206302816
+	14206303392 [label=BmmBackward0 fillcolor=white]
+	14206302336 -> 14206303392
+	14206302624 -> 14206303392
+	14206302624 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206302384 -> 14206302624
+	14206302384 [label=ExpandBackward0 fillcolor=white]
+	14206303344 -> 14206302384
+	14206303344 [label=TransposeBackward0 fillcolor=white]
+	14206303920 -> 14206303344
+	14206303920 [label=PermuteBackward0 fillcolor=white]
+	14206302144 -> 14206303920
+	14206302144 [label=ViewBackward0 fillcolor=white]
+	14206302528 -> 14206302144
+	14206302336 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206303584 -> 14206302336
+	14206303584 [label=ExpandBackward0 fillcolor=white]
+	14206303152 -> 14206303584
+	14206303152 [label=PermuteBackward0 fillcolor=white]
+	14206300272 -> 14206303152
+	14206300272 [label=ViewBackward0 fillcolor=white]
+	14206302528 -> 14206300272
+	13638467312 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638466272 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14205781136 [label=MulBackward0 fillcolor=red]
+	14205781520 -> 14205781136
+	13638466112 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205781616 [label=ViewBackward0 fillcolor=white]
+	14206339008 -> 14205781616
+	14206339008 [label=AddmmBackward0 fillcolor=white]
+	13638463552 -> 14206339008
+	14206339104 -> 14206339008
+	13638465312 -> 14206339008
+	13638465312 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14206339104 [label=ViewBackward0 fillcolor=white]
+	14206340160 -> 14206339104
+	14206340160 [label=ViewBackward0 fillcolor=white]
+	14206339728 -> 14206340160
+	14206339728 [label=CloneBackward0 fillcolor=white]
+	14206338768 -> 14206339728
+	14206338768 [label=PermuteBackward0 fillcolor=white]
+	14206337520 -> 14206338768
+	14206337520 [label=UnsafeViewBackward0 fillcolor=white]
+	14206337232 -> 14206337520
+	14206337232 [label=BmmBackward0 fillcolor=white]
+	14206338048 -> 14206337232
+	14206338672 -> 14206337232
+	14206338672 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206340640 -> 14206338672
+	14206340640 [label=ExpandBackward0 fillcolor=white]
+	14206340688 -> 14206340640
+	14206340688 [label=PermuteBackward0 fillcolor=white]
+	14206339632 -> 14206340688
+	14206339632 [label=ViewBackward0 fillcolor=white]
+	14206339440 -> 14206339632
+	14206339440 [label=SplitBackward0 fillcolor=white]
+	14206340784 -> 14206339440
+	14206340784 [label=ViewBackward0 fillcolor=white]
+	14206340112 -> 14206340784
+	14206340112 [label=AddmmBackward0 fillcolor=white]
+	13638466672 -> 14206340112
+	14206340832 -> 14206340112
+	13638464752 -> 14206340112
+	13638464752 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14206340832 [label=ViewBackward0 fillcolor=white]
+	14206340976 -> 14206340832
+	14206340976 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205781904 -> 14206340976
+	13638464032 -> 14206340976
+	13638465392 -> 14206340976
+	13638465392 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638464032 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638466672 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14206338048 [label=ViewBackward0 fillcolor=white]
+	14206337088 -> 14206338048
+	14206337088 [label=ExpandBackward0 fillcolor=white]
+	14206339536 -> 14206337088
+	14206339536 [label=SoftmaxBackward0 fillcolor=white]
+	14206338432 -> 14206339536
+	14206338432 [label=WhereBackward0 fillcolor=red]
+	14206338144 -> 14206338432
+	14206338144 [label=DivBackward0 fillcolor=red]
+	14206338288 -> 14206338144
+	14206338288 [label=UnsafeViewBackward0 fillcolor=white]
+	14206338192 -> 14206338288
+	14206338192 [label=BmmBackward0 fillcolor=white]
+	14206340016 -> 14206338192
+	14206339920 -> 14206338192
+	14206339920 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206337952 -> 14206339920
+	14206337952 [label=ExpandBackward0 fillcolor=white]
+	14206338912 -> 14206337952
+	14206338912 [label=TransposeBackward0 fillcolor=white]
+	14206339488 -> 14206338912
+	14206339488 [label=PermuteBackward0 fillcolor=white]
+	14206337712 -> 14206339488
+	14206337712 [label=ViewBackward0 fillcolor=white]
+	14206339440 -> 14206337712
+	14206340016 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206338576 -> 14206340016
+	14206338576 [label=ExpandBackward0 fillcolor=white]
+	14206339056 -> 14206338576
+	14206339056 [label=PermuteBackward0 fillcolor=white]
+	14206337472 -> 14206339056
+	14206337472 [label=ViewBackward0 fillcolor=white]
+	14206339440 -> 14206337472
+	13638463552 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638393424 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14205622928 [label=MulBackward0 fillcolor=red]
+	14205780992 -> 14205622928
+	13638392624 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205621824 [label=ViewBackward0 fillcolor=white]
+	14206198352 -> 14205621824
+	14206198352 [label=AddmmBackward0 fillcolor=white]
+	13638390544 -> 14206198352
+	14206198160 -> 14206198352
+	13638393104 -> 14206198352
+	13638393104 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14206198160 [label=ViewBackward0 fillcolor=white]
+	14206198112 -> 14206198160
+	14206198112 [label=ViewBackward0 fillcolor=white]
+	14206199600 -> 14206198112
+	14206199600 [label=CloneBackward0 fillcolor=white]
+	14206199744 -> 14206199600
+	14206199744 [label=PermuteBackward0 fillcolor=white]
+	14206200320 -> 14206199744
+	14206200320 [label=UnsafeViewBackward0 fillcolor=white]
+	14206199264 -> 14206200320
+	14206199264 [label=BmmBackward0 fillcolor=white]
+	14206200656 -> 14206199264
+	14206201376 -> 14206199264
+	14206201376 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206201184 -> 14206201376
+	14206201184 [label=ExpandBackward0 fillcolor=white]
+	14206199120 -> 14206201184
+	14206199120 [label=PermuteBackward0 fillcolor=white]
+	14206200944 -> 14206199120
+	14206200944 [label=ViewBackward0 fillcolor=white]
+	14206200752 -> 14206200944
+	14206200752 [label=SplitBackward0 fillcolor=white]
+	14206198832 -> 14206200752
+	14206198832 [label=ViewBackward0 fillcolor=white]
+	14206200512 -> 14206198832
+	14206200512 [label=AddmmBackward0 fillcolor=white]
+	13638393664 -> 14206200512
+	14206200080 -> 14206200512
+	13638391424 -> 14206200512
+	13638391424 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14206200080 [label=ViewBackward0 fillcolor=white]
+	14206201088 -> 14206200080
+	14206201088 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205622976 -> 14206201088
+	13638392784 -> 14206201088
+	13638390224 -> 14206201088
+	13638390224 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638392784 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638393664 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14206200656 [label=ViewBackward0 fillcolor=white]
+	14206198928 -> 14206200656
+	14206198928 [label=ExpandBackward0 fillcolor=white]
+	14206199072 -> 14206198928
+	14206199072 [label=SoftmaxBackward0 fillcolor=white]
+	14206199456 -> 14206199072
+	14206199456 [label=WhereBackward0 fillcolor=red]
+	14206201664 -> 14206199456
+	14206201664 [label=DivBackward0 fillcolor=red]
+	14206198640 -> 14206201664
+	14206198640 [label=UnsafeViewBackward0 fillcolor=white]
+	14206198496 -> 14206198640
+	14206198496 [label=BmmBackward0 fillcolor=white]
+	14206200128 -> 14206198496
+	14206199984 -> 14206198496
+	14206199984 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206198304 -> 14206199984
+	14206198304 [label=ExpandBackward0 fillcolor=white]
+	14206198016 -> 14206198304
+	14206198016 [label=TransposeBackward0 fillcolor=white]
+	14206198544 -> 14206198016
+	14206198544 [label=PermuteBackward0 fillcolor=white]
+	14206198736 -> 14206198544
+	14206198736 [label=ViewBackward0 fillcolor=white]
+	14206200752 -> 14206198736
+	14206200128 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206214880 -> 14206200128
+	14206214880 [label=ExpandBackward0 fillcolor=white]
+	14206215456 -> 14206214880
+	14206215456 [label=PermuteBackward0 fillcolor=white]
+	14206214400 -> 14206215456
+	14206214400 [label=ViewBackward0 fillcolor=white]
+	14206200752 -> 14206214400
+	13638390544 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638392144 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14205622208 [label=MulBackward0 fillcolor=red]
+	14205623888 -> 14205622208
+	13638392384 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205621152 [label=ViewBackward0 fillcolor=white]
+	14206215408 -> 14205621152
+	14206215408 [label=AddmmBackward0 fillcolor=white]
+	13638390704 -> 14206215408
+	14206215984 -> 14206215408
+	13638389824 -> 14206215408
+	13638389824 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14206215984 [label=ViewBackward0 fillcolor=white]
+	14206215072 -> 14206215984
+	14206215072 [label=ViewBackward0 fillcolor=white]
+	14206215552 -> 14206215072
+	14206215552 [label=CloneBackward0 fillcolor=white]
+	14206216224 -> 14206215552
+	14206216224 [label=PermuteBackward0 fillcolor=white]
+	14206216704 -> 14206216224
+	14206216704 [label=UnsafeViewBackward0 fillcolor=white]
+	14206217040 -> 14206216704
+	14206217040 [label=BmmBackward0 fillcolor=white]
+	14206217184 -> 14206217040
+	14206216944 -> 14206217040
+	14206216944 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206217088 -> 14206216944
+	14206217088 [label=ExpandBackward0 fillcolor=white]
+	14206216992 -> 14206217088
+	14206216992 [label=PermuteBackward0 fillcolor=white]
+	14206214592 -> 14206216992
+	14206214592 [label=ViewBackward0 fillcolor=white]
+	14206217712 -> 14206214592
+	14206217712 [label=SplitBackward0 fillcolor=white]
+	14206214832 -> 14206217712
+	14206214832 [label=ViewBackward0 fillcolor=white]
+	14206217952 -> 14206214832
+	14206217952 [label=AddmmBackward0 fillcolor=white]
+	13638391024 -> 14206217952
+	14206217520 -> 14206217952
+	13638392464 -> 14206217952
+	13638392464 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14206217520 [label=ViewBackward0 fillcolor=white]
+	14206214496 -> 14206217520
+	14206214496 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205621056 -> 14206214496
+	13638392304 -> 14206214496
+	13638391824 -> 14206214496
+	13638391824 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638392304 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638391024 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14206217184 [label=ViewBackward0 fillcolor=white]
+	14206216848 -> 14206217184
+	14206216848 [label=ExpandBackward0 fillcolor=white]
+	14205944160 -> 14206216848
+	14205944160 [label=SoftmaxBackward0 fillcolor=white]
+	14205945264 -> 14205944160
+	14205945264 [label=WhereBackward0 fillcolor=red]
+	14205945072 -> 14205945264
+	14205945072 [label=DivBackward0 fillcolor=red]
+	14205944736 -> 14205945072
+	14205944736 [label=UnsafeViewBackward0 fillcolor=white]
+	14205944400 -> 14205944736
+	14205944400 [label=BmmBackward0 fillcolor=white]
+	14205943968 -> 14205944400
+	14205944976 -> 14205944400
+	14205944976 [label=ReshapeAliasBackward0 fillcolor=white]
+	14205945456 -> 14205944976
+	14205945456 [label=ExpandBackward0 fillcolor=white]
+	14205946080 -> 14205945456
+	14205946080 [label=TransposeBackward0 fillcolor=white]
+	14205946224 -> 14205946080
+	14205946224 [label=PermuteBackward0 fillcolor=white]
+	14205946800 -> 14205946224
+	14205946800 [label=ViewBackward0 fillcolor=white]
+	14206217712 -> 14205946800
+	14205943968 [label=ReshapeAliasBackward0 fillcolor=white]
+	14205946032 -> 14205943968
+	14205946032 [label=ExpandBackward0 fillcolor=white]
+	14205947856 -> 14205946032
+	14205947856 [label=PermuteBackward0 fillcolor=white]
+	14205947664 -> 14205947856
+	14205947664 [label=ViewBackward0 fillcolor=white]
+	14206217712 -> 14205947664
+	13638390704 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638391664 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14205883872 [label=MulBackward0 fillcolor=red]
+	14205885024 -> 14205883872
+	13638392224 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205886224 [label=ViewBackward0 fillcolor=white]
+	14205943920 -> 14205886224
+	14205943920 [label=AddmmBackward0 fillcolor=white]
+	13636584048 -> 14205943920
+	14205946992 -> 14205943920
+	13636583888 -> 14205943920
+	13636583888 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14205946992 [label=ViewBackward0 fillcolor=white]
+	14205947568 -> 14205946992
+	14205947568 [label=ViewBackward0 fillcolor=white]
+	14205947808 -> 14205947568
+	14205947808 [label=CloneBackward0 fillcolor=white]
+	14205945600 -> 14205947808
+	14205945600 [label=PermuteBackward0 fillcolor=white]
+	14205946464 -> 14205945600
+	14205946464 [label=UnsafeViewBackward0 fillcolor=white]
+	14205944016 -> 14205946464
+	14205944016 [label=BmmBackward0 fillcolor=white]
+	14205945696 -> 14205944016
+	14205945888 -> 14205944016
+	14205945888 [label=ReshapeAliasBackward0 fillcolor=white]
+	14205945552 -> 14205945888
+	14205945552 [label=ExpandBackward0 fillcolor=white]
+	14205924304 -> 14205945552
+	14205924304 [label=PermuteBackward0 fillcolor=white]
+	14205924448 -> 14205924304
+	14205924448 [label=ViewBackward0 fillcolor=white]
+	14205925024 -> 14205924448
+	14205925024 [label=SplitBackward0 fillcolor=white]
+	14205923968 -> 14205925024
+	14205923968 [label=ViewBackward0 fillcolor=white]
+	14205925360 -> 14205923968
+	14205925360 [label=AddmmBackward0 fillcolor=white]
+	13638390944 -> 14205925360
+	14205925984 -> 14205925360
+	13638389984 -> 14205925360
+	13638389984 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14205925984 [label=ViewBackward0 fillcolor=white]
+	14205923728 -> 14205925984
+	14205923728 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205884352 -> 14205923728
+	13638390144 -> 14205923728
+	13636583488 -> 14205923728
+	13636583488 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638390144 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638390944 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14205945696 [label=ViewBackward0 fillcolor=white]
+	14205923488 -> 14205945696
+	14205923488 [label=ExpandBackward0 fillcolor=white]
+	14205925216 -> 14205923488
+	14205925216 [label=SoftmaxBackward0 fillcolor=white]
+	14205924784 -> 14205925216
+	14205924784 [label=WhereBackward0 fillcolor=red]
+	14205925792 -> 14205924784
+	14205925792 [label=DivBackward0 fillcolor=red]
+	14205927184 -> 14205925792
+	14205927184 [label=UnsafeViewBackward0 fillcolor=white]
+	14205927088 -> 14205927184
+	14205927088 [label=BmmBackward0 fillcolor=white]
+	14205926992 -> 14205927088
+	14205927280 -> 14205927088
+	14205927280 [label=ReshapeAliasBackward0 fillcolor=white]
+	14205926464 -> 14205927280
+	14205926464 [label=ExpandBackward0 fillcolor=white]
+	14205926512 -> 14205926464
+	14205926512 [label=TransposeBackward0 fillcolor=white]
+	14205927376 -> 14205926512
+	14205927376 [label=PermuteBackward0 fillcolor=white]
+	14205924928 -> 14205927376
+	14205924928 [label=ViewBackward0 fillcolor=white]
+	14205925024 -> 14205924928
+	14205926992 [label=ReshapeAliasBackward0 fillcolor=white]
+	14205924736 -> 14205926992
+	14205924736 [label=ExpandBackward0 fillcolor=white]
+	14205924400 -> 14205924736
+	14205924400 [label=PermuteBackward0 fillcolor=white]
+	14205924832 -> 14205924400
+	14205924832 [label=ViewBackward0 fillcolor=white]
+	14205925024 -> 14205924832
+	13636584048 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636586448 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14205526608 [label=MulBackward0 fillcolor=red]
+	14205883248 -> 14205526608
+	13636586368 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205528384 [label=ViewBackward0 fillcolor=white]
+	14205926368 -> 14205528384
+	14205926368 [label=AddmmBackward0 fillcolor=white]
+	13636585568 -> 14205926368
+	14205923920 -> 14205926368
+	13636587248 -> 14205926368
+	13636587248 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14205923920 [label=ViewBackward0 fillcolor=white]
+	14205926320 -> 14205923920
+	14205926320 [label=ViewBackward0 fillcolor=white]
+	14205926560 -> 14205926320
+	14205926560 [label=CloneBackward0 fillcolor=white]
+	14205926848 -> 14205926560
+	14205926848 [label=PermuteBackward0 fillcolor=white]
+	14206261616 -> 14205926848
+	14206261616 [label=UnsafeViewBackward0 fillcolor=white]
+	14206260704 -> 14206261616
+	14206260704 [label=BmmBackward0 fillcolor=white]
+	14206259264 -> 14206260704
+	14206260752 -> 14206260704
+	14206260752 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206262048 -> 14206260752
+	14206262048 [label=ExpandBackward0 fillcolor=white]
+	14206260416 -> 14206262048
+	14206260416 [label=PermuteBackward0 fillcolor=white]
+	14206260560 -> 14206260416
+	14206260560 [label=ViewBackward0 fillcolor=white]
+	14206260992 -> 14206260560
+	14206260992 [label=SplitBackward0 fillcolor=white]
+	14206260800 -> 14206260992
+	14206260800 [label=ViewBackward0 fillcolor=white]
+	14206261232 -> 14206260800
+	14206261232 [label=AddmmBackward0 fillcolor=white]
+	13636584208 -> 14206261232
+	14206260944 -> 14206261232
+	13636586288 -> 14206261232
+	13636586288 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14206260944 [label=ViewBackward0 fillcolor=white]
+	14206261520 -> 14206260944
+	14206261520 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205528816 -> 14206261520
+	13636584768 -> 14206261520
+	13636583728 -> 14206261520
+	13636583728 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636584768 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636584208 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14206259264 [label=ViewBackward0 fillcolor=white]
+	14206260656 -> 14206259264
+	14206260656 [label=ExpandBackward0 fillcolor=white]
+	14206259696 -> 14206260656
+	14206259696 [label=SoftmaxBackward0 fillcolor=white]
+	14206259408 -> 14206259696
+	14206259408 [label=WhereBackward0 fillcolor=red]
+	14206259936 -> 14206259408
+	14206259936 [label=DivBackward0 fillcolor=red]
+	14206259648 -> 14206259936
+	14206259648 [label=UnsafeViewBackward0 fillcolor=white]
+	14206263248 -> 14206259648
+	14206263248 [label=BmmBackward0 fillcolor=white]
+	14206262576 -> 14206263248
+	14206262720 -> 14206263248
+	14206262720 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206262624 -> 14206262720
+	14206262624 [label=ExpandBackward0 fillcolor=white]
+	14206262528 -> 14206262624
+	14206262528 [label=TransposeBackward0 fillcolor=white]
+	14206260320 -> 14206262528
+	14206260320 [label=PermuteBackward0 fillcolor=white]
+	14206261664 -> 14206260320
+	14206261664 [label=ViewBackward0 fillcolor=white]
+	14206260992 -> 14206261664
+	14206262576 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206261760 -> 14206262576
+	14206261760 [label=ExpandBackward0 fillcolor=white]
+	14206262288 -> 14206261760
+	14206262288 [label=PermuteBackward0 fillcolor=white]
+	14206262912 -> 14206262288
+	14206262912 [label=ViewBackward0 fillcolor=white]
+	14206260992 -> 14206262912
+	13636585568 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636584368 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14205529104 [label=MulBackward0 fillcolor=red]
+	14205529680 -> 14205529104
+	13636584448 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205527760 [label=ViewBackward0 fillcolor=white]
+	14206261904 -> 14205527760
+	14206261904 [label=AddmmBackward0 fillcolor=white]
+	13636585648 -> 14206261904
+	13647974944 -> 14206261904
+	13636587168 -> 14206261904
+	13636587168 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	13647974944 [label=ViewBackward0 fillcolor=white]
+	13647974656 -> 13647974944
+	13647974656 [label=ViewBackward0 fillcolor=white]
+	13647974800 -> 13647974656
+	13647974800 [label=CloneBackward0 fillcolor=white]
+	13647975184 -> 13647974800
+	13647975184 [label=PermuteBackward0 fillcolor=white]
+	13647974464 -> 13647975184
+	13647974464 [label=UnsafeViewBackward0 fillcolor=white]
+	13647975472 -> 13647974464
+	13647975472 [label=BmmBackward0 fillcolor=white]
+	13647975952 -> 13647975472
+	13647975088 -> 13647975472
+	13647975088 [label=ReshapeAliasBackward0 fillcolor=white]
+	13647975664 -> 13647975088
+	13647975664 [label=ExpandBackward0 fillcolor=white]
+	13647975808 -> 13647975664
+	13647975808 [label=PermuteBackward0 fillcolor=white]
+	13647976288 -> 13647975808
+	13647976288 [label=ViewBackward0 fillcolor=white]
+	13647976624 -> 13647976288
+	13647976624 [label=SplitBackward0 fillcolor=white]
+	13647975520 -> 13647976624
+	13647975520 [label=ViewBackward0 fillcolor=white]
+	13647976960 -> 13647975520
+	13647976960 [label=AddmmBackward0 fillcolor=white]
+	13638935552 -> 13647976960
+	13647976528 -> 13647976960
+	13638936192 -> 13647976960
+	13638936192 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	13647976528 [label=ViewBackward0 fillcolor=white]
+	13647976720 -> 13647976528
+	13647976720 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205528576 -> 13647976720
+	13636587408 -> 13647976720
+	13636585008 -> 13647976720
+	13636585008 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636587408 [label="Variable
+ (768)" fillcolor=lightblue]
+	13638935552 [label="Variable
+ (2304)" fillcolor=lightblue]
+	13647975952 [label=ViewBackward0 fillcolor=white]
+	13647977680 -> 13647975952
+	13647977680 [label=ExpandBackward0 fillcolor=white]
+	13647976816 -> 13647977680
+	13647976816 [label=SoftmaxBackward0 fillcolor=white]
+	13647977920 -> 13647976816
+	13647977920 [label=WhereBackward0 fillcolor=red]
+	13647977248 -> 13647977920
+	13647977248 [label=DivBackward0 fillcolor=red]
+	13647977872 -> 13647977248
+	13647977872 [label=UnsafeViewBackward0 fillcolor=white]
+	13647978304 -> 13647977872
+	13647978304 [label=BmmBackward0 fillcolor=white]
+	13647978400 -> 13647978304
+	13647977536 -> 13647978304
+	13647977536 [label=ReshapeAliasBackward0 fillcolor=white]
+	13647978064 -> 13647977536
+	13647978064 [label=ExpandBackward0 fillcolor=white]
+	13647975376 -> 13647978064
+	13647975376 [label=TransposeBackward0 fillcolor=white]
+	13647976672 -> 13647975376
+	13647976672 [label=PermuteBackward0 fillcolor=white]
+	13647976000 -> 13647976672
+	13647976000 [label=ViewBackward0 fillcolor=white]
+	13647976624 -> 13647976000
+	13647978400 [label=ReshapeAliasBackward0 fillcolor=white]
+	13647978112 -> 13647978400
+	13647978112 [label=ExpandBackward0 fillcolor=white]
+	13647977056 -> 13647978112
+	13647977056 [label=PermuteBackward0 fillcolor=white]
+	13647977584 -> 13647977056
+	13647977584 [label=ViewBackward0 fillcolor=white]
+	13647976624 -> 13647977584
+	13636585648 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636585168 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14205747648 [label=MulBackward0 fillcolor=red]
+	14205529296 -> 14205747648
+	13636585808 [label="Variable
+ (768)" fillcolor=lightblue]
+	14205750480 [label=ViewBackward0 fillcolor=white]
+	14205798432 -> 14205750480
+	14205798432 [label=AddmmBackward0 fillcolor=white]
+	13636587088 -> 14205798432
+	14205798144 -> 14205798432
+	13636586048 -> 14205798432
+	13636586048 [label="Variable
+ (768, 768)" fillcolor=lightblue]
+	14205798144 [label=ViewBackward0 fillcolor=white]
+	14205797808 -> 14205798144
+	14205797808 [label=ViewBackward0 fillcolor=white]
+	14205797712 -> 14205797808
+	14205797712 [label=CloneBackward0 fillcolor=white]
+	14205797472 -> 14205797712
+	14205797472 [label=PermuteBackward0 fillcolor=white]
+	14205797520 -> 14205797472
+	14205797520 [label=UnsafeViewBackward0 fillcolor=white]
+	14205797184 -> 14205797520
+	14205797184 [label=BmmBackward0 fillcolor=white]
+	14205796416 -> 14205797184
+	14205796464 -> 14205797184
+	14205796464 [label=ReshapeAliasBackward0 fillcolor=white]
+	14205798384 -> 14205796464
+	14205798384 [label=ExpandBackward0 fillcolor=white]
+	14205799440 -> 14205798384
+	14205799440 [label=PermuteBackward0 fillcolor=white]
+	14205799248 -> 14205799440
+	14205799248 [label=ViewBackward0 fillcolor=white]
+	14205799008 -> 14205799248
+	14205799008 [label=SplitBackward0 fillcolor=white]
+	14205798816 -> 14205799008
+	14205798816 [label=ViewBackward0 fillcolor=white]
+	14205798480 -> 14205798816
+	14205798480 [label=AddmmBackward0 fillcolor=white]
+	13636586768 -> 14205798480
+	14205799152 -> 14205798480
+	13636584928 -> 14205798480
+	13636584928 [label="Variable
+ (768, 2304)" fillcolor=lightblue]
+	14205799152 [label=ViewBackward0 fillcolor=white]
+	14205800064 -> 14205799152
+	14205800064 [label=NativeLayerNormBackward0 fillcolor=white]
+	14205750672 -> 14205800064
+	13636584528 -> 14205800064
+	13637938688 -> 14205800064
+	13637938688 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636584528 [label="Variable
+ (768)" fillcolor=lightblue]
+	13636586768 [label="Variable
+ (2304)" fillcolor=lightblue]
+	14205796416 [label=ViewBackward0 fillcolor=white]
+	14205799632 -> 14205796416
+	14205799632 [label=ExpandBackward0 fillcolor=white]
+	14205798240 -> 14205799632
+	14205798240 [label=SoftmaxBackward0 fillcolor=white]
+	14205800016 -> 14205798240
+	14205800016 [label=WhereBackward0 fillcolor=red]
+	14205799680 -> 14205800016
+	14205799680 [label=DivBackward0 fillcolor=red]
+	14205800256 -> 14205799680
+	14205800256 [label=UnsafeViewBackward0 fillcolor=white]
+	14205799776 -> 14205800256
+	14205799776 [label=BmmBackward0 fillcolor=white]
+	14205797664 -> 14205799776
+	14205796944 -> 14205799776
+	14205796944 [label=ReshapeAliasBackward0 fillcolor=white]
+	14205797328 -> 14205796944
+	14205797328 [label=ExpandBackward0 fillcolor=white]
+	14205797424 -> 14205797328
+	14205797424 [label=TransposeBackward0 fillcolor=white]
+	14205796560 -> 14205797424
+	14205796560 [label=PermuteBackward0 fillcolor=white]
+	14206145152 -> 14205796560
+	14206145152 [label=ViewBackward0 fillcolor=white]
+	14205799008 -> 14206145152
+	14205797664 [label=ReshapeAliasBackward0 fillcolor=white]
+	14206145488 -> 14205797664
+	14206145488 [label=ExpandBackward0 fillcolor=white]
+	14206146064 -> 14206145488
+	14206146064 [label=PermuteBackward0 fillcolor=white]
+	14206145008 -> 14206146064
+	14206145008 [label=ViewBackward0 fillcolor=white]
+	14205799008 -> 14206145008
+	13636587088 [label="Variable
+ (768)" fillcolor=lightblue]
+	13637935488 [label="Variable
+ (3072)" fillcolor=lightblue]
+	14205663648 [label=MulBackward0 fillcolor=red]
+	14205662208 -> 14205663648
+	13637938768 [label="Variable
+ (768)" fillcolor=lightblue]
+	13572850368 [label="Variable
+ (1)" fillcolor=lightblue]
+}
