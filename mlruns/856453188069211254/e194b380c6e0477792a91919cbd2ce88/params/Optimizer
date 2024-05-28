@@ -1,0 +1,4 @@
+ConstantStepOptimizer (
+Parameter Group 0
+    lr: 0.5
+)

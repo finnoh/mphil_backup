@@ -22,10 +22,8 @@ fig-height: 8
 # Updates
 
 - Gradient spikes first, then large step in decoder / encoder
-- These steps seem to affect one hidden unit more strongly than the other
-- Increase of Decoder Weight gradients seems to precede the increase of the -LL
 - The other gradients seem to react to this jump
-- Gradient-Decoder $\to$ Step $\to$ Other gradients $\to$ Step ...
+- Gradient $\to$ Step $\to$ Other gradients $\to$ Step $\to$ -LL jumps 
 - [`torch.nn.utils.clip_grad_norm_(ae.parameters(), max_norm=dMaxGrad)`](https://pytorch.org/docs/stable/generated/torch.nn.utils.clip_grad_norm_.html#torch.nn.utils.clip_grad_norm_) seems to help. This clips the gradient if the norm exceeds `dMaxGrad`. [See here](https://www.cs.toronto.edu/~rgrosse/courses/csc321_2017/readings/L15%20Exploding%20and%20Vanishing%20Gradients.pdf#page=6.78).
 
 ---
@@ -41,29 +39,31 @@ Spikes: Notice how the decoder gradient norm increases first, causing a large st
 
 ---
 
-![](./figures/dashboard_last10_540.png)
+![More spikes I](./figures/dashboard_last10_540.png)
 
 ---
 
-![](./figures/dashboard_last10_160.png)
+![More spikes II](./figures/dashboard_last10_160.png)
 
 ---
 
-![](./figures/dashboard_last10_350.png)
+![More spikes III](./figures/dashboard_last10_350.png)
 
 ---
 
-![Fixed clipping at 0.3. Later in the optimization this is too large.](./figures/dashboard_clipping_fixed.png)
+Optimization with gradient-clipping at $dMaxGrad = 0.3$.
 
-
-
+![](./figures/dashboard_clipping_fixed.png)
 
 ---
 
-Likely, you only want to clip true "outliers" in the gradients and not be too conservative. 
+Optimization with gradient-clipping at $dMaxGrad = 0.1$. Deeper in the optimization those spikes seem to become a problem again, at a lower scale. Oscill. of gradients later in the optimization.
 
-![You can overdo it with the gradient clipping.](./figures/dashboard_clip_01.png)
+![Clipping at 0.1](./figures/dashboard_clip_01.png)
 
+---
 
+Optimization with gradient-clipping at $dMaxGrad = 0.05$. This model also has a normalization layer after the hidden layer.
 
+![Clipping at 0.05 and normalization layer](../mlartifacts/437740661089244805/50054b1717e444eeb1d4acd408e1e77d/artifacts/plots/dashboard.png)
 
