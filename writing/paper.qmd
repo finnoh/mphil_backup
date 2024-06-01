@@ -44,17 +44,26 @@ cache: false
 
 # Introduction
 
+
+
 - Media products increase relevance of content
   - Social media, short videos TikTok, Images, Netflix, Audio / Podcasts
 
 - What is missing from preference learning? How is this different?
-  - Media products / things are different from products as attribute bundles
+  - Media products/things are different from products as attribute bundles
     - We can directly represent the product itself?
   - Brands and their role in advertising
 
 - Market research is expensive. How can we leverage these insights better to improve its benefits?
 
 - EU AI Act
+  - [Content generation is considered low risk](https://www.growthloop.com/university/article/generative-ai-in-marketing)
+
+- Main risk of Gen AI stem from unpredictable behaviors, as generation is based on random samples from a highly non-linear model
+  - lawsuits
+  - damages to brands
+  - missed opportunities
+  - tailoring of models based on prompt engineering and RL-HF
 
 - GDPR
   - Challenges to cookies in website morphing
@@ -78,6 +87,20 @@ cache: false
 
 # Methodology
 
+We reverse-engineer the input to a Large Language Model (LLM), such that it generates a pre-defined text.
+
+For a given target sequence, we find the input-embedding that maximizes the likelihood to generate this target sequence with a unidirectional LLM (e.g. GPT, @radford2018improving). We call this input embedding, "summary embedding" of the target sequence.
+
+We restrict the degrees of freedom in our search for these input embeddings, by making the elements of the input embedding linear combinations of a few hidden factors. 
+
+In turn, these hidden factors yield a generation space, where we locate our target sequences and search for new sequences.
+
+@goodfellowDeepLearning2016
+
+- Autoencoder
+  - The Autoencoder $\operatorname{AE}_{\mathcal{B}} \left(\cdot \right): \lbrace 0, 1 \rbrace^{C} \to \mathbb{R}^E$, with parameters $\mathcal{B}$
+  - Adding covariates to the AE
+
 - Overview
   - LLM
   - maximize likelihood of target sequence
@@ -86,39 +109,74 @@ cache: false
   - generation
   - rating of claims
 
-- LLM
-  - Attention
-  - Transformer
-  - GPT
-  - The length $E$ summary-embedding $\boldsymbol{e}$.
-  - The length $T$ vector of target tokens $\boldsymbol{t}$, where the element $t_i$ is a unique integer code representing a token, e.g. in GPT-2, $50267$ is the End-of-Text token `<|eos|>`.
+Unidirectional LLMs, such as GPT or LLaMa [@radford2018improving; @metaMetaLlama], are built for text-generation. They predict the next token in a sequence of tokens autoregressively, therby, these models only work from left-to-right (or right-to-left). Bidirectional LLMs, such as BERT [@devlinBERTPretrainingDeep2018], are built for representing text. They predict a token given the context around this token, and can hence read the text both from left-to-right and right-to-left. Both types of models share two note-worthy components, that account for a large share of their power. One, developers pre-train both types of models on large bodies of text, to learn about the structure of language itself. Two, by using a transformer architecture [@vaswani2017attention], which enables these language models to learn dependencies between words, such as negations (short-range dependency), or document structures, e.g. salutations in letters (long-range dependency).
+
+- Notation
+  - A large language model $\mathcal{M}$, with parameters $\Omega$.
+  - The length $E$ summary-embedding $\boldsymbol{e}^{*}$.
+  - The length $T$ vector of target tokens $\boldsymbol{t}$, where the element $t_i$ is a unique integer code representing a token, e.g. in GPT-2, the number $50267$ is the End-of-Text token: `<|eos|>`.
+  - The log-likelihood function $\operatorname{\mathcal{L}}_{\mathcal{M}} \left ( \boldsymbol{i}, \boldsymbol{o} \right): \mathbb{R}^E \to \left (- \infty, 0 \right]$, that returns the log-likelihood for LLM $\mathcal{M}$ to generate the output sequence $\boldsymbol{o}$, given the input embedding $\boldsymbol{i}$.
+
+$$
+\boldsymbol{e^{*}} = \argmax_{\boldsymbol{e}} \operatorname{\mathcal{L}}_{\mathcal{M}} \left ( \boldsymbol{e}, \boldsymbol{t} \right) = \argmax_{\boldsymbol{e}} \sum_{i=1}^{L} \log p(t_1, \ldots, t_L | \boldsymbol{e})
+$$
 
 
-- Maximize the likelihood to generate the data
-  - The log-likelihood function $\operatorname{\mathcal{L}} \left ( \cdot \right): \mathbb{R}^E \to \left (- \infty, 0 \right]$
+We aim to find a summary embedding, $\boldsymbol{e^{*}}$, that maximizes the likelihood of generating a given target sequence, $\lbrace t_i \rbrace_{i=1}^{L}$, with a given LLM, $\mathcal{M}$. We use a gradient-based optimization algorithm to maximize this likelihood. We initialize the summary embedding as the element-wise average of the embedding of the target sequence. We then generate a sequence of length $L$, with the LLM and the current input embedding. For the resulting output layer, we compute the likelihood that this layer will generate the target sequence. We backpropagate the gradients and adjust the input layer accordingly. We repeat this process until the optimization converges. We want to investigate further improvements to the implementation, such as computing the likelihood contributions of the tokens in a distributed fashion. In Algorithm 1, we summarize the training process.
+
+<!-- TODO: Update this algorithm -->
+
+\begin{algorithm}
+\begin{algorithmic}
+\label{alg:training}
+\caption{Training of Summary Embeddings}
+\State Initialize $\boldsymbol{s}$
+\State $i \gets 0$
+\While{$Convergence == False$}
+    \State $i \gets i + 1$
+    \State $\boldsymbol{o}^{(i)} \gets \mathcal{M}(\boldsymbol{s})$
+    \State $l^{(i)} \gets \operatorname{Likelihood}(\boldsymbol{o}^{(i)}, \lbrace t_i \rbrace_{1}^{L})$
+    \State $\boldsymbol{s}^{(i + 1)} \gets \operatorname{GradientDecent}(\boldsymbol{s}^{(i)}, l^{(i)})$
+    \State $Convergence \gets \operatorname{CheckConvergence}(\boldsymbol{s}^{(i + 1)}, \boldsymbol{s}^{(i)})$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
 
 <!-- TODO: What does it really return? -->
 <!-- TODO: Good idea or not? -->
-To express that we generate tokens with the LLM, $\mathcal{M}$, based on length $E$ input-embedding $\boldsymbol{e}$, we use the notation $\mathcal{M}(\boldsymbol{e})$. To express the number of tokens, $k$, that we generate, we use the subscript $\mathcal{M}_k(\boldsymbol{e})$. This function call returns an output vector of length $V$, where $V$ denotes the vocabulary size. We denote the output vector as $\boldsymbol{o}$. Each element $o_v$ of this output vector represents the probability of generating token $v$ as the next token. We predict the next token, by selecting the largest element of $\boldsymbol{o}$. When $k = 1$, we use the previous tokens to predict the next token. When $k > 1$, we append the predicted tokens autoregressively to the input embedding, such that we can predict more than one token. While there are many ways to design this procedure and select tokens along the way, we perform a standard greedy procedure, where we select the token with the highest probability at each step. We denote the probability that $\mathcal{M}$ generates the target sequence, given the input embedding, as $p(t_1, \ldots, t_L | \boldsymbol{e})$. For a given Large Language Model, we define $\boldsymbol{e^{*}}$,
-
-$$
-\boldsymbol{e^{*}} = \argmax_{\boldsymbol{e}} \sum_{i=1}^{L} \log p(t_1, \ldots, t_L | \boldsymbol{e}) \text{, }
-$$
 
 as the input-embedding that maximizes the likelihood of generating a given target sequence, $\lbrace t_i \rbrace_{i=1}^{L}$, where $L$ denotes the length of the target sequence and $t_i$ represents token $i$. We estimate these summary embeddings $\boldsymbol{e^{*}}$, by maximizing the conditional likelihood that this embedding generates the target sequence for a given LLM. We use a gradient-based optimization algorithm to maximize this likelihood.
 
-- Autoencoder
-  - The Autoencoder $\operatorname{AE}_{\mathcal{B}} \left(\cdot \right): \lbrace 0, 1 \rbrace^{C} \to \mathbb{R}^E$, with parameters $\mathcal{B}$
-  - Adding covariates to the AE
-
 - Figure of generation tree
-  - beam-search for generation
+  - For generation of sequences, the LLM autoregressively predicts the next token, given the previous tokens. At each step in the generation, a selection of the next token needs to take place, for which there exist various procedures (CITE). As we are optimizing with respect to the joint likelihood of the target sequence, we also need to generate with a procedure that generates this most likely sequence. Finding this sequence from the generation tree is a combinatorical problem and computationally not feasible. Hence, we use the beam-search heuristic to make our generation. Rather than only tracking the most likely token at each generation step, beam search also tracks the $n$-most likely tokens. The more beams we search, the more likely we are to find a sequence with a higher likelihood, then we would have found otherwise [@huggingfaceGenerateText].
 
 - LLM judge to rate claims
 
 <!-- TODO: Consider renaming this headline -->
 
-## Implementation
+
+# Data
+
+We obtain data from a market research company, that includes advertising claims for different FMCG. In our application, we focus on dairy and hair shampoo products. These data, stem from different variations of choice-based conjoint studies [@eggersChoiceBasedConjointAnalysis2022], which we cannot further disclose due to confidentiality agreements. 
+
+The data includes choice-experiments aggregated at the level of the advertising claims, hence we do not have responses of individuals. These measurements of consumer-preferences are on multiple dimensions, such as relevance, brand fit, or an overarching rating of the claim.  
+
+The advertising claims were designed for markets in different countries and are in english (US, UK) or translated into english (others). The date of the study is also included in the data.
+
+We also have information on the marketers motivation behind the design of an advertising claims, such as whether she designed the claims to pronounce the health benefits of a yoghurt, or the taste yoghurt.
+
+The data also include the brand of a product.
+
+- Descriptives of the data
+
+- Prepocessing of the data
+
+<!-- TODO: Provide examples that are created with GPT, i.e. are fake -->
+
+# Results
+
+### Implementation
 
 - Autoencoder
 
@@ -130,27 +188,26 @@ as the input-embedding that maximizes the likelihood of generating a given targe
 
 - Different generation strategies, use beam search to get closer to max LL
 
-# Data
-
-- Descriptives of the data
-
-- Prepocessing of the data
-
-# Results
-
 - Optimization
   - Computation time, scaling
+
 - Encoding space
   - example tangible, intangible
   - generations from encoding space
   - Wasteland, geometrical shape and where it comes from
+
 - Measures of fit
   - areas in the encoding space (count out the pixels and compare to curvature of LL?)
   - analysis of the trees
   - Gap between most likely and second most likely token
-- Application to MR data
 
 - Comparison to BERT embeddings
+- Comparison to prompt engineering results
+
+# Empirical Application
+
+- Application to MR data
+
 
 # Managerial Implications
 
@@ -167,6 +224,7 @@ as the input-embedding that maximizes the likelihood of generating a given targe
 
 - Problems
   - Computation time
+  - Benefits over existing approaches in practice?
 
 - Expansion of this research
   - MAB around the fitted AE, to incorporate consumer feedback in online learning: Which areas of the space are valuable for which consumers?
@@ -174,3 +232,7 @@ as the input-embedding that maximizes the likelihood of generating a given targe
   - Could also learn preferences online with this setup
   - Better LLM
   - Image, video, website, audio data. Perhaps website a good application. Perhaps audio a rather simple way to make this multi-modal (content and sound)
+
+{{< pagebreak >}}
+
+# References

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/337721250762804550/b4c49727cc6e47b987f48dd0d70b09c9/artifacts
+end_time: 1717098957092
+entry_point_name: ''
+experiment_id: '337721250762804550'
+lifecycle_stage: active
+run_id: b4c49727cc6e47b987f48dd0d70b09c9
+run_name: hair_tang_intang_320
+run_uuid: b4c49727cc6e47b987f48dd0d70b09c9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717098809645
+status: 4
+tags: []
+user_id: hoener

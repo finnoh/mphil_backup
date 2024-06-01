@@ -1,0 +1,6 @@
+artifact_location: mlflow-artifacts:/849007024006538062
+creation_time: 1716640603212
+experiment_id: '849007024006538062'
+last_update_time: 1716640603212
+lifecycle_stage: active
+name: linear_2h_both_normalization_2layer

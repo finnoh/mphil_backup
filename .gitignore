@@ -80,6 +80,10 @@ target/
 /admin/
 /data/*/*
 /admin/*/*
+/src/data/*/*
+/src/data/secure_*
+/src/secure_*
+
 
 # Mac OS-specific storage files
 .DS_Store

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/337721250762804550/a32a454bfc22413ab5a021df3901932f/artifacts
+end_time: 1716866763465
+entry_point_name: ''
+experiment_id: '337721250762804550'
+lifecycle_stage: active
+run_id: a32a454bfc22413ab5a021df3901932f
+run_name: dairy_util_hedonic
+run_uuid: a32a454bfc22413ab5a021df3901932f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716832526414
+status: 4
+tags: []
+user_id: hoener

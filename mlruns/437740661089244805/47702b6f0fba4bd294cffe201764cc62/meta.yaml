@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/437740661089244805/47702b6f0fba4bd294cffe201764cc62/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '437740661089244805'
+lifecycle_stage: active
+run_id: 47702b6f0fba4bd294cffe201764cc62
+run_name: test_mr_moving_clip
+run_uuid: 47702b6f0fba4bd294cffe201764cc62
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716632359616
+status: 1
+tags: []
+user_id: hoener

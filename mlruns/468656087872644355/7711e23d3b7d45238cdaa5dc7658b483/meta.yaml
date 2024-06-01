@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/468656087872644355/7711e23d3b7d45238cdaa5dc7658b483/artifacts
+end_time: 1716648064261
+entry_point_name: ''
+experiment_id: '468656087872644355'
+lifecycle_stage: active
+run_id: 7711e23d3b7d45238cdaa5dc7658b483
+run_name: US_DE_guthealth_F7620
+run_uuid: 7711e23d3b7d45238cdaa5dc7658b483
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716643209178
+status: 4
+tags: []
+user_id: hoener
