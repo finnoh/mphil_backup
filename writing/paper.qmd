@@ -15,6 +15,7 @@ header-includes:
   \usepackage{algorithm}
   \usepackage{algpseudocode}
   \usepackage{kpfonts}
+  \usepackage{tikz}
   \DeclareMathOperator*{\argmin}{arg\,min}
   \DeclareMathOperator*{\argmax}{arg\,max}
 pdf-engine: pdflatex
@@ -43,8 +44,6 @@ cache: false
 ---
 
 # Introduction
-
-
 
 - Media products increase relevance of content
   - Social media, short videos TikTok, Images, Netflix, Audio / Podcasts
@@ -82,16 +81,23 @@ cache: false
 
 - Comparison to prompt engineering
 
+- Neural Text degeneration (@ariholtzmanCuriousCaseNeural2020)
+- BERT and RoBERTa @devlinBERTPretrainingDeep2018, @yinhanliuRoBERTaRobustlyOptimized2019, @jeffreypenningtonGloveGlobalVectors2014, @tomasmikolovDistributedRepresentationsWords2013 @tomasmikolovEfficientEstimationWord2013
 
 <!-- TODO: Consider renaming this headline -->
 
-# Methodology
+# Methodology 
+
+- Distributional hypothesis of language @sahlgren2008distributional
 
 We reverse-engineer the input to a Large Language Model (LLM), such that it generates a pre-defined text.
 
-For a given target sequence, we find the input-embedding that maximizes the likelihood to generate this target sequence with a unidirectional LLM (e.g. GPT, @radford2018improving). We call this input embedding, "summary embedding" of the target sequence.
+For a given target sequence, we find the input-embedding that maximizes the likelihood to generate this target sequence with a unidirectional LLM (e.g. GPT, @radford2018improving). We call this input embedding, the "summary embedding" of the target sequence.
 
-We restrict the degrees of freedom in our search for these input embeddings, by making the elements of the input embedding linear combinations of a few hidden factors. 
+We restrict the degrees of freedom in our search for these input embeddings, by making the elements of the input embedding linear combinations of a few hidden factors. This amounts to a linear factor model.
+
+
+![Factor model in Neural Network form](factor_tikz.tex)
 
 In turn, these hidden factors yield a generation space, where we locate our target sequences and search for new sequences.
 
@@ -153,9 +159,6 @@ as the input-embedding that maximizes the likelihood of generating a given targe
 
 - LLM judge to rate claims
 
-<!-- TODO: Consider renaming this headline -->
-
-
 # Data
 
 We obtain data from a market research company, that includes advertising claims for different FMCG. In our application, we focus on dairy and hair shampoo products. These data, stem from different variations of choice-based conjoint studies [@eggersChoiceBasedConjointAnalysis2022], which we cannot further disclose due to confidentiality agreements. 
@@ -182,14 +185,14 @@ The data also include the brand of a product.
 
 - Configuration of LLM
 
-- Optimization
-
 - Connection to other measures, e.g. syntax or rating of consumers
 
 - Different generation strategies, use beam search to get closer to max LL
 
 - Optimization
+  - @diederikp.kingmaAdamMethodStochastic2014
   - Computation time, scaling
+  - Issues with spikes; Figures where they come from
 
 - Encoding space
   - example tangible, intangible
@@ -201,8 +204,8 @@ The data also include the brand of a product.
   - analysis of the trees
   - Gap between most likely and second most likely token
 
-- Comparison to BERT embeddings
-- Comparison to prompt engineering results
+- Comparison to BERT embeddings?
+- Comparison to prompt engineering results?
 
 # Empirical Application
 
@@ -219,12 +222,19 @@ The data also include the brand of a product.
 
 - Interactive dashboard to explore the embedding space
 
+- Costs of tailoring advertising claims
+  - When we take current prices for the [GPT-4o LLM; June 2024](https://openai.com/api/pricing/) (\$5 per 1 Mio tokens input, \$15 per 1 Mio tokens output), then training a dataset of 100 advertising claims, for 5,000 epochs will cost \$150. Freelancers on platforms such as [Upwork.com](https://www.upwork.com/) charge between \$20 and \$200 per hour for work on tasks such as SEO optimization, copy writing, and creation of advertising claims.
+    - Online services for conjoint studies, such as [Conjointly.com](https://conjointly.com/) and [Sawtooth](https://sawtoothsoftware.com/pricing) charge a few thousand dollars per year to use their services. Leveraging the resulting insights as much as possible, by using generative AI, could hence make market research more cost effective.
 
 # Discussion
+
+- Using embedding rather than identity matrix as the input turns this into an autoencoder, rather than a factor model. According to @goodfellowDeepLearning2016, generation from factor models leads to a combination of the learned features in these factors, but not to the generation of sensible data points. Existing, autoencoder based, approaches that have succeeded in generation tasks, might be more suitable for this task (e.g. CITE: Variational Autoencoder).
 
 - Problems
   - Computation time
   - Benefits over existing approaches in practice?
+  - Conceptual issues of using AI in decision making @cathyoneilWeaponsMathDestruction2016; Gender biases @emilyshengWomanWorkedBabysitter2019
+  - How to evaluate the quality of the generated ad claims @tatsunorihashimotoUnifyingHumanStatistical2019
 
 - Expansion of this research
   - MAB around the fitted AE, to incorporate consumer feedback in online learning: Which areas of the space are valuable for which consumers?
