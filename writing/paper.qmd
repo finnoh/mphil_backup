@@ -1,6 +1,6 @@
 ---
 author: Finn-Ole Höner (657110)
-title: "Decoding Consumer Preferences with Large Language Models: A Novel Training Framework"
+title: "working title"
 date: last-modified
 date-format: long
 code-color-bg: lightgray
@@ -15,6 +15,7 @@ header-includes:
   \usepackage{algorithm}
   \usepackage{algpseudocode}
   \usepackage{kpfonts}
+  \usepackage{tcolorbox}
   \usepackage{tikz}
   \DeclareMathOperator*{\argmin}{arg\,min}
   \DeclareMathOperator*{\argmax}{arg\,max}
@@ -45,105 +46,191 @@ cache: false
 
 # Introduction
 
-- Media products increase relevance of content
-  - Social media, short videos TikTok, Images, Netflix, Audio / Podcasts
+> *"Prompt engineering is the art of communicating eloquently to an AI."----Greg Brockman, President OpenAI*
 
-- What is missing from preference learning? How is this different?
-  - Media products/things are different from products as attribute bundles
-    - We can directly represent the product itself?
-  - Brands and their role in advertising
+<!-- TODO: Have more of an advertising claims example? -->
+<!-- TODO: Make this more about a summary, than about generation and prompts? Build the bridge of the two -->
+<!-- TODO: Talk about low-dim representation -->
 
-- Market research is expensive. How can we leverage these insights better to improve its benefits?
+Generative Large Language Models (LLM) are powerful, but unreliable tools for generating text. [A study by the NGO "Algorithm Watch"](https://algorithmwatch.ch/en/wp-content/uploads/2023/12/AlgorithmWatch_Generative-AI-and-elections_An-analysis-of-Microsofts-Bing-Chat.pdf), which is partially funded by the European Union, finds that Microsoft's chatbot Bing Chat, delivers wrong information in a third of its replies to election related questions, posing a risk to exacerbate desinformation. 
 
-- EU AI Act
-  - [Content generation is considered low risk](https://www.growthloop.com/university/article/generative-ai-in-marketing)
+Prompt engineering defines the task of finding the right prompt to generate a desired output. Typically, this is an interactive and iterative process between human and LLM. There are certain writing techniques that improve the quality of
+the LLM's response, such as providing examples for what the desired output should look like. There are various [blog posts](https://huggingface.co/docs/transformers/en/tasks/prompting#best-practices-of-llm-prompting) and books [e.g. @phoenix2024prompt] about how to write good prompts, in fact businesses are [hiring "Prompt Engineers"](https://indeed.com/q-prompt-engineer-jobs.html?vjk=98ac28acfd1328d7) even on dedicated [job boards](https://prompt-engineering-jobs.com/jobs/prompt-engineer-qwvmju/). Despite these, supposedly low-barrier, resources, end users without AI knowledge still struggle with prompt engineering [@zamfirescu2023johnny]. Not only can prompt engineering pose a [security risk](https://www.promptingguide.ai/risks/adversarial), but the process is also fuzzy, hard to replicate, and might still lead to unpredictable behaviors of the model. These issues pose risks for organizations, as the obscurity of manual prompt engineering can lead to loss of know-how, and the unpredictiability of the model can lead to lawsuits, damages to brands, or missed opportunities. 
 
-- Main risk of Gen AI stem from unpredictable behaviors, as generation is based on random samples from a highly non-linear model
-  - lawsuits
-  - damages to brands
-  - missed opportunities
-  - tailoring of models based on prompt engineering and RL-HF
+Problems of reproduceability, transparency, and documentation, become critical for organizations with the advent of the [EU AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai). The act requires for "High risk applications", that the AI model features, e.g. "adequate mitigation systems", "traceability of results", and, "robustness". High risk applications are not common and important for society, they include applications e.g. in education, employment, and public services.
 
-- GDPR
-  - Challenges to cookies in website morphing
+We propose a new type of numeric document summary, which captures all the information contained in the document, as it can be used to recreate the document itself. This document summary comes in the form of a numeric vector, which we call the summary embedding. To obtain this summary embedding, we maximize the likelihood of generating the document with a Large Language Model (LLM). In this sense, these summary embeddings are optimal. We show, that these embeddings capture inherent information about the document, can be used for classification, and generation of new documents. There are only practical requirements for estimating these summary embeddings, namely that backpropagation of gradients is possible from the likelihood to the input of the LLM.
 
-- Generative AI for personalization
-  - Previously: Set pieces, e.g. recommendation systems
-  - True personalization: Generate solution for each individual consumer
+Beyond the methodological contribution, we show a marketing application of these summary embeddings and make a step towards using Generative AI in market research and design of the marketing-mix. We find that we can use these embeddings to capture design motivations of marketers behind advertising claims, and establish a measure for linguistic uniqueness of an advertising claim. Suprisingly, we find that this linguistic uniqueness is negatively correlated with the perceived uniqueness of an advertising claim by consumers. We explore these linguistic features and find that claims with certain words and their synonyms, cluster together, e.g. claims that emphasize the taste of a yoghurt drink or present it as a breakfast. Furthermore, we show that claims that live in certain areas of a low dimensional representation of the summary embeddings, are more likely to be rated favorably by consumers, but that small differences in wording can lead to relatively large differences in evaluation. This suggests a two-step approach to designing a market research study for advertising claims, where the first stage should focus on a wide exploration of the design space, while the second stage should focus on a fine-grained evaluation of the most promising area in this design space. We end with a sketch on how these summary embeddings can be used in an AI augmented design process, similar to applications in image data by @burnap2023product and @ludwigMachineLearningTool2023.
 
-- Consumer preferences in latent generation space
-  - We can view products as attribute bundles and get utilities for these attributes <!-- TODO: What about interactions of attributes? -->
+<!-- 
+
+- Consumer preferences in latent generation space & Ad-claims
+  - Market research is expensive. How can we leverage these insights better to improve its benefits?
+  - What is missing from preference learning? How is this different?
+    - Media products/things are different from products as attribute bundles
+      - We can directly represent the product itself?
+    - Brands and their role in advertising
+  - We can view products as attribute bundles and get utilities for these attributes 
   - How do we do this for products that cannot be "discretized"?
+  - Generative AI for personalization
+    - Previously: Set pieces, e.g. recommendation systems
+    - True personalization: Generate solution for each individual consumer
+  - TODO: Add more product claim specific
+  - Advertisements can be effective, @daiFrontiersWhichFirms2023a observe an increase in purchase intentions for restaurants that adapt online advertising by 7%-19%.
+  - they are relevant @kongMadeUSAClaims2021
+  - costs
+  - need flexibility in online settings
+  - closely related problems, such as email targeting @sahniPersonalizationEmailMarketing2018
+  - advertising is one of the marketing-mix instruments which companies use to position themselves in the market and shapes the incentives of the system itself @moorthyTargetingAdvertisingSpending2023 @renAdvertisingContentCreation2023
+  - design question
+  - Ban of cookie-based advertising due to GDPR, adapting to observable behavior in live sessions or to context on the website itself becomes more important. GDPR
+  - Challenges to cookies in website morphing
+  - @beckerDoesItPay2019, point to the nuanced role that authenticity plays in advertising, especially with respect to its alignment with the brand and product. 
+  - @edelmanBrandingDigitalAge2010 Concept of the consumer decision journey, product claims could vary across multiple visits or encounters of the same customer
 
-- Novel training framework
-  - Circumvent issues with the LLMs decoder
-  - Input embedding represents the information contained in the sequence, as it is the starting point which makes the LLM generate the target sequence
+-->
 
-- Comparison to prompt engineering
+## Relevant Literature
 
-- Neural Text degeneration (@ariholtzmanCuriousCaseNeural2020)
-- BERT and RoBERTa @devlinBERTPretrainingDeep2018, @yinhanliuRoBERTaRobustlyOptimized2019, @jeffreypenningtonGloveGlobalVectors2014, @tomasmikolovDistributedRepresentationsWords2013 @tomasmikolovEfficientEstimationWord2013
+In the following, we compare our summary embeddings with three established methods to summarize documents: The Bidirectional Encoder Representations from Transformers (BERT) model's `[CLS]` token [@devlinBERTPretrainingDeep2018], pooled word embeddings [@shenBaselineNeedsMore2018], and prompt engineering approaches [@@huangenhanced]. 
 
-<!-- TODO: Consider renaming this headline -->
+The BERT model is a transformer [see @vaswani2017attention] based model to represent text. Its developers have pre-trained BERT on a large corpus of text, using two different self-supervised learning objectives. The first objective is the so called "Masked Language Model" task. Here, the researchers replace a random selection of tokens in the text by a mask token, and the goal of the BERT model is to predict which token is underlying this mask. In order to learn about the information captures in a sentence, the researchers also pose the "Next Sentence Prediction" task to the model. For this training objective, the BERT model receives a pair of two sentences and needs to predict whether the second sentence follows the first one in a text. This task trains the `[CLS]` token: As it is pre-pended before every such sentence pair, it learns a representation of the information contained in the focal sentence. In practice, the output for a `[CLS]` token serves as a powerful feature e.g. for sentence classification. BERT embeddings are versatile, but can also be fine-tuned to a specific task such as text summarization. However, such a fine-tuning requires the user to compile a dataset of text-summary and text pairs, that are representative of their application. These BERT representations are only descriptive and cannot be used for the generation of new text [see @devlinBERTPretrainingDeep2018]. There exist expansions to BERT, such as RoBERTa by @yinhanliuRoBERTaRobustlyOptimized2019, which improve the optimization procedure. 
 
-# Methodology 
+@shenBaselineNeedsMore2018 points to the value of using pooled word embeddings to represent documents. The idea behind a pooled word embedding is, that we can represent a sequence of tokens by aggregating the word-embeddings of these tokens. There are different methods we can use for this aggregation, some examples are the use of taking the average across the tokens (mean-pooling) or taking the maximum value across the tokens (max-pooling). There are various types of word embeddings that we could use for the pooling, often, these are non-attention word embeddings, such as Word2Vec [@tomasmikolovDistributedRepresentationsWords2013; @tomasmikolovEfficientEstimationWord2013] or Global Vectors (GLoVe) [@jeffreypenningtonGloveGlobalVectors2014]. These pooled word embeddings, cannot be used for text generation and perform worse than BERT embeddings in language tasks, as they do not employ the attention mechanism and loose information in the aggregation step [see e.g. @onanHierarchicalGraphbasedText2023].
 
-- Distributional hypothesis of language @sahlgren2008distributional
+We can also summarize documents by passing these to an LLM and prompting the model to write a summary for us [e.g. @huangenhanced; @chakrabortyAbstractiveSummarizationEvaluation2024]. However, these summaries are textual, not deterministic, and their quality depends on the formulation of the prompt. For example, @liuLostMiddleHow2023 find that answers of LLMs are better, when we place relevant information at the beginning or end of the prompt, while inserting emotions into prompts also improves the quality of the LLMs response, in some cases even doubling its performance [see @liLargeLanguageModels2023]. Another issue is that these summaries can vary in length, and one needs to specify how detailed a summary should be. The difference in length between the summary and focal document, also makes it challenging to evaluate how much of the information of the focal document is captured by the summary [@chakrabortyAbstractiveSummarizationEvaluation2024]. If these summaries are of a high quality, i.e. represent the information in the focal document well, then they can be useful when we want to share a written summary of a document. However, for many data science and automation tasks, we need a reliable numeric representation of the document, which is the focus of this paper.
 
-We reverse-engineer the input to a Large Language Model (LLM), such that it generates a pre-defined text.
+In this work, we propose a method that optimizes the input prompt to an LLM, such that we obtain a desired outcome. We call these input prompts "document summaries", as the perfectly replicate a focal document. These input embeddings capture all information that is contained in a document, because we can re-generate the focal document just based on this summary embedding. These document summaries are deterministic, because we obtain them through maximum likelihood estimation and live in continuous space.  We can evaluate the fit of such a document summary, as the likelihood indicates its fit directly.
 
-For a given target sequence, we find the input-embedding that maximizes the likelihood to generate this target sequence with a unidirectional LLM (e.g. GPT, @radford2018improving). We call this input embedding, the "summary embedding" of the target sequence.
+<!-- TODO:  @khattabDSPyCompilingDeclarative2023 -->
 
-We restrict the degrees of freedom in our search for these input embeddings, by making the elements of the input embedding linear combinations of a few hidden factors. This amounts to a linear factor model.
+| Method                              | Origin                                          | Reference                              |  Deterministic? |  Generation?  |  Type?  |
+|:------------------------------------|:------------------------------------|:--------------------|:----------------------:|:----------------------:|:----------------------:|
+| BERT `[CLS]` token                       | Next-sentence prediction task                  | @devlinBERTPretrainingDeep2018         | $\checkmark$   | $\times$       | Numeric    |
+| Pooled Word Embeddings              | Aggregation of token information               | @shenBaselineNeedsMore2018             | $\checkmark$   | $\times$       | Numeric    |
+| Prompt engineering                  | Emergent capability of LLM                     | CITE                                   | $\times$       | $\times$       | Textual    |
+| Reverse engineered document summaries | Maximize the likelihood to re-generate the focal document | *Proposed method*                        | $\checkmark$   | $\checkmark$   | Numeric |
+: Overview of existing methods to summarize documents. {#tbl-docsum}
 
 
-![Factor model in Neural Network form](factor_tikz.tex)
+# Methodology
 
-In turn, these hidden factors yield a generation space, where we locate our target sequences and search for new sequences.
 
-@goodfellowDeepLearning2016
 
-- Autoencoder
-  - The Autoencoder $\operatorname{AE}_{\mathcal{B}} \left(\cdot \right): \lbrace 0, 1 \rbrace^{C} \to \mathbb{R}^E$, with parameters $\mathcal{B}$
-  - Adding covariates to the AE
+<!-- TODO: Intuitive method explainer -->
 
-- Overview
-  - LLM
-  - maximize likelihood of target sequence
-  - autoencoder on these summary embeddings (+ covariates?)
-  - also yields low-dim generation space
-  - generation
-  - rating of claims
+<!-- TODO: Talk about low-dim representation and regularization -->
 
-Unidirectional LLMs, such as GPT or LLaMa [@radford2018improving; @metaMetaLlama], are built for text-generation. They predict the next token in a sequence of tokens autoregressively, therby, these models only work from left-to-right (or right-to-left). Bidirectional LLMs, such as BERT [@devlinBERTPretrainingDeep2018], are built for representing text. They predict a token given the context around this token, and can hence read the text both from left-to-right and right-to-left. Both types of models share two note-worthy components, that account for a large share of their power. One, developers pre-train both types of models on large bodies of text, to learn about the structure of language itself. Two, by using a transformer architecture [@vaswani2017attention], which enables these language models to learn dependencies between words, such as negations (short-range dependency), or document structures, e.g. salutations in letters (long-range dependency).
+<!-- TODO: Normalization layer and its role; Does it work without it? Why / not? -->
 
+Generative Large Language Models (LLM), such as [ChatGPT](https://chat.openai.com/) [@radford2018improving], generate text based on textual inputs, so called prompts. Internally, the model translates the prompt first into tokens, integer codes representing certain words, symbols and syllabuls, and then into a lower dimensional vector representation of the text itself, which we call the input embedding. This input embedding is then passed through a neural network that yields a probability distribution over the next token in the sequence. To generate text, the model makes a draw from this distribution, and attached this generated token at the end of the prompt, repeating this process until it predicts the next token to be the end-of-text token (eos), i.e. until it predicts that the text ends. LLMs are pre-trained on large text corpora, such as the [Common Crawl](https://commoncrawl.org/) which contains over 250 billion pages of text. Their architecture is rooted in the attention mechanism. The attention mechanism models interactions in the text, such as negations, synonyms, or grammatical structures, across a long sequence of text. @vaswani2017attention implement this mechanism in the transformer block, which is a modular building block for the neural network underlying an LLM. The combination of these transformer blocks, giant pre-training data, and huge computing resources, lead to LLMs that have "emergent capabilities". These are capabilities, which were not explicitly trained for by the developers of the model, such as the ability of a model to translate between languages, pass the BAR exam, or write textual summaries of documents [see @weiEmergentAbilitiesLarge; @luAreEmergentAbilities2023]. Unidirectional LLMs, such as GPT or LLaMa [@radford2018improving; @metaMetaLlama], are built for text-generation. They predict the next token in a sequence of tokens autoregressively, therby, these models only work from left-to-right (or right-to-left). Bidirectional LLMs, such as BERT [@devlinBERTPretrainingDeep2018], are built for representing text. They predict a token given the context around this token, and can hence read the text both from left-to-right and right-to-left. Both types of models share two note-worthy components, that account for a large share of their power. One, developers pre-train both types of models on large bodies of text, to learn about the structure of language itself. Two, by using a transformer architecture [@vaswani2017attention], which enables these language models to learn dependencies between words, such as negations (short-range dependency), or document structures, e.g. salutations in letters (long-range dependency). <!-- TODO: Simplify this paragraph -->
+
+- For generation of sequences, the LLM autoregressively predicts the next token, given the previous tokens. At each step in the generation, a selection of the next token needs to take place, for which there exist various procedures (CITE). As we are optimizing with respect to the joint likelihood of the target sequence, we also need to generate with a procedure that generates this most likely sequence. Finding this sequence from the generation tree is a combinatorical problem and computationally not feasible. Hence, we use the beam-search heuristic to make our generation. Rather than only tracking the most likely token at each generation step, beam search also tracks the $n$-most likely tokens. The more beams we search, the more likely we are to find a sequence with a higher likelihood, then we would have found otherwise [@huggingfaceGenerateText].
+ 
+
+Each document, in our case an advertising claim, $d$ consists of the tokens $t_1^{d}, \ldots, t_T^(d)$.
+
+The probability to generate the sequence $t_1, \ldots, t_T$ with the LLM when using the embedding $\boldsymbol{s}$ as an input is $p(t_1, \ldots, t_T \mid \boldsymbol{s})$. We can split this probability into conditional probabilities due to the autoregressive architecture of the LLM and because we observe the target sequence. This provides large computational gains, as we can calculate these parts in parallel. Hence, we define the log-likelihood of the summary embedding for the target sequence as 
+$$
+\operatorname{\mathcal{L}} \left ( \boldsymbol{s} \mid t_1, \ldots, t_T \right) = \log p(t_1 | \boldsymbol{s}) + \log p(t_2 | t_1, \boldsymbol{s}) + \ldots + \log p(t_T | t_1, \ldots, t_{T-1}, \boldsymbol{s}) \text{, }
+$$
+
+and find the optimal summary embedding as
+
+$$
+\mathbf{s}^{*} = \argmax_{\boldsymbol{s}} \operatorname{\mathcal{L}} \left ( \boldsymbol{s} \mid t_1, \ldots, t_T \right) \text{. }
+$$
+
+We summarize the training process for the single summary embeddings in Algorithm 1. The summary embedding is a vector of length $E$, which is the same dimension as the dimension of the LLM's input embedding.
+
+\begin{algorithm}
+\begin{algorithmic}
+\label{alg:singletraining}
+\caption{Training of Single Summary Embeddings}
+\State $i \gets 0$
+\State $\epsilon \gets 0.01$
+\State $\boldsymbol{s} \gets \operatorname{Initialization} \left( \cdot \right)$
+\While{$True$}
+    \State $l^{(i)} \gets \operatorname{\mathcal{L}} \left ( \boldsymbol{s} \mid t_1, \ldots, t_T \right)$
+    \State $\nabla_{\boldsymbol{s}}^{(i)} l \gets \operatorname{ComputeGradient} \left ( l^{(i)}  \right )$
+    \State $\boldsymbol{s}^{(i + 1)} l \gets \operatorname{Optimizer} \left(\boldsymbol{s}^{(i)}, \; \nabla_{\boldsymbol{s}}^{(i)} l \right)$
+    \State $i \gets i + 1$    
+    \If{$l^{(i)} < \epsilon$}
+      \State \text{break}
+    \EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+As we are interested in finding a low-dimensional sub-space, in which we can represent the $D$ advertising claims, we use a factor model and estimate the summary embeddings for all advertising claims jointly, yielding the $D \times E$ matrix of summary embeddings $\mathbf{S}$. We restrict the degrees of freedom to $F$ hidden factors. To implement this factor model, we create an Autoencoder with one hidden layer, that is fully connected with linear activation functions [@goodfellowDeepLearning2016]. The input data to this autoencoder is an identity matrix of dimension $D$. We illustrate this neural network representation of the factor model in @fig-factor.
+
+![Factor model in Neural Network form, example for document 2](factor_tikz.tex){#fig-factor}
+
+We denote the matrix of weights of the encoder and decoder layers by $\mathbf{W}^{Encoder}$ and $\mathbf{W}^{Decoder}$. These matrices have the dimensions $D \times F$ and $F \times E$ respectively. We also define the vectors of biases for the encoder and decoder by $\boldsymbol{b}^{Encoder}$ (length $F$) and $\boldsymbol{b}^{Decoder}$ (length $E$), and stack them into matrices by taking the Kronecker product with a length $D$ vector of ones, $\boldsymbol{1}_D$, to obtain the biases in matrix form as $\mathbf{B}^{Encoder} = \boldsymbol{1}_D \otimes \boldsymbol{b}^{Encoder}$ and $\mathbf{B}^{Decoder} = \boldsymbol{1}_F \otimes \boldsymbol{b}^{Decoder}$. For notational convenience, we denote this factor model by $\operatorname{Factor}_{\Omega_{Factor}} \left(\mathbb{I}_{D} \right): \lbrace 0, 1 \rbrace^{D \times D} \to \mathbb{R}^E$, with parameters $\Omega_{Factor}$, where $\Omega_{Factor} = \lbrace \mathbf{W}^{Encoder}, \mathbf{W}^{Decoder}, \mathbf{B}^{Encoder}, \mathbf{B}^{Decoder} \rbrace$.
+
+<!-- The Large Language Model provides a log-likelihood function $\operatorname{\mathcal{L}} \left ( \mathbf{S} \right): \mathbb{R}^{D \times E} \to \mathbb{R}^{\left (- \infty, 0 \right]}$, with parameters $\Omega_{LLM}$, which returns the log-likelihood for the summary embedding to generate the target documents. -->
+
+
+When we define the weights and biases in this form, we can write the factor representation of the input as
+
+$$
+\mathbf{F} = \mathbf{W}^{Encoder} + \mathbf{B}^{Encoder} \text{, }
+$$
+
+thereby the matrix of summary embeddings for all claims becomes
+
+$$
+\mathbf{S} = \left( \mathbf{W}^{Encoder} + \mathbf{B}^{Encoder} \right) \mathbf{W}^{Decoder} + \mathbf{B}^{Decoder} \text{. }
+$$
+
+When we estimate the matrix of summary embeddings $\mathbf{S}$, we use the joint log-likelihood to re-generate all documents in the dataset, $\operatorname{\mathcal{L}}_D = \sum_{d=1}^D \operatorname{\mathcal{L}}_d$, where $\operatorname{\mathcal{L}}_d$ is the log-likelihood to re-generate document $d$ with summary embedding $\mathbf{S}$. We estimate the summary embeddings by maximizing this joint log-likelihood with respect to the parameters of the factor model:
+
+<!-- TODO: Can I split this into separate optimizations? Why / why not? -->
+$$
+ \mathbf{S}^{*} = \argmax_{\mathbf{W}^{Encoder}, \; \mathbf{W}^{Decoder}, \; \mathbf{B}^{Encoder}, \; \mathbf{B}^{Decoder}} \operatorname{\mathcal{L}}_D \left ( \mathbf{S} \right) \text{. }
+$$
+
+
+
+<!-- 
+For one observation vector, $\boldsymbol{d}$, of length $D$, the resulting length $F$ vector in the factor layer, $\boldsymbol{f}$,  is $\boldsymbol{f} = \boldsymbol{i}^T \mathbb{W}^E + \boldsymbol{B}^E$. In turn, the corresponding vector in the output space, $\boldsymbol{e}$, is $\boldsymbol{e} = \boldsymbol{h} \mathbb{W}^D + \boldsymbol{B}^D$. Taking these two steps together we obtain the output vector as $\boldsymbol{e} = \left( \boldsymbol{i}^T \mathbb{W}^E + \boldsymbol{B}^E \right) \mathbb{W}^D + \boldsymbol{B}^D$. This shows how the elements of $\boldsymbol{e}$ are now linearly dependent and a function of the factors contained in $\boldsymbol{h}$. Taking into account that our input matrix is an identity matrix, one observation becomes a standard basis vector, i.e. a vector that only contains zeroes, except at one position, where it contains a one. Essentially, the standard basis vector with a one at position $j$, $\boldsymbol{i}_j^T$, selects the $j$-th column of a matrix when multiplying the two. Hence, we can represent observation $j$ in the hidden layer as $\boldsymbol{h}^{(j)} = \boldsymbol{W^E_{\cdot, \; j}} + \boldsymbol{B}^E$.
+ -->
+
+<!-- 
 - Notation
   - A large language model $\mathcal{M}$, with parameters $\Omega$.
   - The length $E$ summary-embedding $\boldsymbol{e}^{*}$.
   - The length $T$ vector of target tokens $\boldsymbol{t}$, where the element $t_i$ is a unique integer code representing a token, e.g. in GPT-2, the number $50267$ is the End-of-Text token: `<|eos|>`.
   - The log-likelihood function $\operatorname{\mathcal{L}}_{\mathcal{M}} \left ( \boldsymbol{i}, \boldsymbol{o} \right): \mathbb{R}^E \to \left (- \infty, 0 \right]$, that returns the log-likelihood for LLM $\mathcal{M}$ to generate the output sequence $\boldsymbol{o}$, given the input embedding $\boldsymbol{i}$.
 
-$$
-\boldsymbol{e^{*}} = \argmax_{\boldsymbol{e}} \operatorname{\mathcal{L}}_{\mathcal{M}} \left ( \boldsymbol{e}, \boldsymbol{t} \right) = \argmax_{\boldsymbol{e}} \sum_{i=1}^{L} \log p(t_1, \ldots, t_L | \boldsymbol{e})
-$$
+-->
 
-
+<!-- 
 We aim to find a summary embedding, $\boldsymbol{e^{*}}$, that maximizes the likelihood of generating a given target sequence, $\lbrace t_i \rbrace_{i=1}^{L}$, with a given LLM, $\mathcal{M}$. We use a gradient-based optimization algorithm to maximize this likelihood. We initialize the summary embedding as the element-wise average of the embedding of the target sequence. We then generate a sequence of length $L$, with the LLM and the current input embedding. For the resulting output layer, we compute the likelihood that this layer will generate the target sequence. We backpropagate the gradients and adjust the input layer accordingly. We repeat this process until the optimization converges. We want to investigate further improvements to the implementation, such as computing the likelihood contributions of the tokens in a distributed fashion. In Algorithm 1, we summarize the training process.
+ -->
 
-<!-- TODO: Update this algorithm -->
+
+We summarize the training process for finding the sub-space representation in Algorithm 2.
+
+<!-- TODO: Update this -->
 
 \begin{algorithm}
 \begin{algorithmic}
 \label{alg:training}
-\caption{Training of Summary Embeddings}
-\State Initialize $\boldsymbol{s}$
+\caption{Training of Summary Embeddings based on factor model}
 \State $i \gets 0$
-\While{$Convergence == False$}
-    \State $i \gets i + 1$
-    \State $\boldsymbol{o}^{(i)} \gets \mathcal{M}(\boldsymbol{s})$
-    \State $l^{(i)} \gets \operatorname{Likelihood}(\boldsymbol{o}^{(i)}, \lbrace t_i \rbrace_{1}^{L})$
-    \State $\boldsymbol{s}^{(i + 1)} \gets \operatorname{GradientDecent}(\boldsymbol{s}^{(i)}, l^{(i)})$
-    \State $Convergence \gets \operatorname{CheckConvergence}(\boldsymbol{s}^{(i + 1)}, \boldsymbol{s}^{(i)})$
+\State $\epsilon \gets 0.01$
+\State $\mathbf{W}^{Encoder}_{(i)}, \; \mathbf{W}^{Decoder}_{(i)}, \; \mathbf{B}^{Encoder}_{(i)}, \; \mathbf{B}^{Decoder}_{(i)} \gets \operatorname{Initialization} \left( \cdot \right)$
+\While{$True$}
+    \State $\mathbf{S} \gets \left( \mathbf{W}^{Encoder}_{(i)} + \mathbf{B}^{Encoder}_{(i)} \right) \mathbf{W}^{Decoder}_{(i)} + \mathbf{B}^{Decoder}_{(i)}$
+    \State $l_{(i)} \gets \operatorname{\mathcal{L}}_D \left ( \mathbf{S} \right)$
+    \State $\nabla_{(i)} \gets \operatorname{ComputeGradient} \left ( l^{(i)}  \right )$
+    \State $\mathbf{W}^{Encoder}_{(i + 1)}, \; \mathbf{W}^{Decoder}_{(i + 1)}, \; \mathbf{B}^{Encoder}_{(i + 1)}, \; \mathbf{B}^{Decoder}_{(i + 1)} \gets \operatorname{Optimizer} \left(\mathbf{W}^{Encoder}_{(i)}, \; \mathbf{W}^{Decoder}_{(i)}, \; \mathbf{B}^{Encoder}_{(i)}, \; \mathbf{B}^{Decoder}_{(i)}, \; \nabla_{(i)} \right)$
+    \State $i \gets i + 1$    
+    \If{$l_{(i)} < \epsilon$}
+      \State \text{break}
+    \EndIf
 \EndWhile
 \end{algorithmic}
 \end{algorithm}
@@ -151,25 +238,29 @@ We aim to find a summary embedding, $\boldsymbol{e^{*}}$, that maximizes the lik
 
 <!-- TODO: What does it really return? -->
 <!-- TODO: Good idea or not? -->
-
-as the input-embedding that maximizes the likelihood of generating a given target sequence, $\lbrace t_i \rbrace_{i=1}^{L}$, where $L$ denotes the length of the target sequence and $t_i$ represents token $i$. We estimate these summary embeddings $\boldsymbol{e^{*}}$, by maximizing the conditional likelihood that this embedding generates the target sequence for a given LLM. We use a gradient-based optimization algorithm to maximize this likelihood.
-
-- Figure of generation tree
-  - For generation of sequences, the LLM autoregressively predicts the next token, given the previous tokens. At each step in the generation, a selection of the next token needs to take place, for which there exist various procedures (CITE). As we are optimizing with respect to the joint likelihood of the target sequence, we also need to generate with a procedure that generates this most likely sequence. Finding this sequence from the generation tree is a combinatorical problem and computationally not feasible. Hence, we use the beam-search heuristic to make our generation. Rather than only tracking the most likely token at each generation step, beam search also tracks the $n$-most likely tokens. The more beams we search, the more likely we are to find a sequence with a higher likelihood, then we would have found otherwise [@huggingfaceGenerateText].
-
-- LLM judge to rate claims
-
+<!-- TODO: Figure of generation tree -->
+  
 # Data
 
-We obtain data from a market research company, that includes advertising claims for different FMCG. In our application, we focus on dairy and hair shampoo products. These data, stem from different variations of choice-based conjoint studies [@eggersChoiceBasedConjointAnalysis2022], which we cannot further disclose due to confidentiality agreements. 
+CITE: Prompt engineering
 
-The data includes choice-experiments aggregated at the level of the advertising claims, hence we do not have responses of individuals. These measurements of consumer-preferences are on multiple dimensions, such as relevance, brand fit, or an overarching rating of the claim.  
+:::{#fig-gpt}
+\noindent
+\begin{minipage}{\textwidth}
+\begin{tcolorbox}[colback=white, colframe=gray!75!black]
+\textbf{Prompt:} \textit{I work for a marketing agency. I want to market a haircare product and need some claims for this. \textbf{I want you to emphasize how shiny the haircare product consumers' hair makes}. I need claims that differ in style with respect to how tangible the claims are. Make these claims brief. Can you give me 10 claims that are rather tangible and 10 claims that are rather intangible?}
+\end{tcolorbox}
+\end{minipage}
 
-The advertising claims were designed for markets in different countries and are in english (US, UK) or translated into english (others). The date of the study is also included in the data.
+[Prompt to generate the benchmark advertising claims](https://chatgpt.com/share/6af9a0b9-f8ee-4c31-a1b8-00712384ba59)
+::::
 
-We also have information on the marketers motivation behind the design of an advertising claims, such as whether she designed the claims to pronounce the health benefits of a yoghurt, or the taste yoghurt.
+As as robustness check, we repeated this task for different attributes (instead of shiny, healthiness and colorfulness of hair), and for a different product category (surface cleaners). In total, we obtain 80 advertising claims, 20 for each of these settings. Half of these claims are supposed to be tangible and half intangible. 
 
-The data also include the brand of a product.
+
+We obtain data from a market research company, that includes advertising claims for different FMCG. In our application, we focus on dairy and hair shampoo products. These data, stem from different variations of choice-based conjoint studies [@eggersChoiceBasedConjointAnalysis2022], which we cannot further disclose due to confidentiality agreements. The data includes choice-experiments aggregated at the level of the advertising claims, hence we do not have responses of individuals. These measurements of consumer-preferences are on multiple dimensions, such as relevance, uniqueness of a claim, brand fit, or an overarching rating of the claim. The advertising claims were designed for markets in different countries and are in english (US, UK) or translated into english (others). The date of the study is also included in the data. We also have information on the marketers motivation behind the design of an advertising claims, such as whether she designed the claims to pronounce the health benefits of a yoghurt, or the taste yoghurt, as well as the brand of the product.
+
+<!-- TODO: Some graphs / tables for descriptives -->
 
 - Descriptives of the data
 
@@ -179,7 +270,229 @@ The data also include the brand of a product.
 
 # Results
 
+TODO: Have similarity measure vs euclidean distance in encoding space
+
+- Performed suite of tests of generated data
+  - haircare shiny
+  - haircare healthy
+  - haircare colorful
+
+[ ] Training of embeddings
+
+![Training of embeddings](figures/dashboard.png)
+
+- computation
+- dealing with spikes
+
+[ ] Analysis of embeddings; Plot correlation of claims and dims, PCA
+
+
+::: {#fig-correlation layout-ncol=2 layout-nrow=2}
+![RE](figures/correlation_re.pdf)
+
+![BoW](figures/correlation_bow.pdf)
+
+![W2V](figures/correlation_w2v.pdf)
+
+![BERT](figures/correlation_bert.pdf)
+
+
+Correlation matrices along the claims. 
+:::
+
+::: {#fig-correlation-surface layout-ncol=2 layout-nrow=2}
+![RE](figures/correlation_re_surface.pdf)
+
+![BoW](figures/correlation_bow_surface.pdf)
+
+![W2V](figures/correlation_w2v_surface.pdf)
+
+![BERT](figures/correlation_bert_surface.pdf)
+
+
+Correlation matrices along the claims. 
+:::
+
+::: {#fig-correlation-haircolor layout-ncol=2 layout-nrow=2}
+![RE](figures/correlation_re_color.pdf)
+
+![BoW](figures/correlation_bow_color.pdf)
+
+![W2V](figures/correlation_w2v_color.pdf)
+
+![BERT](figures/correlation_bert_color.pdf)
+
+
+Correlation matrices along the claims. 
+:::
+
+::: {#fig-correlation-health layout-ncol=2 layout-nrow=2}
+![RE](figures/correlation_re_health.pdf)
+
+![BoW](figures/correlation_bow_health.pdf)
+
+![W2V](figures/correlation_w2v_health.pdf)
+
+![BERT](figures/correlation_bert_health.pdf)
+
+
+Correlation matrices along the claims. 
+:::
+
+::: {#fig-correlationts layout-ncol=2 layout-nrow=2}
+![RE](figures/correlation_ts_re.pdf)
+
+![BoW](figures/correlation_ts_bow.pdf)
+
+![W2V](figures/correlation_ts_w2v.pdf)
+
+![BERT](figures/correlation_ts_bert.pdf)
+
+
+Correlation matrices along the embedding dimensions. 
+:::
+
+::: {#fig-pca layout-ncol=2 layout-nrow=2}
+![RE](figures/pca_re.pdf)
+
+![BoW](figures/pca_bow.pdf)
+
+![W2V](figures/pca_w2v.pdf)
+
+![BERT](figures/pca_bert.pdf)
+
+
+First two principal components of the embedding matrix, colored by class.
+:::
+
+::: {#fig-loo layout-ncol=2 layout-nrow=2}
+![RE](figures/loo_re.pdf)
+
+![BoW](figures/loo_bow.pdf)
+
+![W2V](figures/loo_w2v.pdf)
+
+![BERT](figures/loo_bert.pdf)
+
+
+Reuslts of leave-one-out regression, colored by class.
+:::
+
+  - GPT-2
+  - BERT
+  - Word2Vec
+  - RE
+
+[ ] Encoding dimension plot
+
+
+@fig-encoding, @tbl-claims
+
+::: {#fig-encoding layout-ncol=2}
+
+![All points](figures/encoding_space.pdf){#fig-encoding1}
+
+![Zoom-in](figures/encoding_space_zoomin.pdf){#fig-encoding2}
+
+Encoding space of the advertising claims.
+
+:::
+
+
+
+| Number | Claim |
+|:-:|:-----------:|
+0  (T) | Experience 50% more visible shine after just one use.
+1 (T) | Formulated with light-reflecting technology for a glossy finish.
+2 (T) | Transform dull strands into radiant, luminous locks.
+3 (T) | Infused with nourishing oils that enhance natural shine.
+4 (T) | See instant brilliance with our advanced shine-boosting formula.
+5 (T) | Locks in moisture to amplify hair's natural luster.
+6 (T) | Achieve salon-quality shine without leaving home.
+7 (T) | Visible reduction in dullness, replaced with stunning shine.
+8 (T) | Say goodbye to lackluster hair, hello to mirror-like shine.
+9 (T) | Clinically proven to enhance shine by up to 70%.
+10 (I) | Elevate your confidence with hair that gleams under any light.
+11 (I) | Embrace the allure of luminous hair that turns heads.
+12 (I) | Unleash the power of radiant hair that speaks volumes.
+13 (I) | Transform your look with hair that exudes brilliance.
+14 (I) | Feel the difference of hair that shines with vitality and health.
+15 (I) | Rediscover the joy of hair that beams with inner vibrancy.
+16 (I) | Indulge in the luxury of hair that shimmers with elegance.
+17 (I) | Step into the spotlight with hair that radiates beauty.
+18 (I) | Experience the magic of hair that dazzles with every movement.
+19 (I) | Unlock the secret to hair that shines from within, reflecting your inner glow.
+
+: Tangible (T) and Intangible (I) advertising claims for hair shampoo products. {#tbl-claims}
+
+- labels, accuracy
+- clustering
+- generation of new claims
+  - exploring the space
+  - measure of fit (area)
+  
+[ ] generation of new claims [@Goodfellow2016]
+
+
+![Exploration of Encoding Space](figures/exploration_encoding_space.pdf)
+
+![Exploration of the likelihoods](figures/likelihoods_generation.pdf)
+
+<!-- TODO: Update these tables! -->
+
+|    | 3rd   | 2nd   | Choice        |   Prob. 3rd |   Prob. 2nd |   Prob. Choice |
+|---:|:------|:------|:--------------|------------:|------------:|---------------:|
+|  0 | Feel  | Un    | Step          | 0.0287145   | 0.0344409   |       0.887634 |
+|  1 | onto  | back  | into          | 0.000927151 | 0.00125316  |       0.992544 |
+|  2 | to    | class | the           | 5.98035e-05 | 6.91189e-05 |       0.99934  |
+|  3 | '     | sun   | spotlight     | 0.000623843 | 0.00123234  |       0.992407 |
+|  4 | into  | in    | with          | 0.00192485  | 0.00199383  |       0.992454 |
+|  5 | a     | hairs | hair          | 0.000946804 | 0.000969693 |       0.995565 |
+|  6 | above | .     | that          | 0.000743194 | 0.0014022   |       0.993072 |
+|  7 | X     | can   | radi          | 0.000538268 | 0.00169703  |       0.992411 |
+|  8 | ating | ats   | ates          | 0.000915091 | 0.00206985  |       0.996706 |
+|  9 | heat  | into  | beauty        | 0.00111988  | 0.00228065  |       0.987492 |
+| 10 | ).    | .)    | .             | 0.000529124 | 0.00114012  |       0.996219 |
+| 11 | \textit{2x linebreak}      | ]     | \textit{eos-token} | 0.000603324 | 0.00100365  |       0.995909 |
+| 12 | \textit{2x linebreak}    | \textit{linebreak}      | \textit{eos-token} | 7.61097e-06 | 0.00124311  |       0.99872  |
+| 13 | \textit{2x linebreak}    | \textit{linebreak}      | \textit{eos-token} | 2.16886e-05 | 0.000565556 |       0.999231 |
+| 14 | \textit{2x linebreak}    | \textit{linebreak}      | \textit{eos-token} | 3.80865e-05 | 0.00084979  |       0.998713 |
+| 15 | \textit{2x linebreak}    | \textit{linebreak}      | \textit{eos-token} | 5.16162e-05 | 0.00161664  |       0.997724 |
+| 16 | \textit{2x linebreak}    | \textit{linebreak}      | \textit{eos-token} | 0.000101122 | 0.0031923   |       0.995816 |
+: Example for a low 1st probability {#tbl-lowprob}
+
+
+|    | 3rd      | 2nd        | Choice        |   Prob. 3rd |   Prob. 2nd |   Prob. Choice |
+|---:|:---------|:-----------|:--------------|------------:|------------:|---------------:|
+|  0 | See      | Form       | Experience    | 0.00921188  | 0.013993    |       0.943786 |
+|  1 | 20       | 25         | 50            | 0.00203264  | 0.00445767  |       0.976235 |
+|  2 | %.       | .          | %             | 0.00142157  | 0.00205115  |       0.994173 |
+|  3 | better   | More       | more          | 0.000946993 | 0.00160339  |       0.996037 |
+|  4 | shine    | protective | visible       | 0.00178126  | 0.00218073  |       0.979003 |
+|  5 | glow     | light      | shine         | 0.000826363 | 0.00209097  |       0.983356 |
+|  6 | when     | by         | after         | 0.00171736  | 0.00367565  |       0.987    |
+|  7 | a        | well       | just          | 0.000570301 | 0.00172336  |       0.98959  |
+|  8 | two      | a          | one           | 0.00153683  | 0.00186334  |       0.989587 |
+|  9 | shine    | usage      | use           | 0.000427258 | 0.00324287  |       0.990624 |
+| 10 | ,        | !          | .             | 0.000354906 | 0.000630647 |       0.9981   |
+| 11 | .        |            | \textit{eos-token} | 0.000454232 | 0.00156762  |       0.994366 |
+| 12 | Transfer |            | \textit{eos-token} | 0.000179846 | 0.00032993  |       0.998234 |
+| 13 |          | More       | \textit{eos-token} | 0.000109437 | 0.000194042 |       0.998748 |
+| 14 | More     |            | \textit{eos-token} | 7.64376e-05 | 0.000174342 |       0.999236 |
+| 15 | Lab      |            | \textit{eos-token} | 5.29115e-05 | 0.000444251 |       0.998936 |
+| 16 | Lab      |            | \textit{eos-token} | 0.000276325 | 0.00155492  |       0.997141 |
+: Example for similar tokens {#tbl-similartoken}
+
+
+  - exploration of the likelihoods
+  - frequentist test of generating existing
+
+[ ] Repetition with actual marketing data
+
+
 ### Implementation
+
+- GPT-2; Far from state of the art, if it works here, it will work with other model
 
 - Autoencoder
 
@@ -209,8 +522,136 @@ The data also include the brand of a product.
 
 # Empirical Application
 
+
+
+
+- Summary statistics of the data
+
 - Application to MR data
 
+<!-- TODO: Check whether this is okay to name -->
+
+- Two small sub-samples from the same market research study of product claims for a dairy product
+  - MR1: Major theme "Gut Health", country DE, language english
+  - MR2: Major theme "Scientific words", country ES, language english
+  - MR3: Major theme: "RTB vs. Benefit", minor theme: "Amino-Acid", "Energy", ..., country NL, fitness brand, language english
+  - MR4: Hair care, country BR, total sample, find difference between two brands: Both from same FMCG  corporation
+
+
+## MR1
+
+::: {#fig-correlation-mr1 layout-ncol=2}
+![RE](figures/correlation_re_mr1.pdf)
+
+![BERT](figures/correlation_bert_mr1.pdf)
+
+
+Correlation matrices along the claims. 
+:::
+
+
+![Encoding space of the advertising claims.](figures/encoding_space_mr1.pdf){#fig-encoding1-mr1}
+
+
+::: {#fig-loo_mr1 layout-ncol=2}
+
+![RE](figures/loo_re_mr1.pdf)
+
+![BERT](figures/loo_bert_mr1.pdf)
+
+
+Reuslts of leave-one-out regression, colored by class.
+:::
+
+## MR2
+
+::: {#fig-correlation-mr2 layout-ncol=2}
+![RE](figures/correlation_re_mr2.pdf)
+
+![BERT](figures/correlation_bert_mr2.pdf)
+
+
+Correlation matrices along the claims. 
+:::
+
+::: {#fig-encoding-mr2 layout-ncol=2}
+
+![All points](figures/encoding_space_mr2.pdf){#fig-encoding1-mr2}
+
+![Zoom-in](figures/encoding_space_zoomin_mr2.pdf){#fig-encoding2-mr2}
+
+Encoding space of the advertising claims.
+
+:::
+
+::: {#fig-loo_mr2 layout-ncol=2}
+
+![RE](figures/loo_re_mr2.pdf)
+
+![BERT](figures/loo_bert_mr2.pdf)
+
+
+Reuslts of leave-one-out regression, colored by class.
+:::
+
+
+
+## MR4
+
+::: {#fig-correlation-mr4 layout-ncol=2}
+![RE](figures/correlation_re_mr4.pdf)
+
+![BERT](figures/correlation_bert_mr4.pdf)
+
+
+Correlation matrices along the claims. 
+:::
+
+::: {#fig-encoding-mr4 layout-ncol=2}
+
+![All points](figures/encoding_space_mr4.pdf){#fig-encoding1-mr4}
+
+![Zoom-in](figures/encoding_space_zoomin_mr4.pdf){#fig-encoding2-mr4}
+
+Encoding space of the advertising claims.
+
+:::
+
+::: {#fig-loo_mr4 layout-ncol=2}
+
+![RE](figures/loo_re_mr4.pdf)
+
+![BERT](figures/loo_bert_mr4.pdf)
+
+
+Reuslts of leave-one-out regression, colored by class.
+:::
+
+## MR 5
+
+::: {#fig-anecdote-mr5 layout-ncol=2}
+
+![Occurrence of words taste, natural, and immune system.](figures/anecdote_immune_system_mr5.pdf){#fig-anecdote-mr5a}
+
+![Occurrence of words relating to morning theme](figures/anecdote_morning_system_mr5.pdf){#fig-anecdote-mr5b}
+
+Embedding of the yoghurt claims, colored by word features.
+:::
+
+- establish that the space is continuous, word features etc.
+
+
+![Uniqueness score of embedded yoghurt drink claims.](figures/uniqueness_mr5.pdf){#fig-ratings-mr5a}
+
+@fig-anecdote-mr5 shows the encoding space for the yoghurt drink advertising claims, and illustrates how the embedding picks up on language features of the documents. Namely, @fig-anecdote-mr5a colors the claims based on whether they contain the words "taste" or "sense", "natural", and/or "immune system". We color-coded these three by the basic colors (yellow, red, blue), and claims that contain multiple of these words by the mixtures of these colors. If a claim contains none of these words, we code it in grey. Claims with the same word features cluster together, while claims that contain none of these words, are pushed to the outside of the plot. Intuitively, we would expect that claims which contain multiple of these word features from a transition between the claims which only have one of the word features. For this, we only have claims 13 and 21 as examples, whereas the former does not form such a boundary, and the latter is at the edge of the "Natural" and "Immune System" class.
+
+<!-- TODO: Give example of transition between two points -->
+
+We expect advertising claims that are more unique to have a more isolated position in the encoding space, as they are less similar to other claims. In other words, the uniqueness score should be positively correlated with the euclidean distance of an encoded claim to its neighest neighbor. @fig-ratings-mr5a shows that this is not the case, the correlation of these two measures is substanial and negative ($-0.4375$). The opposite is true: The three most unique claims (4, 17, 18) cluster together closely, and the further claims are away from these three, the less unique they tend to be. Claims with low uniqueness scores are spread further apart and far away from the most unique claims. These three most unique claims have some things in common, all of these use a combination of the words "natural", "active", and talk about ingredients (with synonyms). On the other hand, claim 15 is the only claim in the dataset using the word "yoghurt drink" and is also the only claim about emotions. Thereby, it is unique from a language perspective (far away from other points in the encoding), but perhaps not unique to consumers, as there might be similar claims on the market already. Also, uniqueness is highly correlated ($0.8843$) with the overall rating of claims, some of this correlation could be due to consumers viewing uniqueness as a proxy for "satisfaction". Lastly, the researched advertising claims are self-selected, and perhaps more unique then the average claim that is on the market already. This might lead to a form of Simpson's paradox [@sprenger2021simpson], where in the population there is a positive correlation between uniqueness and unique language, but perhaps not in this special sub-sample of the data.
+
+![Overall rating of embedded yoghurt drink claims.](figures/rating_country_mr5.pdf){#fig-ratings-mr5b}
+
+@fig-ratings-mr5b again shows the encoding space, but this time colored by the overall rating of the claims. Claims of similar rating tend to cluster together, with higher ratings in the north-east and lower ratings towards the south-west of the graph. The clustering of similarly rated claims, could be due to these claims being similar in language. For marketers, there are two insights from this: One, getting the overall theme of a claim right, can ensure that customers perception of this claim is within a certain ballpark. Two, after identifying a fruitful theme for the advertising claim, it is still useful to explore this neighborhood in more fine-grained steps, as locally, there might be small alterations that have large effects on the perception: See e.g. claims 21 (rating in top 4% percentile ) and 14 (rating in top 12%), despite one of the shortest distances in the encoding space. @fig-ratings-mr5b also shows how ratings of uniqueness can differ by country, the reasons for this could lie in what consumers are used to from the domestic market and in cultural differences.
 
 # Managerial Implications
 
@@ -218,7 +659,7 @@ The data also include the brand of a product.
 
 - Brands
 
-- Wording
+- Wording: Ballpark, finetuning idea
 
 - Interactive dashboard to explore the embedding space
 
@@ -226,22 +667,78 @@ The data also include the brand of a product.
   - When we take current prices for the [GPT-4o LLM; June 2024](https://openai.com/api/pricing/) (\$5 per 1 Mio tokens input, \$15 per 1 Mio tokens output), then training a dataset of 100 advertising claims, for 5,000 epochs will cost \$150. Freelancers on platforms such as [Upwork.com](https://www.upwork.com/) charge between \$20 and \$200 per hour for work on tasks such as SEO optimization, copy writing, and creation of advertising claims.
     - Online services for conjoint studies, such as [Conjointly.com](https://conjointly.com/) and [Sawtooth](https://sawtoothsoftware.com/pricing) charge a few thousand dollars per year to use their services. Leveraging the resulting insights as much as possible, by using generative AI, could hence make market research more cost effective.
 
+- Generator, predictor compatible embeddings; Generative AI to assist and automate design processes in marketing
+  - Existing approaches
+    - @hongWritingMoreCompelling2022 using a hierarchical attention network (HAN)
+  - @burnap2023product
+    - architecture of encoder, embedding space, predictor, generator
+    - images, VAE & GAN; Use semi-supervised learning of unlabelled and labeled images; These attributes can shape the generation
+    - augment the design process, rather than automate it
+    - Training requires large resources (2 weeks on multiple GPUs); However, use works on regular laptop
+    - Don't have pre-trained model available that can generate
+    - Performs better than research clinic, at a fraction of the cost, managers want to adapt this model in the organization
+    - Differences
+      - piggy-back of pre-trained LLM, can just learn the specifics of the domain rather than the language itself
+      - Deterministic generation
+      - When using bigger model, benefit of emergent capabilities; @brandUsingGPTMarket2023a; @goliFrontiersCanLarge2024 indicate that LLMs have ermergent capabilities wrt to consumer preferences (NOTE: Is this a fair point to make? We are getting rid of stochastic decoder in a sense)
+  - The approaches by @ludwigMachineLearningTool2023 and @burnap2023product model an encoding space for images, that can be used for generating new images as well as to create features that inform a supervised machine learning task
+  - These frameworks consist of three componenets: The encoder, which projects datapoints in an encoding space, the generator, which turns points from the encoding space into new datapoints, and the predictor, which predicts a certain label based on a point from the encoding space [compare terminology @burnap2023product].
+  - In our context, these three components perform the following tasks: The encoder represents an advertising claim as a vector, the generator generates and advertising claim based on such a vector, and the predictor predicts the marketeers motivation based on vector from the encoding space.
+  - Rather than inform product design, @ludwigMachineLearningTool2023, use such a framework to generate hypotheses for why a prisoner might be granted bail or not. For this, they predict judges decisions' from bail hearings, based on the mugshot photo of the defendant (predictor) and learn about the distribution of mugshots with a Generative Adversarial Network [CITE Goodfellow GAN]. To generate new hypothesis, they perform gradient descent on the prediction of the predictor with respect to the encoding data point. They search for the alteration to the image, that changes the predicted outcome the most. By making equal steps along this gradient in opposing directions, they obtain to versions of the same image manipulated with respect to this feature. @ludwigMachineLearningTool2023 also find, that comparing these two images often yields people to name the specific change, creating new hypothesis on why an inmate might be granted bail or not.
+  - We call the input data, $x$, and its distribution $p(x)$. In our setting, $x$ is an advertising claim. <!-- TODO: How does it work for @burnap2023product ? -->
+  - We call labels, $y$ and its distribution $p(y)$. In our setting, a label is e.g. the motivation of the marketeer behind an advertising claim, such as whether they want the claim to be "tangible" or "intangible". The "label" can also be a continuous variable, such as a consumer rating, turning classification problems into regression problems.
+  - We assume, that we can predict $y$ based on the data $x$. The distribution of the label given the data is the likelihood $p(y | x)$.
+  - Generative Adversarial Networks (GANs) consist of two components: The generator and the discriminator. The discriminator takes a datapoint as its input and predicts whether this is a genuine or fake datapoint, while the generator creates new datapoints based on noise. The learning objective for the generator is to create samples that pass the scrutiny of the discriminator, while the objective for the discriminator is, to correctly classify its test cases. There exists an equilibrium for these two objectives, when the generator creates samples that are indistinguishable from real datapoints. In essence, the GAN learns the distribution $p(x)$ of the data.
+  - The GAN architecture was designed for continuous data (images), rather than discrete data (text) , and adaptations if this model are necessary [see @de2021survey]
+  - There is a potential to benefit of the pre-trained information in LLMs. Rather than GANs, which require more training data as these networks need to learn the properties of an image from the ground up, we can focus directly on the types of texts that are relevant to our domain.  <!-- NOTE: Is this true? -->
+  - The training objective of LLMs is to predict the next token in a sequence of tokens
+  - Need to model $p(x)$ and $p(y | x)$
+  - For text data, we have options to model $p(y | x)$, e.g. with a supervised machine learning model. There are also potent ways to represent the input data $x$, sucha as by pooling BERT embeddings of a text [@devlinBERTPretrainingDeep2018; @shenBaselineNeedsMore2018].
+  - We can also make draws from $p(x)$, however, this only works through prompt engineering (CITE). And we do not obtain an encoding space, that can be shared with a predictor model.
+  - We solve this problem by finding an encoding space, that allows for informed generation and provides a representation useful for supervised learning tasks.
+  - We find this encoding space through an optimization. Namely, for every sequence in our dataset, we find an embedding vector, such that when we use this vector as an input to our LLM, we maximize the likelihood of generating this sequence. This we call the summary embedding. We perform this optimization for our full dataset simultaneously by using a factor model.
+  - By using this factor model, we create a bottleneck, forcing the model to learn helpful features; In other factor models, these features are often interpretable dimensions [@goodfellowDeepLearning2016].
+
+
 # Discussion
 
-- Using embedding rather than identity matrix as the input turns this into an autoencoder, rather than a factor model. According to @goodfellowDeepLearning2016, generation from factor models leads to a combination of the learned features in these factors, but not to the generation of sensible data points. Existing, autoencoder based, approaches that have succeeded in generation tasks, might be more suitable for this task (e.g. CITE: Variational Autoencoder).
+- Further Applications
+  - Framework of generator and predictor
+  - optimization of prompts in continuous space
+  - automatic answer evaluation
+  - explainable AI for generative models
 
-- Problems
-  - Computation time
-  - Benefits over existing approaches in practice?
-  - Conceptual issues of using AI in decision making @cathyoneilWeaponsMathDestruction2016; Gender biases @emilyshengWomanWorkedBabysitter2019
+## Problems
+
+- Issues with Generation
   - How to evaluate the quality of the generated ad claims @tatsunorihashimotoUnifyingHumanStatistical2019
+  - Another explanaition could lie in the decoding strategie. @ariholtzmanCuriousCaseNeural2020 show how text generation based on a maximum likelihood objective leads to text that sounds bland and not human, propsing the use of different decoding strategies to make the generated text more human.
 
-- Expansion of this research
+  - Using embedding rather than identity matrix as the input turns this into an autoencoder, rather than a factor model. According to @goodfellowDeepLearning2016, generation from factor models leads to a combination of the learned features in these factors, but not to the generation of sensible data points. Existing, autoencoder based, approaches that have succeeded in generation tasks, might be more suitable for this task (e.g. CITE: Variational Autoencoder).
+  
+  - Need deeper architecture, the manifold on which advertising claims live is not a linear plane?
+  
+  - does it make sense to have continuous representation of discrete thing? Then there would be other latent variable architectures, such as [Boltzman machines](https://www.cs.toronto.edu/~rgrosse/courses/csc321_2017/slides/lec20.pdf)
+
+- Implementation challenges
+  - Computation time
+  - [Tokenizer can cause problems?](https://www.promptingguide.ai/research/llm-tokenization) <!-- TODO: Is this true? Give an example? Won't be a problem forever ... But inherent to this type of model -->
+  - Not as flexible as general LLMs, as we need to have a target sequence and have a use case where we don't want a distribution
+
+## Expansion of this research
+
+<!-- TODO: Regularization of summary embeddings, have them absolute and not relative -->
+
+  - Incorporating the context of the product itself, embedding e.g. the brand, product features and competitors in the model, to move into part of the generation space that is "open" for the product
+  - Using fine-tuned LLMs
   - MAB around the fitted AE, to incorporate consumer feedback in online learning: Which areas of the space are valuable for which consumers?
   - For online learning, could wrap the decoder into an MAB and let the MAB explore the space by pulling arms <!-- TODO: Which kind of MAB? -->
   - Could also learn preferences online with this setup
   - Better LLM
   - Image, video, website, audio data. Perhaps website a good application. Perhaps audio a rather simple way to make this multi-modal (content and sound)
+
+
+# Conclusion
 
 {{< pagebreak >}}
 
