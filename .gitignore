@@ -104,3 +104,5 @@ src/log_models
 # ignore all .png files in folder and subfolders of mlartifacts
 mlartifacts/**/*.pngpath/to/yourfile
 path/to/yourfile
+
+*.png
