@@ -20,6 +20,14 @@ sPathEmbeddings = "data/processed/summary_embeddings"
 sNameEmbeddingA = "tangible_hair.pkl"
 sNameEmbeddingB = "intangible_hair.pkl"
 
+# plt.rcParams.update({
+#     "font.family": "serif",
+#     "text.usetex": True,
+#     'text.latex.preamble': r'\usepackage{cm-super}' + r'\usepackage{kpfonts}' + r"\usepackage{amsmath}" + r'\usepackage{amssymb}' + r"\usepackage{siunitx}"
+# })
+
+# csfont = {'fontname':'kpfonts'}
+
 # FUNCTIONS --------------------------
 # https://stackoverflow.com/questions/56369030/runtimeerror-attempting-to-deserialize-object-on-a-cuda-device
 class CPU_Unpickler(pickle.Unpickler):
@@ -52,16 +60,17 @@ class EmbeddingVisualizer:
         self.lEmbeddingB = lEmbeddingB
         
         
-def visualize_correlations(similarity_matrix, sName, bEmbedding=False):
+def visualize_correlations(similarity_matrix, sName, sFilePath, bEmbedding=False):
 
     plt.imshow(similarity_matrix, cmap='coolwarm', vmin=-1, vmax=1)
     plt.colorbar()
     plt.title(f'Similarity Matrix ({sName})')
-    plt.xticks(range(similarity_matrix.shape[0]), range(1, similarity_matrix.shape[0] + 1))
-    plt.yticks(range(similarity_matrix.shape[0]), range(1, similarity_matrix.shape[0] + 1))
+    #plt.xticks([])
+    #plt.yticks([])
+    plt.savefig(sFilePath)
     plt.show()
     
-def visualize_pca(embeddings, sName, vColorAssign=None):
+def visualize_pca(embeddings, sName, sFilePath, vColorAssign=None):
     
     if vColorAssign is None:
         vColorAssign = np.zeros(embeddings.shape[0])
@@ -75,6 +84,11 @@ def visualize_pca(embeddings, sName, vColorAssign=None):
     for i, (x, y) in enumerate(zip(pca_embeddings[:, 0], pca_embeddings[:, 1])):
         plt.text(x, y, str(i+1), color='black', fontsize=10)
     plt.title(f'PCA ({sName})')
+    plt.xlabel('PC1')
+    plt.ylabel('PC2')
+    plt.xticks()
+    plt.yticks()
+    plt.savefig(sFilePath)
     plt.show()
 
 def visualize_tsne(embeddings, sName, iPerplexity, vColorAssign=None):
@@ -138,7 +152,7 @@ def create_benchmarks(lClaims):
     return similarity_matrix_word2vec, similarity_matrix_bert, similarity_matrix_bow
 
 
-def loo_regression(tEmbeddingsA, tEmbeddingsB, tEmbeddings_demeaned, sName, vColorAssign = None):
+def loo_regression(tEmbeddingsA, tEmbeddingsB, tEmbeddings_demeaned, sName, sFilePath, vColorAssign = None):
 
     lResults = list()
     for iFocal in range(tEmbeddings_demeaned.shape[0]):
@@ -177,21 +191,24 @@ def loo_regression(tEmbeddingsA, tEmbeddingsB, tEmbeddings_demeaned, sName, vCol
     plt.scatter(aEstimates[:, 1], aEstimates[:, 2], c=vColorAssign)
     plt.xlabel('beta_A')
     plt.ylabel('beta_B')
-    plt.title(f'Leave-One-Out Regression ({sName}), orange = A, green = B')
+    plt.title(f'Leave-One-Out Regression ({sName})')
     plt.legend()
 
     # Plot histogram of intercept
     plt.subplot(1, 2, 2)
     plt.hist(aEstimates[:, 0])
+    plt.xlim([-0.05, 0.05])
     plt.xlabel('Intercept')
     plt.ylabel('Frequency')
-    plt.title(f'Histogram of Intercept; Mean = {np.mean(aEstimates[:, 0]):.3f}; Sd = {np.std(aEstimates[:, 0]):.3f}')
+    plt.title(f'Mean = {np.mean(aEstimates[:, 0]):.3f}; Sd = {np.std(aEstimates[:, 0]):.3f}')
 
     # Adjust spacing between subplots
     plt.tight_layout()
 
     # Show the plots
+    plt.savefig(sFilePath)
     plt.show()
+    
     
     return lResults
 class SummaryEmbeddings:

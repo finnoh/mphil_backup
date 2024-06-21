@@ -37,6 +37,17 @@ def TokenizeClaims(lClaims, tokenizer):
 def create_input_data(iClaims):
     return torch.eye(iClaims)
 
+def load_data(sDataPath, bUnique = False):
+    with open(sDataPath, 'r') as file:
+        lClaims = file.readlines()
+    lClaims = [claim.replace('\n', '') for claim in lClaims]
+    
+    if bUnique:
+    
+        return list(set(lClaims))
+    else:
+        return lClaims
+
 # TODO: Consider removing this function
 def PadScores(tOut, tLengths, iClaims, iVocab: int=50257):
 

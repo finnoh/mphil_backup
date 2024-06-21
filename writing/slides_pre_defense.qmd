@@ -1,0 +1,179 @@
+---
+title: "TITLE"
+subtitle: "Pre-Defense MPhil assessed by dr. Meike Morren & dr. Jonne Guyt"
+author: "Finn-Ole Höner; Supervisors: prof. Dennis Fok & prof. Bas Donkers"
+date: 2024-06-28
+date-format: long
+format: beamer
+aspectratio: 169
+incremental: false
+include-in-header: ../beamer_preamble.tex
+bibliography: ../references.bib
+fig-align: center
+fig-cap-location: bottom
+fig-format: pdf
+links-as-notes: true
+number-depth: 1
+eval: false
+echo: true
+fig-width: 12
+fig-height: 8
+pdf-engine: pdflatex
+---
+
+## One-Slide Summary
+
+- New method to calculate document summaries
+
+
+---
+
+
+
+\tiny
+
+| Method                              | Origin                                          | Reference                              |  Deterministic? |  Generation?  |  Type?  |
+|:------------------------------------|:------------------------------------|:--------------------|:--------------:|:--------------:|:--------------:|
+| BERT `[CLS]` token                       | Next-sentence prediction task                  | @devlinBERTPretrainingDeep2018         | $\checkmark$   | $\times$       | Numeric    |
+| Pooled Word Embeddings              | Aggregation of token information               | @tomasmikolovDistributedRepresentationsWords2013 @shenBaselineNeedsMore2018             | $\checkmark$   | $\times$       | Numeric    |
+| (Optimized) Prompt engineering                  | Emergent capability of LLM                     | @khattabDSPyCompilingDeclarative2023; @huangenhanced                                   | $\times$       | $\checkmark$       | Textual    |
+|  |  |                         |    |    |  |
+| Reverse engineered document summaries | Maximize the likelihood to re-generate the focal document | *Proposed method*                        | $\checkmark$   | $\checkmark$   | Numeric |
+: Overview of existing methods to summarize documents. {#tbl-docsum}
+
+---
+
+![Training of embeddings](figures/dashboard.png){#fig-optimization}
+
+## two
+
+::: {#fig-correlation layout-ncol=2}
+
+![SE: 2 Factors with LayerNorm.](figures/correlation_re.pdf)
+
+![BERT](figures/correlation_bert.pdf)
+
+
+Correlation matrices along the claims. 
+:::
+
+---
+
+::: {#fig-encoding layout-ncol=2}
+
+![All points](figures/encoding_space.pdf){#fig-encoding1}
+
+![Zoom-in](figures/encoding_space_zoomin.pdf){#fig-encoding2}
+
+Encoding space of the advertising claims. Numbered points are locations of claims that are part of the training data, colored dots are points where we generate one of the claims that are part of the training data, and red crosses are locations where we generate a claim that ends with the eos-token, but is not part of the training data. Whitespace marks coordinates where we generate a string that does not contain an eos token.
+:::
+
+---
+
+![Exploration of Encoding Space](figures/exploration_encoding_space.pdf){#fig-space}
+
+---
+
+\small
+
+|    | 3rd      | 2nd        | Choice        |   Prob. 3rd |   Prob. 2nd |   Prob. Choice |
+|---:|:---------|:-----------|:--------------|------------:|------------:|---------------:|
+|  0 | See      | Form       | Experience    |       0.009 |       0.014 |          0.944 |
+|  1 | 20       | 25         | 50            |       0.002 |       0.004 |          0.976 |
+|  2 | %.       | .          | %             |       0.001 |       0.002 |          0.994 |
+|  3 | better   | More       | more          |       0.001 |       0.002 |          0.996 |
+|  4 | shine    | protective | visible       |       0.002 |       0.002 |          0.979 |
+|  5 | glow     | light      | shine         |       0.001 |       0.002 |          0.983 |
+|  6 | when     | by         | after         |       0.002 |       0.004 |          0.987 |
+|  7 | a        | well       | just          |       0.001 |       0.002 |          0.990 |
+|  8 | two      | a          | one           |       0.002 |       0.002 |          0.990 |
+|  9 | shine    | usage      | use           |       0.000 |       0.003 |          0.991 |
+| 10 | ,        | !          | .             |       0.000 |       0.001 |          0.998 |
+| 11 | .        | \textit{space}  | \textit{eos-token} |       0.000 |       0.002 |          0.994 |
+: Example for similar tokens {#tbl-similartoken}
+
+
+---
+
+\small
+
+|    | Weight | Generated String                                                                                      |
+|---:|:-------|:------------------------------------------------------------------------------------------------------|
+|  0 | 0/20   | Unlock the secret to hair that shines from within, reflecting your inner glow.   \textit{eos-token}   |
+|  1 | 1/20   | Unlock the secret to hair that shining from within, your bedroom. \textit{eos-token}                  |
+|  2 | 2/20   | Unlock the secret to black metal's glow. \textit{multiple eos-token}                                  |
+|  3 | 3/20   | Unlock the secret to blackened nails that shine from the shine.   \textit{eos-token}                  |
+|  4 | 4/20   | Un to of for the team members upon \textit{linebreak} Moderation of the, that|
+|  5 | ...    | ...                                                                                                   |
+| 17 | 17/20  | Rediscover the joy of hair that's at the-corrects life with a healthy                                 |
+| 18 | 18/20  | Rediscover the joy of hair that beams with inner vibrancy. \textit{eos-token}                         |
+| 19 | 19/20  | Rediscover the joy of hair that beams with inner vibrancy. \textit{eos-token}                         |
+: Example for similar tokens {#tbl-weight}
+
+---
+
+\small
+
+\begin{algorithm}[H]
+\begin{algorithmic}
+\label{alg:singletraining}
+\caption{Training of Single Summary Embeddings}
+\State $i \gets 0$
+\State $\epsilon \gets 0.01$
+\State $\boldsymbol{s} \gets \operatorname{Initialization} \left( \cdot \right)$
+\While{$True$}
+    \State $l^{(i)} \gets \operatorname{\mathcal{L}} \left ( \boldsymbol{s} \mid t_1, \ldots, t_T \right)$
+    \State $\nabla_{\boldsymbol{s}}^{(i)} l \gets \operatorname{ComputeGradient} \left ( l^{(i)}  \right )$
+    \State $\boldsymbol{s}^{(i + 1)} l \gets \operatorname{Optimizer} \left(\boldsymbol{s}^{(i)}, \; \nabla_{\boldsymbol{s}}^{(i)} l \right)$
+    \State $i \gets i + 1$    
+    \If{$l^{(i)} < \epsilon$}
+      \State \text{break}
+    \EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+
+---
+
+\small
+
+\begin{algorithm}[H]
+\begin{algorithmic}
+\label{alg:training}
+\caption{Training of Summary Embeddings based on factor model}
+\State $i \gets 0$
+\State $\epsilon \gets 0.01$
+\State $\mathbf{W}^{Encoder}_{(i)}, \; \mathbf{W}^{Decoder}_{(i)}, \; \mathbf{B}^{Encoder}_{(i)}, \; \mathbf{B}^{Decoder}_{(i)} \gets \operatorname{Initialization} \left( \cdot \right)$
+\While{$True$}
+    \State $\mathbf{S} \gets \left( \mathbf{W}^{Encoder}_{(i)} + \mathbf{B}^{Encoder}_{(i)} \right) \mathbf{W}^{Decoder}_{(i)} + \mathbf{B}^{Decoder}_{(i)}$
+    \State $l_{(i)} \gets \operatorname{\mathcal{L}}_D \left ( \mathbf{S} \right)$
+    \State $\nabla_{(i)} \gets \operatorname{ComputeGradient} \left ( l^{(i)}  \right )$
+    \State $\mathbf{W}^{Encoder}_{(i + 1)}, \; \mathbf{W}^{Decoder}_{(i + 1)}, \; \mathbf{B}^{Encoder}_{(i + 1)}, \; \mathbf{B}^{Decoder}_{(i + 1)} \gets \operatorname{Optimizer} \left(\mathbf{W}^{Enc., Dec.}_{(i + 1)}, \; \mathbf{B}^{Enc., Dec.}_{(i + 1)}, \; \nabla_{(i)} \right)$
+    \State $i \gets i + 1$    
+    \If{$l_{(i)} < \epsilon$}
+      \State \text{break}
+    \EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+---
+
+![Document Summaries](figures/anecdote_morning_system_mr5.pdf){width=75%}
+
+---
+
+![Document Summaries](figures/uniqueness_mr5.pdf){width=75%}
+
+
+## Appendix
+
+![Document Summaries](figures/anecdote_morning_system_bert_mr5.pdf){width=75%}
+
+---
+
+![Document Summaries](figures/uniqueness_bert_mr5.pdf){width=75%}
+
+
+## References {.allowframebreaks}

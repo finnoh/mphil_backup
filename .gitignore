@@ -83,6 +83,7 @@ target/
 /src/data/*/*
 /src/data/secure_*
 /src/secure_*
+/src/analysis/secure_*
 
 
 # Mac OS-specific storage files

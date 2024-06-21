@@ -1,0 +1,21 @@
+sNameAEModel: 'FactorModel'
+s_model: "gpt2"
+sDataPath: "data/claim.txt"
+iEncodingDim: 2
+iOutputSize: 768
+sAENameArchitecture: "factor_linear_2h_both_none"
+sRunName: "test_claims"
+dLearningRate: 1e-1
+dEps: 5e-2
+dWeightDecay: 0
+dMaxGrad: None
+iBreakAtEpochs: 1e4
+bSaveModels: False
+dLambda: None
+
+
+module load Python/3.9.5-GCCcore-10.3.0
+module load SciPy-bundle/2023.07-gfbf-2023a
+module load PyTorch/2.1.2-foss-2023a
+module load matplotlib/3.7.2-gfbf-2023a
+module load tqdm/4.66.1-GCCcore-12.3.0

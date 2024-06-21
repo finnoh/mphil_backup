@@ -1,0 +1,1 @@
+hair20_0.026LL.pth : d5b63d748bf64dfb9e4d4e1e363d1255 : -0.026
